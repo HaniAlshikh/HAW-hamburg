@@ -50,7 +50,7 @@ end
 
 # approximate pi value based on leibniz formula
 def approx_pi(accuracy)
-  return [0, "0/0"] unless accuracy.is_a?(Integer) && accuracy > 0
+  return [0, "0/1"] unless accuracy.is_a?(Integer) && accuracy > 0
 
   values = []
   accuracy.times { |k| values << ((-1)**k.to_f / ((2 * k) + 1)) }
@@ -62,13 +62,12 @@ end
 
 # approximate one using ?
 def approx_one(accuracy)
-  return [0,0] unless accuracy.is_a?(Integer) && accuracy > 0
+  return [0,[0]] unless accuracy.is_a?(Integer) && accuracy >= 2
 
   values = []
-  (1..accuracy).each do |k|
-    x = ((k*2).to_f - 1) / (pro(1..(k*2)))
-    break if x == 0
-    values << x
+  (2..accuracy).each do |k|
+    approx = ((k).to_f - 1) / (pro(1..(k)))
+    values << approx unless approx == 0 && break
   end
 
   [sum(values), values]
@@ -79,17 +78,15 @@ end
 def egyptians_pro(a, b)
   # make sure input and order are correct
   return 0 unless a.is_a?(Integer) && b.is_a?(Integer)
-  a < b ? (l_column, r_column = [*a], [*b]) : (l_column, r_column = [*b], [*a])
+  a < b ? (values = [[a,b]]) : (values = [[b,a]])
 
-
+  # create an array of two arrays (l_column, r_column)
   loop.with_index do |args, i|
-    break if l_column[-1] == 1
-    l_column << l_column[i] / 2
-    r_column << r_column[i] * 2
+    break if values[-1][0] == 1
+    values << [values[i][0]/2, values[i][1]*2]
   end
 
-  sum(r_column.delete_if { |num| l_column[r_column.index(num)].even? })
-
+  sum(values.select { |num| num[0].odd? }.map { | num | num[1] })
 end
 
 
@@ -122,7 +119,7 @@ puts "Approximated #{pi_a[0]*4}, fraction: #{pi_a[1]*4}"
 puts
 
 puts "3.3. 1 approximition".green
-approx_one = approx_one(100)
+approx_one = approx_one(300)
 puts "your approximation of 1:  #{approx_one[0]}, fraction: #{approx_one[0].rationalize}"
 puts "achived at: #{approx_one[1].index(approx_one[1][-1])}"
 p approx_one[1]
