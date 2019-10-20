@@ -1,31 +1,42 @@
 Professor:: Dr. Bernd Kahlbrandt  
 Author:: Nick Marvin Rattay  
 Author:: Hani Alshikh  
-<div style="text-align: right">13.10.2019</div>
+<div style="text-align: right">19.10.2019</div>
 
-# Umgang mit Strings
+# Umgang mit Zahlen
 
-Nach Analyse der Aufgabenstellung und deren Voraussetzungen wurde die Entscheidung getroffen, keine Klassen zu benutzen.
+Nach Analyse der Aufgabenstellung und deren Voraussetzungen wurde die Entscheidung getroffen, ein Modul zu benutzen, welches die Lesbarkeit verbessert. Dies ist in modules/formula.rb zu finden. Der Script zum durchführen ist im Hauptordner/numbers_run.rb zu finden.
 
-## 01. Aufruf von Methoden
+Um die Lösung nicht unnötig komplexer zu machen, wurde die User-Eingabe und das Error handling nicht betrachtet, da dies auch nicht Teil der Aufgabe ist.    
 
-Für diesen Teil der Aufgabe verfügt die Klasse String auf die benötigten Methoden, um die Aufgaben zu erledigen, wie in dem Script "part_01.rb" zu entnehmen.
+### 01. & 02. Summe und Produkt Methoden
 
-Um einen String umzudrehen, kann man beispielsweise die Methode .reverse benutzen.
+Die Methode inject wurde für die Berechnung benutzt, da dies die Möglichkeit bietet, einen Startwert für die Berechnung elegant einzugeben, statt zu prüfen, ob es einen Startwert gibt, in Fällen wie Z.B. leerer Array. 
 
-Bei den ersetzen Aufgaben wurde die Methode .gsub benutzt. Man könnte auch die Methode .replace benutzen, allerdings bietet die Methode .gsub mehr Flexibilität dank der Nutzung von Regex. 
+Fälle wie Array von Arrays, Hashes usw., werden ignoriert. Und der Startwert 0 bzw. 1 wird zurückgegeben. Das kann gefährlich sein, aber aufgrund der fehlenden Eingabe bei solchen  Situationen wurde dies nicht betrachtet.
 
-## 02. Einlesen und Verarbeiten von Textdateien
+### 03. Arbeiten mit Folgen von Zahlen
 
-Bei dieser Aufgabe wird mehr Logik benötigt, allerdings nicht so viel, dass man es in Methoden unterteilt.
+#### 01. Collatz-Folge
 
-Error handling wurde hier auch nicht betrachtet, da dies nicht Teil der Aufgabe ist.
+Die Berechnung der Collatz-Folge wird basierend auf einen Startwert solange durchgeführt, bis ein Zyklus zu erkennen ist. 
+Dafür wurde der resultierende Array aus der Differenz zwischen dem Sequenz- und Zyklus-Array auf die Leerheit geprüft.
 
-Bei der ersten Teilaufgabe wurde wie vorausgesetzt File.open mit der Übergabe in einen Block benutzt, man könnte sich auch ein paar Code Zeilen sparen und IO.read bzw. File.read benutzen.
+Der Vorteil dieser Prüfung ist, dass man beliebige Zyklus Arrays benutzen könnte.
+
+#### 02.03. Approximationsreihen
+
+Für beide Approximationsreihen wird anhand der Differenz zwischen der letzten zwei Approximationen und dem Wert des Epsilons festgestellt, ob die gewünschte Genauigkeit erreicht wurde.  
 
 
-Das Regex /[:alpha:]/ wurde in beiden Aufgaben anstatt  /\w+/ benutzt, da es nicht ASCII Buchstaben wie die Umlaute unterstützt.
+#### 04. Die russische Bauern
 
+Hiefür wurde zwei dimensionale Array benutzt um einige Zeilen Code zu sparen. Allerdings könnte man auch zwei Arrays für beide Spalten benutzen.
 
-### Quellen:
+Extra:
+Man kann die absoluten Werte der eingegebenen Zahlen nehmen und am Ende die Summe mit -1 multiplizieren, falls nur einer der Zahlen negativ ist, ansonsten mit +1. Dadurch wurden auch die negativen Zahlen unterstützt.
+
+#### Quellen:
 - https://ruby-doc.org
+- https://en.wikipedia.org/wiki/Collatz_conjecture
+- https://de.wikipedia.org/wiki/Russische_Bauernmultiplikation
