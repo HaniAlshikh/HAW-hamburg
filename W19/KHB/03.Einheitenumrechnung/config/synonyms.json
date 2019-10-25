@@ -1,0 +1,101 @@
+
+{
+  "mm": [
+    "mm",
+    "millimeter"
+  ],
+  "cm": [
+    "cm",
+    "centimeter"
+  ],
+  "m": [
+    "m",
+    "meter"
+  ],
+  "km": [
+    "km",
+    "kilometer"
+  ],
+  "in": [
+    "in",
+    "inch"
+  ],
+  "ft": [
+    "ft",
+    "feet"
+  ],
+  "yd": [
+    "yd",
+    "yard"
+  ],
+  "mile": [
+    "ml",
+    "mile"
+  ],
+  "potrzebie": [
+    "potrzebie"
+  ],
+  "mp": [
+    "mp"
+  ],
+  "kp": [
+    "kp"
+  ],
+  "fp": [
+    "fp"
+  ],
+  "g": [
+    "g"
+  ],
+  "kg": [
+    "kg"
+  ],
+  "zentner": [
+    "zentner"
+  ],
+  "tonne": [
+    "tonne"
+  ],
+  "ounce": [
+    "ounce"
+  ],
+  "pound": [
+    "pound"
+  ],
+  "ton": [
+    "ton"
+  ],
+  "ngogn": [
+    "ngogn"
+  ],
+  "blintz": [
+    "blintz"
+  ],
+  "Kn": [
+    "kn"
+  ],
+  "celsius": [
+    "celsius"
+  ],
+  "kelvin": [
+    "kelvin"
+  ],
+  "fahrenheit": [
+    "fahrenheit"
+  ],
+  "smurdley": [
+    "smurdley"
+  ],
+  "dutzend": [
+    "dutzend"
+  ],
+  "mandel": [
+    "mandel"
+  ],
+  "schock": [
+    "schock"
+  ],
+  "gross": [
+    "gross"
+  ]
+}
