@@ -1,0 +1,88 @@
+:mm:
+  - :mm
+  - :millimeter
+:cm:
+  - :cm
+  - :centimeter
+:m:
+  - :m
+  - :meter
+:km:
+  - :km
+  - :kilometer
+:in:
+  - :in
+  - :inch
+:ft:
+  - :ft
+  - :feet
+:yd:
+  - :yd
+  - :yard
+:mile:
+  - :ml
+  - :mile
+:potrzebie:
+  - :potrzebie
+  - :p
+:mp:
+  - :mp
+  - :millipotrzebie
+:kp:
+  - :kp
+  - :kilopotrzebie
+:fp:
+  - :fp
+  - :farshimmeltpotrzebie
+:g:
+  - :g
+  - :gram
+:kg:
+  - :kg
+  - kilogram
+:zentner:
+  - :zentner
+  - :quintal
+:tonne:
+  - :tonne
+  - :t
+:ounce:
+  - :ounce
+  - :oz
+:pound:
+  - :pound
+  - :lb
+:ton:
+  - :ton
+  - :mt
+:ngogn:
+  - :ngogn
+:blintz:
+  - :blintz
+:kn:
+  - :kn
+  - :kilonewtons
+:celsius:
+  - :celsius
+  - :c
+:kelvin:
+  - :kelvin
+  - :k
+:fahrenheit:
+  - :fahrenheit
+  - :f
+:smurdley:
+  - :smurdley
+  - :s
+:dutzend:
+  - :dutzend
+  - :dz
+:mandel:
+  - :mandel
+  - :md
+:schock:
+  - :schock
+  - :sk
+:gross:
+  - :gross
+  - :gs

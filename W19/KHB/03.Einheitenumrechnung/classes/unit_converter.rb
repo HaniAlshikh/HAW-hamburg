@@ -3,19 +3,19 @@ require_relative '../modules/units'
 class UnitConverter
 
   include Units
-  attr_accessor :epsilon, :conversion
+  attr_accessor :digits, :conversion
   attr_reader :factor, :from_measure, :to_measure, :conversions
 
   def initialize()
     @factor, @from_measure, @to_measure, @conversion = [*nil]
-    @epsilon = Float::EPSILON
+    @digits = 2
     @conversions = []
   end
 
   def convert()
-    if Units::get_unit(from_measure) == "OLD UNITS"
+    if Units::get_unit(from_measure) == :MENGENEINHEIT
       old_convert
-    elsif Units::get_unit(from_measure) == "TEMPERATURE"
+    elsif Units::get_unit(from_measure) == :TEMPERATURE
       temp_convert
     else
       base_convert
@@ -24,48 +24,52 @@ class UnitConverter
 
 
   def base_convert()
-    (factor * Units::dig_value(from_measure) / Units::dig_value(to_measure))
+    (factor * Units::dig_value(from_measure) / Units::dig_value(to_measure)).round(digits)
   end
 
   def old_convert()
-    conv_result = []
     measure_val = factor * Units::dig_value(from_measure)
-    to_in_from = base_convert.to_i
+    conv_result = [measure_val, "oder"]
 
-    conv_result << "#{to_in_from} #{to_measure}"
-    measure_val -= Units::dig_value(to_measure) * to_in_from
+    unit = Units::UNITS[Units::get_unit(from_measure)]
+    ordered_unit = unit.sort_by(&:last).reverse.to_h
+    ordered_unit = {to_measure => ordered_unit.delete(to_measure)}.merge(ordered_unit)
 
-    unless measure_val == 0
-      Units::UNITS['OLD UNITS'].sort_by(&:last).reverse.to_h.each do |measure, value|
-        if value <= measure_val
-          conv_result << "#{(measure_val / value).to_i} #{measure}"
-          measure_val -= value * (measure_val / value).to_i
-        end
+    ordered_unit.each do |measure, value|
+      if value <= measure_val
+        conv_result << "#{(measure_val / value).to_i} #{measure}"
+        measure_val -= value * (measure_val / value).to_i
       end
-
-      conv_result << measure_val if measure_val != 0
     end
-    conv_result
+
+    conv_result << measure_val if measure_val != 0
+    conv_result.join(' ')
   end
 
   def temp_convert()
     in_celsius = factor
-    unless from_measure == Units::get_key('celsius')
-      in_celsius = Units::TEMP_FORMULA['from'][Units::get_key(from_measure)].(factor)
+    unless from_measure == Units::get_key(:celsius)
+      in_celsius = Units::TEMP_FORMULA[:from][from_measure].(in_celsius)
     end
-    Units::TEMP_FORMULA['to'][Units::get_key(to_measure)].(in_celsius)
+
+    Units::TEMP_FORMULA[:to][to_measure].(in_celsius).round(digits)
   end
 
   def save_conversion()
-    @conversions << ["#{factor}#{from_measure}","#{to_measure}", "#{conversion}"]
+    @conversions << ["#{factor} #{from_measure}","#{to_measure}", conversion]
   end
 
   def reset()
-    @factor, @from_measure, @to_measure = [*nil]
+    @digits, @factor, @from_measure, @to_measure = 2, [*nil]
   end
 
   def each()
     @conversions.each
+  end
+
+  def to_s()
+    "#{@conversion} #{@to_measure unless
+        Units::get_unit(@from_measure) == :MENGENEINHEIT}"
   end
 
   def factor=(factor)
