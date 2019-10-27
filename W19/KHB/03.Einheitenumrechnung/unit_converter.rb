@@ -27,7 +27,7 @@ puts <<~EOT.green
         - the second valid unit is the target unit
         - everything else will be ignored
 
-    - conversion are shown with 2 digits after the decimal point
+    - conversion are shown with 4 digits after the decimal point
         - if you would like to change this please
           add another number to your input
           1k to f 5 digits | 1k f 5

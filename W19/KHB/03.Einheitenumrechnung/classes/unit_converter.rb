@@ -1,4 +1,5 @@
 require_relative '../modules/units'
+require_relative '../lib/prettify'
 
 # convert between multiple units and stores them for output
 class UnitConverter
@@ -8,12 +9,12 @@ class UnitConverter
 
   def initialize
     @factor, @from_measure, @to_measure, @conversion = [*nil]
-    @digits = 2
+    @digits = 4
     @conversions = []
   end
 
   # check the unit and call the corresponding conversion method
-  # @return [Float, String]
+  # @return [Numeric, String]
   def convert
     if Units.get_unit(from_measure) == :MENGENEINHEIT
       count_convert
@@ -25,7 +26,7 @@ class UnitConverter
   end
 
   # factor relationship conversion formula on a basie measurement
-  # @return [Float]
+  # @return [Numeric]
   def base_convert
     (factor * Units.dig_value(from_measure) / Units.dig_value(to_measure)).round(digits)
   end
@@ -39,25 +40,25 @@ class UnitConverter
   # @return [String]
   def count_convert
     # 01. calculate value
-    measure_val = factor * Units.dig_value(from_measure)
-    conv_result = [measure_val, 'oder']
+    measure_val = (factor * Units.dig_value(from_measure)).round(digits)
+    conv_result = [measure_val.round(digits).prettify, 'or']
     # prep: order unit by value and favor the target unit on top
     ordered_unit = Units.order_unit(Units.get_unit(from_measure))
     ordered_unit = { to_measure => ordered_unit.delete(to_measure) }.merge(ordered_unit)
     # loop between units for 02. & 03.
     ordered_unit.each do |measure, value|
-      if value <= measure_val
+      if value <= measure_val || measure == to_measure
         conv_result << "#{(measure_val / value).to_i} #{measure}"
         measure_val -= value * (measure_val / value).to_i
       end
     end
     # 04. save any leftovers and return string result
-    conv_result << measure_val if measure_val != 0
+    conv_result << measure_val.round(digits).prettify if measure_val != 0
     conv_result.join(' ')
   end
 
   # convert between temps based on a pre-defined formulas
-  # @return [Float]
+  # @return [Numeric]
   def temp_convert
     in_celsius = factor
     # convert to celsius if not
@@ -70,7 +71,8 @@ class UnitConverter
   # save the current conversion
   # @return [Array] conversions
   def save_conversion
-    @conversions << ["#{factor} #{from_measure}", to_measure.to_s, conversion]
+    @conversions << ["#{factor.prettify} #{from_measure}", to_measure.to_s,
+                     conversion.is_a?(Float) ? conversion.prettify : conversion]
   end
 
   # reset for the next conversion
@@ -108,7 +110,7 @@ class UnitConverter
     unless validate_to_measure?(to_measure)
       raise ArgumentError,
             "can't convert between #{Units.get_unit(from_measure)}" \
-                              "and #{Units.get_unit(to_measure)}"
+                              " and #{Units.get_unit(to_measure)}"
     end
 
     @to_measure = Units.get_key(to_measure)
