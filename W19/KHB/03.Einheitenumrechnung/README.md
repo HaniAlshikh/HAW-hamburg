@@ -7,7 +7,7 @@ Author:: Hani Alshikh
 
 Dieses Programm wurde möglichst objektorientiert entworfen. Eine Übersicht der Struktur kann man vom folgenden Diagramm entnehmen  
 
-![Einheitenumrechenr UML Diagram](UML/Einheitenumrechner.svg)
+![Einheitenumrechenr UML Diagram](UML/Einheitenumrechner.png)
 
 
 ### 01. Leistung
