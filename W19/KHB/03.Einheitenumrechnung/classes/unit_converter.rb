@@ -1,3 +1,14 @@
+#####################################################################
+# Assigment sheet A03: Unit Converter in Ruby.
+#
+# the main class containing the conversion logic to convert between
+# common units as specified
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
+
 require_relative '../modules/units'
 require_relative '../lib/prettify'
 
@@ -75,27 +86,35 @@ class UnitConverter
                      conversion.is_a?(Float) ? conversion.prettify : conversion]
   end
 
-  # reset for the next conversion
+  # reset for next conversion
   def reset
     @digits, @factor, @from_measure, @to_measure = 2, [*nil]
   end
 
+  # support enumeration
   def each
     @conversions.each
   end
 
+  # support string methods
   def to_s
     "#{@conversion} #{@to_measure unless
         Units.get_unit(@from_measure) == :MENGENEINHEIT}"
   end
 
-  # setters and validates
+  # setters and validators
+  # factor setter which make sure it's float
+  # @param [Numeric]
+  # @raise [ArgumentError]
   def factor=(factor)
     @factor = Float(factor)
   rescue ArgumentError => e
     raise e.class, "'#{factor}' is not a valid value"
   end
 
+  # base measurement setter
+  # @param [String, Symbol]
+  # @raise [ArgumentError]
   def from_measure=(from_measure)
     from_measure = from_measure.downcase.to_sym
     unless validate_from_measure?(from_measure)
@@ -105,6 +124,9 @@ class UnitConverter
     @from_measure = Units.get_key(from_measure)
   end
 
+  # target measurement setter
+  # @param [String, Symbol]
+  # @raise [ArgumentError]
   def to_measure=(to_measure)
     to_measure = to_measure.downcase.to_sym
     unless validate_to_measure?(to_measure)
@@ -116,10 +138,16 @@ class UnitConverter
     @to_measure = Units.get_key(to_measure)
   end
 
+  # validate base measurement
+  # @param [Symbol]
+  # @return [Boolean]
   def validate_from_measure?(from_measure)
     Units.measure?(from_measure)
   end
 
+  # validate target measurement and make sure it has matching unit
+  # @param [Symbol]
+  # @return [Boolean]
   def validate_to_measure?(to_measure)
     Units.same_unit?(from_measure, to_measure)
   end

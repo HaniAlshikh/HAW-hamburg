@@ -1,3 +1,13 @@
+#####################################################################
+# Assigment sheet A03: Unit Converter in Ruby.
+#
+# Test cases for for user interaction
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
+
 require 'test/unit'
 require_relative '../classes/user_helper'
 
@@ -7,6 +17,7 @@ class InputTest < Test::Unit::TestCase
     @user_helper = UserHelper.new
   end
 
+  # basic input test
   def test_ask
     test_cases = { '1k c' => [[1.0],[:k,:c]],
                    '10.2kg g' => [[10.2],[:kg, :g]],
@@ -23,16 +34,9 @@ class InputTest < Test::Unit::TestCase
   end
 
 
-  def test_assign()
-    input_values = [:kg, :cm, :celsius, :g]
-    input_strings = [10.2, 20, 30, 7.5]
-
-    assert_true(user_helper.assign(input_values,input_strings))
-  end
-
-
   private
 
+  # simulate user input
   def with_stdin
     stdin = $stdin             # remember $stdin
     $stdin, write = IO.pipe    # create pipe assigning its "read end" to $stdin

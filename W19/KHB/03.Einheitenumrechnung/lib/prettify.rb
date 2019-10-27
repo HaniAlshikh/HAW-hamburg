@@ -1,3 +1,13 @@
+#####################################################################
+# Assigment sheet A03: Unit Converter in Ruby.
+#
+# tiny library to extend classes functionality
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
+
 # extend the string class to support basic output manipulation
 class String
   # Output green colored string

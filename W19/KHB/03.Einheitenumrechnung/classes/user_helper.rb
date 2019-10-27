@@ -1,3 +1,13 @@
+#####################################################################
+# Assigment sheet A03: Unit Converter in Ruby.
+#
+# Helper class to deal with user interaction
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
+
 require_relative 'unit_converter'
 require_relative '../lib/prettify'
 
@@ -13,13 +23,13 @@ class UserHelper
   def start
     loop do
       # 01. Input
-      input_values, input_strings = ask()
-        assign(input_values, input_strings)
+      input_values, input_strings = ask
+      assign(input_values, input_strings)
       # 02. Process
       unit_converter.conversion = unit_converter.convert
-      # in between output
+      # -- in between output
       puts "#{unit_converter} \n\n"
-      # save and reset for the next round
+      # -- save and reset for the next round
       unit_converter.save_conversion
       unit_converter.reset
     end
@@ -30,18 +40,17 @@ class UserHelper
 
   # ask user for input
   # @return [[Array],[Array]]
-  def ask()
+  def ask
     # get input and check to exit
-    input = prompt("what would you to do: ")
+    input = prompt('what would you to do: ')
     exit(0) if input =~ /exit|done/
     # separate input to arrays of strings and values
     input_values = input.scan(/\d*\.?\d+/).map(&:to_f)
     input_strings = input.gsub(/\d+/, '').scan(/\w+/).map(&:downcase).map(&:to_sym)
-    [input_values, input_strings.select{ |sym| Units.measure?(sym) }]
+    [input_values, input_strings.select { |sym| Units.measure?(sym) }]
   end
 
   # handel assigment
-  # @return [TrueClass] when the assigment complete
   def assign(input_values, input_strings)
     # try input if missing ask for it
     handle_assigment(ArgumentError) do
@@ -70,13 +79,13 @@ class UserHelper
     puts "\n###################### Your Conversions ######################\n".green
     puts format % ['', 'From', 'To', 'Result'], ""
     conversions.each do |conversion|
-      puts format % [Units::get_unit(conversion[1].to_sym), conversion[0], conversion[1], conversion[2]]
+      puts format % [Units.get_unit(conversion[1].to_sym), conversion[0], conversion[1], conversion[2]]
     end
     puts
   end
 
-  # handel errors and repeat for correct value
-  # @param [Exception] *error Exceptions to be handled
+  # handel errors and repeat till correct value
+  # @param [Exception] error Exceptions to be handled
   # @yield assigment block
   # @return [TrueClass] when handling is done
   def handle_assigment(error)

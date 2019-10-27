@@ -1,6 +1,18 @@
+#####################################################################
+# Assigment sheet A03: Unit Converter in Ruby.
+#
+# Helper module to handel units and measurements data requests
+# and verification
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
+
 require 'yaml'
 
 # units handler
+# TODO: Error handling and data checks
 module Units
   UNITS = YAML.load_file(File.join(__dir__, '../config/units.yml')).freeze
   SYNONYM = YAML.load_file(File.join(__dir__, '../config/synonyms.yml')).freeze

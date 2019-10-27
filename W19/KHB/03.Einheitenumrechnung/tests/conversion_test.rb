@@ -1,3 +1,13 @@
+#####################################################################
+# Assigment sheet A03: Unit Converter in Ruby.
+#
+# Test cases for every unit and measurement
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
+
 require 'test/unit'
 require_relative '../classes/unit_converter'
 
