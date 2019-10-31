@@ -12,7 +12,7 @@ class MasterMind
     @verbose = false
     @n_letters = 6
     @pegs = 4
-    @attempts = 10
+    @attempts = 12
     @letters = ("A".."Z").to_a[0...n_letters]
     @log = []
     @winner = nil

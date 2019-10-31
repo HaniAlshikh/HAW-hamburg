@@ -69,7 +69,7 @@ class UserHelper
           puts "Well i mean you got me :|, i can't win in less than 6 attempts yet :("
           return
         when (6..8) then puts "Only #{mastermind.attempts} attempts!! well don't expect much"
-        when (12..Float::INFINITY) then puts "#{mastermind.attempts} attempts, how generous of you"
+        when (14..Float::INFINITY) then puts "#{mastermind.attempts} attempts, how generous of you"
         else "Hmmmm what did you do?!"
         end
         comp_v_human

@@ -41,7 +41,7 @@ class FeedbackTest < Test::Unit::TestCase
       puts "-"*40
       puts "\n       #{code_maker.secret_code}"
 
-      10.times do
+      mastermind.attempts.times do
         @code_breaker.guesses << @code_breaker.guess
         puts "computer guess: #{@code_breaker.guesses.last}"
         lost = @code_maker.lost?(@code_breaker.guesses.last)

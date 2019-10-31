@@ -37,7 +37,7 @@ class ComputerCodeBreaker < CodeBreaker
     # until we get [B B] shuffle there no tricks here yet
     return lucky_guess(@helper_guess) if @helper_guess.size > 2
 
-    puts 'almost there...' if print_helper[3]; @print_helper[3] = false
+    puts "\nalmost there..." if print_helper[3]; @print_helper[3] = false
     # 2 done 2 to go
     fill_secret_code if @helper_guess.size == 2
     # oh common a switch should do it now :)
