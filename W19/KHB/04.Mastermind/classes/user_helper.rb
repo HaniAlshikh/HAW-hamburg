@@ -133,7 +133,7 @@ class UserHelper
     if mastermind.winner.to_s =~ /human.*/i
       puts "Wow your code is hard to guess"
     else
-      puts "looks like i'm really smart after all :)"
+      puts "Oh yea, looks like i'm really smart after all :)"
     end
 
   end

@@ -2,7 +2,8 @@ require_relative 'code_breaker'
 
 class ComputerCodeBreaker < CodeBreaker
 
-  attr_accessor :guess_index, :code_letters, :possible_positions, :swap_tmp, :letters_possibility
+  attr_accessor :guess_index, :secret_code_letters, :possible_positions,
+                :swap_tmp, :letters_possibility, :print_helper
 
   def initialize(mastermind)
     # @mastermind = mastermind
@@ -10,56 +11,51 @@ class ComputerCodeBreaker < CodeBreaker
     @guess_index = 0
     @possible_positions = mastermind.letters.each_with_object({}) { |l, h| h[l] = (0...mastermind.pegs).to_a }
     @possible_answers = []
-    @code_letters = []
+    @secret_code_letters = []
     @helper_guess = []
     @secret_code = [nil] * mastermind.pegs
     @swap_tmp = []
+    @print_helper = [*true] * 6
   end
 
   def guess()
 
-    collect_code_letters unless @code_letters.size == mastermind.pegs
-    return collecting_guess unless @code_letters.size == mastermind.pegs
+    puts "\nlet's see what we got here....." if print_helper[0]; @print_helper[0] = false
+    collect_code_letters
+    return collecting_guess unless @secret_code_letters.size == mastermind.pegs
 
-    if mastermind.has_duplicates?(@code_letters)
-      generate_answers(@code_letters) if @possible_answers.empty?
-      return feeling_lucky
+    if mastermind.has_duplicates?(@secret_code_letters)
+      puts "\nthis should be easy to guess...." if print_helper[1]; @print_helper[1] = false
+      return lucky_guess(@secret_code_letters)
     end
 
-    return generate_helper_guess if @helper_guess.empty?
+    puts "\nok, ok i can handel it.." if print_helper[2]; @print_helper[2] = false
+    return helper_guess if @helper_guess.empty?
 
     # still by 4 or got 2?
-    if @helper_guess.size > 2
-      # until we get [B B] shuffle there no tricks here yet
-      @feedback.last.uniq == ['B'] ? minimize_positions : (return feeling_lucky)
-    end
+    minimize_positions if @feedback.last.uniq == ['B']
+    # until we get [B B] shuffle there no tricks here yet
+    return lucky_guess(@helper_guess) if @helper_guess.size > 2
 
+    puts 'almost there...' if print_helper[3]; @print_helper[3] = false
     # 2 done 2 to go
-    if @helper_guess.size == 2
-      fill_secret_code
-      @helper_guess = ['skip all other cases and come to the last switch downstairs']
-      return @secret_code
-    end
-
+    fill_secret_code if @helper_guess.size == 2
     # oh common a switch should do it now :)
-    if @feedback.last.uniq.size > 1
-      @secret_code[@swap_tmp[0]], @secret_code[@swap_tmp[1]] =
-          @secret_code[@swap_tmp[1]], @secret_code[@swap_tmp[0]]
-    end
+    switch_guess if @feedback.last.uniq.size > 1
 
     @secret_code
 
   end
 
-  def generate_helper_guess
+  def helper_guess
     # generate a pattern of [B/W . B/W .]
-    pegless_letter = (mastermind.letters - @code_letters)[0]
-    @helper_guess = (@code_letters[0..1].map { |l| [l, pegless_letter] }.flatten)
+    pegless_letter = (mastermind.letters - @secret_code_letters)[0]
+    @helper_guess = (@secret_code_letters[0..1].map { |l| [l, pegless_letter] }.flatten)
     @possible_answers = @helper_guess.permutation(@helper_guess.size).to_a.uniq
     # keep track of possible positions for possible letters only
-    @possible_positions.select! { |l, _| @code_letters.include?(l) }
-    @helper_guess = @code_letters.dup
-    feeling_lucky
+    @possible_positions.select! { |l, _| @secret_code_letters.include?(l) }
+    @helper_guess = @secret_code_letters.dup
+    lucky_guess(@helper_guess)
   end
 
   def minimize_positions
@@ -84,6 +80,12 @@ class ComputerCodeBreaker < CodeBreaker
         end
       end
     end
+    @helper_guess = ['skip all other cases and come to the last switch guess']
+  end
+
+  def switch_guess
+    @secret_code[@swap_tmp[0]], @secret_code[@swap_tmp[1]] =
+        @secret_code[@swap_tmp[1]], @secret_code[@swap_tmp[0]]
   end
 
   def generate_answers(code)
@@ -91,8 +93,10 @@ class ComputerCodeBreaker < CodeBreaker
   end
 
   def collect_code_letters
-    unless @feedback.empty?
-      @code_letters.fill(@guesses.last.uniq.first, code_letters.size, feedback.last.size)
+    unless @secret_code_letters.size == mastermind.pegs
+      unless @feedback.empty?
+        @secret_code_letters.fill(@guesses.last.uniq.first, secret_code_letters.size, feedback.last.size)
+      end
     end
   end
 
@@ -101,7 +105,8 @@ class ComputerCodeBreaker < CodeBreaker
     [*mastermind.letters[guess_index - 1]] * 4
   end
 
-  def feeling_lucky
+  def lucky_guess(from_code)
+    generate_answers(from_code) if @possible_answers.empty?
     @possible_answers.shuffle!.pop
   end
 
