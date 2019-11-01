@@ -19,21 +19,19 @@ require_relative '../lib/extend'
 class UserHelper
 
   attr_reader :mastermind
-  attr_accessor :code_breaker, :code_maker
+  attr_accessor :code_breaker, :code_maker, :knuth
   def initialize
     @mastermind = MasterMind.new
     @code_maker, @code_breaker = [*nil]
+    @knuth = false
   end
 
 
   def run
-    loop do
-      ask
-    end
+    loop { ask }
   ensure
     output
   end
-
 
   def ask
     repeat_on(ArgumentError) do
@@ -45,6 +43,7 @@ class UserHelper
       when /^config attempts.*|^c a.*/i then conf_attempts(input[/\d+/])
       when /^config pegs.*|^c p.*/i then conf_pegs(input[/\d+/])
       when /^config letters.*|^c l.*/i then conf_letters(input[/\d+/])
+      when /^config knuth|^c k$/i then @knuth = (@knuth ? (puts 'Knuth disabled'; false) : (puts 'Knuth enabled'; true))
       when /^verbose$|^v$/i then verbose
       else raise ArgumentError, "#{input} is not a valid option"
       end
@@ -113,7 +112,7 @@ class UserHelper
     repeat_on(ArgumentError) { code_maker.generate { prompt('your secret code: ') } }
 
     mastermind.attempts.times do
-      code_breaker.guesses << code_breaker.guess
+      code_breaker.guesses << (@knuth ? code_breaker.guess_knuth : code_breaker.guess)
       puts "my guess: #{code_breaker.guesses.last}"
 
       break if code_maker.lost?(code_breaker.guesses.last)
@@ -130,7 +129,11 @@ class UserHelper
     puts "\n  #{code_maker.secret_code}  \n\n"
 
     if mastermind.winner.to_s =~ /computer.*/i
-      puts "Oh yea, looks like i'm really smart after all :)"
+      if @knuth
+        puts "Well it's Knuth algorithm, what did you expect :D"
+      else
+        puts "Oh yea, looks like i'm really smart after all :)"
+      end
     else
       puts "Wow your code is hard to guess"
     end
@@ -193,7 +196,7 @@ class UserHelper
   # prompt for input
   # @param [String] message prompt message
   # @return [String] input
-  def prompt(message)
+  def prompt(message, type=false)
     print(message)
     gets.chomp
   end
