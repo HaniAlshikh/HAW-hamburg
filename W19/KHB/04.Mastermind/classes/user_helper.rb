@@ -29,11 +29,10 @@ class UserHelper
   def run
     loop do
       ask
-      # break if prompt('Again? (y/n): ') =~ /^n$|^no$|^ne$|^nein$/i
     end
+  ensure
+    output
   end
-
-  at_exit { puts "Here comes the output soon" }
 
 
   def ask
@@ -101,10 +100,10 @@ class UserHelper
 
     puts "\n  #{code_maker.secret_code}  \n\n"
 
-    if mastermind.winner.to_s =~ /human.*/i
-      puts "Congrats you won!"
-    else
+    if mastermind.winner.to_s =~ /computer.*/i
       puts "You lost, maybe next time :)"
+    else
+      puts "Congrats you won!"
     end
   end
 
@@ -130,10 +129,10 @@ class UserHelper
 
     puts "\n  #{code_maker.secret_code}  \n\n"
 
-    if mastermind.winner.to_s =~ /human.*/i
-      puts "Wow your code is hard to guess"
-    else
+    if mastermind.winner.to_s =~ /computer.*/i
       puts "Oh yea, looks like i'm really smart after all :)"
+    else
+      puts "Wow your code is hard to guess"
     end
 
   end
@@ -170,7 +169,14 @@ class UserHelper
     puts "Changed attempts value to: #{mastermind.attempts}".green
   end
 
-
+  def output
+    # formatting and outputting
+    format = "%-13s %-10s %-10s %-10s %s"
+    puts "\n########################## Game log ##########################\n".green
+    puts format % ['', 'Maker', 'Breaker', 'Guesses', 'Winner'], ""
+    @mastermind.logs.each { |log| puts format % [log[0], log[1], log[2], log[3], log[4]] }
+    puts
+  end
 
   # handel errors and repeat till correct value
   # @param [Exception] error Exceptions to be handled

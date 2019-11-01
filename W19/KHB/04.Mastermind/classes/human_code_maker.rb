@@ -22,4 +22,8 @@ class HumanCodeMaker < CodeMaker
     feedback
   end
 
+  def to_s
+    "You"
+  end
+
 end

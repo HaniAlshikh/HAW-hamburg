@@ -20,10 +20,8 @@ puts <<~EOT.green
   | |\\/| |/ _` |(_-<|  _|/ -_)| '_|| '  \\ | || ' \\ / _` |
   |_|  |_|\\__,_|/__/ \\__|\\___||_|  |_|_|_||_||_||_|\\__,_|
 
-  L Letter matched
-  M Matched letter and position
-
-  happy converting
+  B Black peg
+  W White peg
 
   ##############################################################
 EOT

@@ -49,10 +49,22 @@ class FeedbackTest < Test::Unit::TestCase
         puts "feedback      : #{@code_breaker.feedback.last}"
         if lost
           puts "Code guessed successfully"
+          @mastermind.evaluate(@code_maker, @code_breaker)
           break
-          # code_breaker.reset
         end
       end
     end
+
+    output
+
+  end
+
+  def output
+    # formatting and outputting
+    format = "%-13s %-10s %-10s %-10s %s"
+    puts "\n############################ Game log ############################\n".green
+    puts format % ['', 'Maker', 'Breaker', 'Guesses', 'Winner'], ""
+    @mastermind.logs.each { |log| puts format % [log[0], log[1], log[2], log[3], log[4]] }
+    puts
   end
 end

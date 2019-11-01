@@ -14,4 +14,8 @@ class HumanCodeBreaker < CodeBreaker
     guess_
   end
 
+  def to_s
+    "You"
+  end
+
 end

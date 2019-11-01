@@ -1,6 +1,10 @@
 require_relative 'code_breaker'
+require "set"
+require_relative '../Modules/knuth_algorithm'
 
 class ComputerCodeBreaker < CodeBreaker
+
+  include KnuthAlgorithm
 
   attr_accessor :guess_index, :secret_code_letters, :possible_positions,
                 :swap_tmp, :letters_possibility, :print_helper
@@ -16,6 +20,10 @@ class ComputerCodeBreaker < CodeBreaker
     @secret_code = [nil] * mastermind.pegs
     @swap_tmp = []
     @print_helper = [*true] * 6
+  end
+
+  def to_s
+    "Computer"
   end
 
   def guess()

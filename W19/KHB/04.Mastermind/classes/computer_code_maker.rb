@@ -17,7 +17,7 @@ class ComputerCodeMaker < CodeMaker
       feedback << 'W'
       code = code.subtract_once([*letter])
     end
-    feedback.shuffle
+    feedback
   end
 
   def generate
@@ -29,6 +29,10 @@ class ComputerCodeMaker < CodeMaker
 
   def give_feedback(guess)
     self.class.give_feedback(guess, @secret_code)
+  end
+
+  def to_s
+    "Computer"
   end
 
 end

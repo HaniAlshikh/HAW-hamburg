@@ -6,7 +6,7 @@ end
 class MasterMind
 
   attr_reader :letters, :n_letters, :pegs, :attempts
-  attr_accessor :log, :winner, :verbose
+  attr_accessor :logs, :winner, :verbose
 
   def initialize
     @verbose = false
@@ -14,7 +14,7 @@ class MasterMind
     @pegs = 4
     @attempts = 12
     @letters = ("A".."Z").to_a[0...n_letters]
-    @log = []
+    @logs = []
     @winner = nil
   end
 
@@ -32,11 +32,11 @@ class MasterMind
 
   def evaluate(code_maker, code_breaker)
     if code_maker.lost?(code_breaker.guesses.last)
-      @winner = code_breaker.class
+      @winner = code_breaker.to_s
     else
-      @winner = code_maker.class
+      @winner = code_maker.to_s
     end
-    log << [@winner, code_maker.secret_code]
+    @logs << ["[ #{code_maker.secret_code.join(' ')} ]", code_maker, code_breaker, code_breaker.guesses.size, @winner]
     @winner
   end
 
