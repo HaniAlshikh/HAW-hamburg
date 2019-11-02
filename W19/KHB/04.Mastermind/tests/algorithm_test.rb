@@ -13,18 +13,22 @@ require_relative '../classes/master_mind'
 require_relative '../classes/code_breaker'
 require_relative '../classes/computer_code_maker'
 require_relative '../classes/computer_code_breaker'
+require_relative '../classes/config'
 
 class AlgorithmTest < Test::Unit::TestCase
 
   attr_reader :mastermind, :code_maker, :code_breaker
 
   def setup
-    @mastermind = MasterMind.new
+    @mastermind = MasterMind.new(Config::CONFIGS)
     @code_maker = ComputerCodeMaker.new(mastermind)
     @code_breaker = ComputerCodeBreaker.new(mastermind)
   end
 
   def test_algorithm
+
+    @mastermind.attempts = "20"
+    @mastermind.knuth = false
 
     tests = [
         %w[A A B B],
@@ -42,11 +46,11 @@ class AlgorithmTest < Test::Unit::TestCase
       puts "\n       #{code_maker.secret_code}"
 
       mastermind.attempts.times do
-        @code_breaker.guesses << @code_breaker.guess_knuth # guess or guess_knuth
+        @code_breaker.guess
         puts "computer guess: #{@code_breaker.guesses.last}"
         lost = @code_maker.lost?(@code_breaker.guesses.last)
-        @code_breaker.feedback << @code_maker.give_feedback(@code_breaker.guesses.last)
-        puts "feedback      : #{@code_breaker.feedback.last}"
+        @code_breaker.scores << @code_maker.score(@code_breaker.guesses.last)
+        puts "score         : #{@code_breaker.scores.last}"
         if lost
           puts "Code guessed successfully"
           @mastermind.evaluate(@code_maker, @code_breaker)

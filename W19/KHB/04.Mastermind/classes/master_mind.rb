@@ -6,20 +6,21 @@ end
 class MasterMind
 
   attr_reader :letters, :n_letters, :pegs, :attempts
-  attr_accessor :logs, :winner, :verbose
+  attr_accessor :logs, :winner, :verbose, :knuth
 
-  def initialize
-    @verbose = false
-    @n_letters = 6
-    @pegs = 4
-    @attempts = 12
+  def initialize(config)
+    @verbose = config[:verbose]
+    @n_letters = config[:letters]
+    @pegs = config[:pegs]
+    @attempts = config[:attempts]
+    @knuth = config[:knuth]
     @letters = ("A".."Z").to_a[0...n_letters]
     @logs = []
     @winner = nil
   end
 
   def validate_code?(code)
-    code.size == pegs && (code - letters).empty?
+    code.size == @pegs && (code - @letters).empty?
   end
 
   def has_duplicates?(code)
@@ -35,7 +36,17 @@ class MasterMind
     @logs << { secret_code: "[ #{code_maker.secret_code.join(' ')} ]",
                maker: code_maker, breaker: code_breaker, guesses: code_breaker.guesses.size,
                winner: @winner }
-    @winner
+  end
+
+  def score(guess, code)
+    black_pegs = code.zip(guess).map { |c, g| c if c == g }.compact
+    score = ['B'] * black_pegs.size
+    guess.subtract_once(black_pegs).each do |letter|
+      next unless code.subtract_once(black_pegs).include?(letter)
+      score << 'W'
+      code = code.subtract_once([*letter])
+    end
+    score
   end
 
   def n_letters=(num)
@@ -47,6 +58,8 @@ class MasterMind
       @pegs = num
     end
   end
+
+  # TODO: handel integer assigment
   def attempts=(num)
     safe_assign(num) { |num| @attempts = num }
   end

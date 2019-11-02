@@ -9,6 +9,8 @@
 #####################################################################
 
 require_relative 'master_mind'
+require_relative 'config'
+require_relative '../Modules/toolbox'
 require_relative 'human_code_breaker'
 require_relative 'human_code_maker'
 require_relative 'computer_code_breaker'
@@ -18,32 +20,33 @@ require_relative '../lib/extend'
 # helper class to deal with user interaction
 class UserHelper
 
-  attr_reader :mastermind
+  include Toolbox
+
+  attr_reader :mastermind, :config
   attr_accessor :code_breaker, :code_maker
   def initialize
-    @mastermind = MasterMind.new
+    @mastermind = MasterMind.new(Config::CONFIGS)
     @code_maker, @code_breaker = [*nil]
-    @knuth = false
+    @config = Config.new(@mastermind)
   end
-
 
   def run
     loop { ask }
   ensure
-    output unless mastermind.logs.empty?
+    output unless @mastermind.logs.empty?
   end
 
   def ask
     repeat_on(ArgumentError) do
       case input = prompt("\nwhat would you to do: ")
       when /^play$|^p$/i then play
-      when /^exit$|^e$/i then exit()
-      when /^config$|^c$/i then config
-      when /^config attempts.*|^c a.*/i then conf_attempts(input[/\d+/])
-      when /^config pegs.*|^c p.*/i then conf_pegs(input[/\d+/])
-      when /^config letters.*|^c l.*/i then conf_letters(input[/\d+/])
-      when /^knuth|^k$/i then knuth
-      when /^verbose$|^v$/i then verbose
+      when /^exit$|^e$/i then exit
+      when /^config$|^c$/i then @config.config
+      when /^config attempts.*|^c a.*/i then @config.attempts(input[/\d+/])
+      when /^config pegs.*|^c p.*/i then @config.pegs(input[/\d+/])
+      when /^config letters.*|^c l.*/i then @config.letters(input[/\d+/])
+      when /^knuth|^k$/i then @config.knuth
+      when /^verbose$|^v$/i then @config.verbose
       else raise ArgumentError, "#{input} is not a valid option"
       end
     end
@@ -51,134 +54,62 @@ class UserHelper
 
   def play
     repeat_on(ArgumentError) do
-      input = prompt('Who are you? maker or breaker: ')
-      case input
-      when /^codemaker$|^maker$|^m$/i
-        @code_breaker = ComputerCodeBreaker.new(mastermind)
-        @code_maker = HumanCodeMaker.new(mastermind)
-        if mastermind.letters.size > 6 || mastermind.pegs > 4
-          puts "\nWell i'm smart but not that smart :)"
-          puts "please rest to 6 letters and 4 pegs to play with me."
-          return
-        end
-        case mastermind.attempts
-        when (0..5)
-          puts "Well i mean you got me :|, i can't win in less than 6 attempts yet :("
-          return
-        when (6..8) then puts "Only #{mastermind.attempts} attempts!! well don't expect much"
-        when (14..Float::INFINITY) then puts "#{mastermind.attempts} attempts, how generous of you"
-        else "Hmmmm what did you do?!"
-        end
-        comp_v_human
-      when /^codebreaker$|^breaker$|^b$/i
-        @code_breaker = HumanCodeBreaker.new(mastermind)
-        @code_maker = ComputerCodeMaker.new(mastermind)
-        human_v_comp
-      else raise ArgumentError, "#{input} is not a valid option"
+      case players = prompt('Who are you? maker or breaker: ')
+      when /^codemaker$|^maker$|^m$/i then play_comp_v_human
+      when /^codebreaker$|^breaker$|^b$/i then play_human_v_comp
+      else raise ArgumentError, "#{players} is not a valid option"
       end
     end
   end
 
-  def human_v_comp
+  def play_comp_v_human
+    @code_breaker = ComputerCodeBreaker.new(@mastermind)
+    return unless @code_breaker.check_requirement?
+    @code_breaker.interact
+    @code_maker = HumanCodeMaker.new(@mastermind)
+    game_start { comp_v_human }
+  end
 
-    code_maker.generate
+  def play_human_v_comp
+    @code_breaker = HumanCodeBreaker.new(@mastermind)
+    @code_maker = ComputerCodeMaker.new(@mastermind)
+    game_start { human_v_comp }
+  end
+
+  def game_start
     display_info
-
-    mastermind.attempts.times do
-      repeat_on(ArgumentError) do
-        code_breaker.guesses << code_breaker.guess { prompt('your guess: ') }
-      end
-      break if code_maker.lost?(code_breaker.guesses.last)
-
-      code_breaker.feedback << code_maker.give_feedback(code_breaker.guesses.last)
-      puts "feedback  : #{code_breaker.feedback.last.join(' ')}"
-    end
-
-    mastermind.evaluate(code_maker, code_breaker)
-
+    yield if block_given?
+    mastermind.evaluate(@code_maker, @code_breaker)
     puts "\n  #{code_maker.secret_code}  \n\n"
+    code_maker.interact
+  end
 
-    if mastermind.winner.to_s =~ /computer.*/i
-      puts "You lost, maybe next time :)"
-    else
-      puts "Congrats you won!"
+  def human_v_comp
+    code_maker.generate
+    mastermind.attempts.times do
+      repeat_on(ArgumentError) { code_breaker.guesses << code_breaker.guess { prompt('your guess: ') } }
+      break if code_maker.lost?(code_breaker.guesses.last)
+      # TODO: hnadel user feedback for knuth
+      code_breaker.scores << code_maker.score(code_breaker.guesses.last)
+      puts "feedback  : #{code_breaker.scores.last.join(' ')}"
     end
   end
 
   def comp_v_human
-
-    display_info
     repeat_on(ArgumentError) { code_maker.generate { prompt('your secret code: ') } }
-
     mastermind.attempts.times do
-      code_breaker.guesses << (@knuth ? code_breaker.guess_knuth : code_breaker.guess)
+      code_breaker.guess
       puts "my guess: #{code_breaker.guesses.last}"
-
       break if code_maker.lost?(code_breaker.guesses.last)
-
       repeat_on(ArgumentError) do
-        code_breaker.feedback << code_maker.give_feedback(
-            ComputerCodeMaker.give_feedback(
+        code_breaker.scores << code_maker.score(mastermind.score(
             code_breaker.guesses.last, code_maker.secret_code)) { prompt('Please give a feedback: ') }
       end
     end
-
-    mastermind.evaluate(code_maker, code_breaker)
-
-    puts "\n  #{code_maker.secret_code}  \n\n"
-
-    if mastermind.winner.to_s =~ /computer.*/i
-      if @knuth
-        puts "Well it's Knuth algorithm, what did you expect :D"
-      else
-        puts "Oh yea, looks like i'm really smart after all :)"
-      end
-    else
-      puts "Wow your code is hard to guess"
-    end
-
   end
 
   def display_info
     puts "\nLetters to chose from:\n\n    - #{mastermind.letters.join(' ')} -\n\n"
-  end
-
-  def config
-    conf_letters
-    conf_pegs
-    conf_attempts
-    puts "All configurations are set"
-  end
-
-  def conf_letters(num = nil)
-    repeat_on(ArgumentError) do
-      mastermind.n_letters = num ? num : prompt("number of letters (current: #{mastermind.n_letters}): ")
-    end
-    puts "Changed letters amount to: #{mastermind.n_letters}".green
-  end
-
-  def conf_pegs(num = nil)
-    repeat_on(ArgumentError) do
-      mastermind.pegs = num ? num : prompt("number of letters (current: #{mastermind.pegs}): ")
-    end
-    puts "Changed pegs amount to: #{mastermind.pegs}".green
-  end
-
-  def conf_attempts(num = nil)
-    repeat_on(ArgumentError) do
-      mastermind.attempts = num ? num : prompt("number of attempts (current: #{mastermind.attempts}): ")
-    end
-    puts "Changed attempts amount to: #{mastermind.attempts}".green
-  end
-
-  def verbose
-    mastermind.verbose ? (puts 'verbose mode disabled'.green) : (puts 'verbose mode enabled'.green)
-    mastermind.verbose = !mastermind.verbose
-  end
-
-  def knuth
-    @knuth ? (puts 'Knuth disabled'.green) : (puts 'Knuth enabled'.green)
-    @knuth = !@knuth
   end
 
   def output
@@ -190,26 +121,6 @@ class UserHelper
       puts format % [log[:secret_code], log[:maker], log[:breaker], log[:guesses], log[:winner]]
     end
     puts
-  end
-
-  # handel errors and repeat till correct value
-  # @param [Exception] error Exceptions to be handled
-  # @yield assigment block
-  # @return [TrueClass] when handling is done
-  def repeat_on(error)
-    yield
-    true
-  rescue error => e
-    puts e.message.red.bold
-    retry
-  end
-
-  # prompt for input
-  # @param [String] message prompt message
-  # @return [String] input
-  def prompt(message, type=false)
-    print(message)
-    gets.chomp
   end
 
 end

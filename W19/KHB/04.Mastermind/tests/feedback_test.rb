@@ -13,13 +13,14 @@ require_relative '../classes/master_mind'
 require_relative '../classes/code_maker'
 require_relative '../classes/computer_code_maker'
 require_relative '../classes/human_code_maker'
+require_relative '../classes/config'
 
 class AlgorithmTest < Test::Unit::TestCase
 
   attr_reader :mastermind, :code_maker
 
   def setup
-    @mastermind = MasterMind.new
+    @mastermind = MasterMind.new(Config::CONFIGS)
     @code_maker = ComputerCodeMaker.new(mastermind)
   end
 
@@ -43,8 +44,8 @@ class AlgorithmTest < Test::Unit::TestCase
       expected = test[2]
       expected_wrong = test[3]
 
-      assert_equal(expected.sort, code_maker.give_feedback(guess).sort, 'feedback is not correct')
-      assert_not_equal(expected_wrong.sort, code_maker.give_feedback(guess).sort.empty?, 'feedback is not correct')
+      assert_equal(expected.sort, code_maker.score(guess).sort, 'feedback is not correct')
+      assert_not_equal(expected_wrong.sort, code_maker.score(guess).sort.empty?, 'feedback is not correct')
     end
 
   end
