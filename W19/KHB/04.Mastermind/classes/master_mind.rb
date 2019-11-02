@@ -31,22 +31,19 @@ class MasterMind
   end
 
   def evaluate(code_maker, code_breaker)
-    if code_maker.lost?(code_breaker.guesses.last)
-      @winner = code_breaker.to_s
-    else
-      @winner = code_maker.to_s
-    end
-    @logs << ["[ #{code_maker.secret_code.join(' ')} ]", code_maker, code_breaker, code_breaker.guesses.size, @winner]
+    @winner = code_maker.lost?(code_breaker.guesses.last) ? code_breaker : code_maker
+    @logs << { secret_code: "[ #{code_maker.secret_code.join(' ')} ]",
+               maker: code_maker, breaker: code_breaker, guesses: code_breaker.guesses.size,
+               winner: @winner }
     @winner
   end
-
 
   def n_letters=(num)
     safe_assign(num) { |num| @n_letters = num }
   end
   def pegs=(num)
     safe_assign(num) do |num|
-      raise GameError, "Pegs should be less than letters: #{@n_letters}" if num > @n_letters
+      raise GameError, "Pegs should be less than letters: #{@n_letters}" if num >= @n_letters
       @pegs = num
     end
   end

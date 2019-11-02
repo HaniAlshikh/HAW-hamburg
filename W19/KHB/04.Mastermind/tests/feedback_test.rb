@@ -14,7 +14,7 @@ require_relative '../classes/code_maker'
 require_relative '../classes/computer_code_maker'
 require_relative '../classes/human_code_maker'
 
-class FeedbackTest < Test::Unit::TestCase
+class AlgorithmTest < Test::Unit::TestCase
 
   attr_reader :mastermind, :code_maker
 

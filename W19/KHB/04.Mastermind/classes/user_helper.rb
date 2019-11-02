@@ -19,7 +19,7 @@ require_relative '../lib/extend'
 class UserHelper
 
   attr_reader :mastermind
-  attr_accessor :code_breaker, :code_maker, :knuth
+  attr_accessor :code_breaker, :code_maker
   def initialize
     @mastermind = MasterMind.new
     @code_maker, @code_breaker = [*nil]
@@ -30,20 +30,19 @@ class UserHelper
   def run
     loop { ask }
   ensure
-    output
+    output unless mastermind.logs.empty?
   end
 
   def ask
     repeat_on(ArgumentError) do
-      input = prompt("\nwhat would you to do: ")
-      case input
+      case input = prompt("\nwhat would you to do: ")
       when /^play$|^p$/i then play
       when /^exit$|^e$/i then exit()
       when /^config$|^c$/i then config
       when /^config attempts.*|^c a.*/i then conf_attempts(input[/\d+/])
       when /^config pegs.*|^c p.*/i then conf_pegs(input[/\d+/])
       when /^config letters.*|^c l.*/i then conf_letters(input[/\d+/])
-      when /^config knuth|^c k$/i then @knuth = (@knuth ? (puts 'Knuth disabled'; false) : (puts 'Knuth enabled'; true))
+      when /^knuth|^k$/i then knuth
       when /^verbose$|^v$/i then verbose
       else raise ArgumentError, "#{input} is not a valid option"
       end
@@ -155,21 +154,31 @@ class UserHelper
     repeat_on(ArgumentError) do
       mastermind.n_letters = num ? num : prompt("number of letters (current: #{mastermind.n_letters}): ")
     end
-    puts "Changed letters value to: #{mastermind.n_letters}".green
+    puts "Changed letters amount to: #{mastermind.n_letters}".green
   end
 
   def conf_pegs(num = nil)
     repeat_on(ArgumentError) do
       mastermind.pegs = num ? num : prompt("number of letters (current: #{mastermind.pegs}): ")
     end
-    puts "Changed pegs value to: #{mastermind.pegs}".green
+    puts "Changed pegs amount to: #{mastermind.pegs}".green
   end
 
   def conf_attempts(num = nil)
     repeat_on(ArgumentError) do
       mastermind.attempts = num ? num : prompt("number of attempts (current: #{mastermind.attempts}): ")
     end
-    puts "Changed attempts value to: #{mastermind.attempts}".green
+    puts "Changed attempts amount to: #{mastermind.attempts}".green
+  end
+
+  def verbose
+    mastermind.verbose ? (puts 'verbose mode disabled'.green) : (puts 'verbose mode enabled'.green)
+    mastermind.verbose = !mastermind.verbose
+  end
+
+  def knuth
+    @knuth ? (puts 'Knuth disabled'.green) : (puts 'Knuth enabled'.green)
+    @knuth = !@knuth
   end
 
   def output
@@ -177,7 +186,9 @@ class UserHelper
     format = "%-13s %-10s %-10s %-10s %s"
     puts "\n########################## Game log ##########################\n".green
     puts format % ['', 'Maker', 'Breaker', 'Guesses', 'Winner'], ""
-    @mastermind.logs.each { |log| puts format % [log[0], log[1], log[2], log[3], log[4]] }
+    @mastermind.logs.each do |log|
+      puts format % [log[:secret_code], log[:maker], log[:breaker], log[:guesses], log[:winner]]
+    end
     puts
   end
 
@@ -199,11 +210,6 @@ class UserHelper
   def prompt(message, type=false)
     print(message)
     gets.chomp
-  end
-
-  def verbose
-    mastermind.verbose = true
-    puts "Verbose mode is activated".green
   end
 
 end

@@ -14,7 +14,7 @@ require_relative '../classes/code_breaker'
 require_relative '../classes/computer_code_maker'
 require_relative '../classes/computer_code_breaker'
 
-class FeedbackTest < Test::Unit::TestCase
+class AlgorithmTest < Test::Unit::TestCase
 
   attr_reader :mastermind, :code_maker, :code_breaker
 
@@ -24,7 +24,7 @@ class FeedbackTest < Test::Unit::TestCase
     @code_breaker = ComputerCodeBreaker.new(mastermind)
   end
 
-  def test_custom
+  def test_algorithm
 
     tests = [
         %w[A A B B],
@@ -42,7 +42,7 @@ class FeedbackTest < Test::Unit::TestCase
       puts "\n       #{code_maker.secret_code}"
 
       mastermind.attempts.times do
-        @code_breaker.guesses << @code_breaker.guess
+        @code_breaker.guesses << @code_breaker.guess_knuth # guess or guess_knuth
         puts "computer guess: #{@code_breaker.guesses.last}"
         lost = @code_maker.lost?(@code_breaker.guesses.last)
         @code_breaker.feedback << @code_maker.give_feedback(@code_breaker.guesses.last)
@@ -64,7 +64,9 @@ class FeedbackTest < Test::Unit::TestCase
     format = "%-13s %-10s %-10s %-10s %s"
     puts "\n############################ Game log ############################\n".green
     puts format % ['', 'Maker', 'Breaker', 'Guesses', 'Winner'], ""
-    @mastermind.logs.each { |log| puts format % [log[0], log[1], log[2], log[3], log[4]] }
+    @mastermind.logs.each do |log|
+      puts format % [log[:secret_code], log[:maker], log[:breaker], log[:guesses], log[:winner]]
+    end
     puts
   end
 end
