@@ -42,7 +42,7 @@ class UserHelper
   # @return [[Array],[Array]]
   def ask
     # get input and check to exit
-    input = prompt('what would you to do: ')
+    input = prompt('what would you like to do: ')
     exit(0) if input =~ /exit|done/
     # separate input to arrays of strings and values
     input_values = input.scan(/\d*\.?\d+/).map(&:to_f)
