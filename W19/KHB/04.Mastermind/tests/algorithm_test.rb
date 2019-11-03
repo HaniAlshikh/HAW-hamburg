@@ -1,33 +1,31 @@
 #####################################################################
-# Assigment sheet A03: Unit Converter in Ruby.
-#
-# Test cases for every unit and measurement
-#
+# Assigment sheet A04: Mastermind in Ruby.
+# 
 # Author:: Nick Marvin Rattay
 # Author:: Hani Alshikh
 #
 #####################################################################
 
 require 'test/unit'
-require_relative '../classes/master_mind'
+require_relative '../classes/mastermind'
 require_relative '../classes/code_breaker'
 require_relative '../classes/computer_code_maker'
 require_relative '../classes/computer_code_breaker'
 require_relative '../classes/config'
 
+# test cases for Knuth and MAI
 class AlgorithmTest < Test::Unit::TestCase
-
   attr_reader :mastermind, :code_maker, :code_breaker
 
   def setup
-    @mastermind = MasterMind.new(Config::CONFIGS)
+    @mastermind = Mastermind.new(Config::CONFIGS)
     @code_maker = ComputerCodeMaker.new(mastermind)
     @code_breaker = ComputerCodeBreaker.new(mastermind)
   end
 
   def test_algorithm
 
-    @mastermind.attempts = "20"
+    @mastermind.attempts = 20
     @mastermind.knuth = false
 
     tests = [
@@ -35,6 +33,7 @@ class AlgorithmTest < Test::Unit::TestCase
         %w[B D C A],
         %w[A B C D],
         %w[E F A B],
+        %W[F E D C],
         code_maker.generate
     ]
 
@@ -53,7 +52,7 @@ class AlgorithmTest < Test::Unit::TestCase
         puts "score         : #{@code_breaker.scores.last}"
         if lost
           puts "Code guessed successfully"
-          @mastermind.evaluate(@code_maker, @code_breaker)
+          @mastermind.log(@code_maker, @code_breaker)
           break
         end
       end

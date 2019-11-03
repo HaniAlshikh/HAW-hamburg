@@ -1,14 +1,12 @@
 #####################################################################
 # Assigment sheet A03: Unit Converter in Ruby.
 #
-# Helper class to deal with user interaction
-#
 # Author:: Nick Marvin Rattay
 # Author:: Hani Alshikh
 #
 #####################################################################
 
-require_relative 'master_mind'
+require_relative 'mastermind'
 require_relative 'config'
 require_relative '../Modules/toolbox'
 require_relative 'human_code_breaker'
@@ -19,13 +17,13 @@ require_relative '../lib/extend'
 
 # helper class to deal with user interaction
 class UserHelper
-
   include Toolbox
 
   attr_reader :mastermind, :config
   attr_accessor :code_breaker, :code_maker
+
   def initialize
-    @mastermind = MasterMind.new(Config::CONFIGS)
+    @mastermind = Mastermind.new(Config::CONFIGS)
     @code_maker, @code_breaker = [*nil]
     @config = Config.new(@mastermind)
   end
@@ -38,7 +36,7 @@ class UserHelper
 
   def ask
     repeat_on(ArgumentError) do
-      case input = prompt("\nwhat would you to do: ")
+      case input = prompt("\nwhat would you like to do: ")
       when /^play$|^p$/i then play
       when /^exit$|^e$/i then exit
       when /^config$|^c$/i then @config.config
@@ -64,6 +62,7 @@ class UserHelper
 
   def play_comp_v_human
     @code_breaker = ComputerCodeBreaker.new(@mastermind)
+    # back to ask if requirements are not meet
     return unless @code_breaker.check_requirement?
     @code_breaker.interact
     @code_maker = HumanCodeMaker.new(@mastermind)
@@ -78,32 +77,40 @@ class UserHelper
 
   def game_start
     display_info
+    # yield for the players block
     yield if block_given?
-    mastermind.evaluate(@code_maker, @code_breaker)
-    puts "\n  #{code_maker.secret_code}  \n\n"
+    mastermind.log(@code_maker, @code_breaker)
+    puts "\nThe secret code    - #{code_maker.secret_code.join(' ')} -\n\n"
     code_maker.interact
   end
 
   def human_v_comp
+    # generate secret code
     code_maker.generate
+    # get guesses from human
     mastermind.attempts.times do
-      repeat_on(ArgumentError) { code_breaker.guesses << code_breaker.guess { prompt('your guess: ') } }
+      repeat_on(ArgumentError) { code_breaker.guess { prompt('your guess: ') } }
+      # break if human guessed the secret code
       break if code_maker.lost?(code_breaker.guesses.last)
-      # TODO: hnadel user feedback for knuth
+      # give a score
       code_breaker.scores << code_maker.score(code_breaker.guesses.last)
-      puts "feedback  : #{code_breaker.scores.last.join(' ')}"
+      puts "Score     : #{code_breaker.scores.last.join(' ')}"
     end
   end
 
   def comp_v_human
+    # get secret code
     repeat_on(ArgumentError) { code_maker.generate { prompt('your secret code: ') } }
     mastermind.attempts.times do
+      # computer guess
       code_breaker.guess
-      puts "my guess: #{code_breaker.guesses.last}"
+      puts "my guess           : #{code_breaker.guesses.last.join(' ')}"
+      # break if computer guessed the code
       break if code_maker.lost?(code_breaker.guesses.last)
+      # ask for score
       repeat_on(ArgumentError) do
         code_breaker.scores << code_maker.score(mastermind.score(
-            code_breaker.guesses.last, code_maker.secret_code)) { prompt('Please give a feedback: ') }
+            code_breaker.guesses.last, code_maker.secret_code)) { prompt('Please give a score: ') }
       end
     end
   end
@@ -112,8 +119,8 @@ class UserHelper
     puts "\nLetters to chose from:\n\n    - #{mastermind.letters.join(' ')} -\n\n"
   end
 
+  # formatting and outputting the game log
   def output
-    # formatting and outputting
     format = "%-13s %-10s %-10s %-10s %s"
     puts "\n########################## Game log ##########################\n".green
     puts format % ['', 'Maker', 'Breaker', 'Guesses', 'Winner'], ""
@@ -122,5 +129,4 @@ class UserHelper
     end
     puts
   end
-
 end

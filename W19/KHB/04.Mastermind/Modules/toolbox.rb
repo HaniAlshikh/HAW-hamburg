@@ -8,7 +8,6 @@ module Toolbox
   # @return [TrueClass] when handling is done
   def repeat_on(error)
     yield
-    true
   rescue error => e
     puts e.message.red.bold
     retry

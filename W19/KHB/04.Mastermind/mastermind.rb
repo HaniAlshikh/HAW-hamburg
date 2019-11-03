@@ -1,8 +1,7 @@
 #####################################################################
-# Assigment sheet A04: Unit Converter in Ruby.
+# Assigment sheet A04: Mastermind in Ruby.
 #
-# this script starts the unit converter system, which can interact
-# with one user and convert between common Units
+# this script prints usage info and starts the game
 #
 # Author:: Nick Marvin Rattay
 # Author:: Hani Alshikh
@@ -20,8 +19,16 @@ puts <<~EOT.green
   | |\\/| |/ _` |(_-<|  _|/ -_)| '_|| '  \\ | || ' \\ / _` |
   |_|  |_|\\__,_|/__/ \\__|\\___||_|  |_|_|_||_||_||_|\\__,_|
 
-  B Black peg
-  W White peg
+                   B Black Peg  W White Peg
+
+  Usage:
+  - play or p to start playing
+  - exit or e to exit
+  - config or c to config the main configuration
+  - config attempts <num> or c a <num> to change the attempts value
+  - config pegs <num> or c p <num> to change the pegs value
+  - config letters <num> or c l <num> to change the letters value
+  - knuth or k to enable knuth's algorithm
 
   ##############################################################
 EOT

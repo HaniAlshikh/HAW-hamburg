@@ -1,26 +1,25 @@
 #####################################################################
 # Assigment sheet A03: Unit Converter in Ruby.
 #
-# Test cases for every unit and measurement
-#
 # Author:: Nick Marvin Rattay
 # Author:: Hani Alshikh
 #
 #####################################################################
 
 require 'test/unit'
-require_relative '../classes/master_mind'
+require_relative '../classes/mastermind'
 require_relative '../classes/code_maker'
 require_relative '../classes/computer_code_maker'
 require_relative '../classes/human_code_maker'
 require_relative '../classes/config'
 
-class AlgorithmTest < Test::Unit::TestCase
+# test cases for the scoring system
+class ScoreTest < Test::Unit::TestCase
 
   attr_reader :mastermind, :code_maker
 
   def setup
-    @mastermind = MasterMind.new(Config::CONFIGS)
+    @mastermind = Mastermind.new(Config::CONFIGS)
     @code_maker = ComputerCodeMaker.new(mastermind)
   end
 
@@ -34,8 +33,8 @@ class AlgorithmTest < Test::Unit::TestCase
         [%w[A B A C], %w[A D C F], %w[B W], %w[B B]],
         [%w[A C F E], %w[A B C B], %w[B W], %w[B B]],
         [%w[A A B C], %w[C A B A], %w[W B B W], %w[B B W]],
-        [%w[A B C D], %w[A A B B], %w[B W], %w[B W W]]
-
+        [%w[A B C D], %w[A A B B], %w[B W], %w[B W W]],
+        [%w[A B C B], %w[A A B D], %w[B W], %w[B W W]]
     ]
 
     tests.each do |test|
@@ -44,8 +43,8 @@ class AlgorithmTest < Test::Unit::TestCase
       expected = test[2]
       expected_wrong = test[3]
 
-      assert_equal(expected.sort, code_maker.score(guess).sort, 'feedback is not correct')
-      assert_not_equal(expected_wrong.sort, code_maker.score(guess).sort.empty?, 'feedback is not correct')
+      assert_equal(expected.sort, code_maker.score(guess).sort, 'score is not correct')
+      assert_not_equal(expected_wrong.sort, code_maker.score(guess).sort.empty?, 'score is not correct')
     end
 
   end
