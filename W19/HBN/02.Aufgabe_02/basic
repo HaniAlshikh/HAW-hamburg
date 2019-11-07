@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+#
+
+# 01. Dateinamen
+ls
+
+# 02. Heute Datei
+date '+%d-%m-%Y %H:%M:%S' > "heute"
+
+# 03. Dateisystem
+df -H > "platz"
+
+# 04. 5 Zeilen anzeigen
+head -n 5 "platz"
+
+# 05. Prozessbaum
+pstree > "prozessbaum"
+
+# 06. seitenweiser Ausgabe
+more "prozessbaum"
+
+# 07. Dateinamen sowie Rechte- und Größeninformationen
+ls -al
+
+# 08. p datei
+ls | grep "^p.*"
+
+# 09. neues Verzeichniss
+mkdir "meindir"
+
+# 10. verschieben
+mv prozessbaum meindir/
+
+# 11. Datei mit p
+find . -name "p*"
+
+# 12. Verzeichniss wechseln
+cd meindir
+
+# 13. kopieren
+cp prozessbaum pb
+
+# 14. löschen
+rm pb

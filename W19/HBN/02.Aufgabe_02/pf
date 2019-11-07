@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+#
+
+# prüfe, dass ein Argument übergegeben wurde
+# ! macht von true false und umgekehrt
+# -z prüft, ob ein String leer ist
+# $1 verweist auf das erste Argument
+if ! [ -z "$1" ] ; then
+  # ps zeigt Informationen über Prozesse
+  # a für all Prozesse
+  # u um ein User auszuwählen
+  # x irgendein User
+  # | Ausgabeumlenkung
+  # grep sucht nach einem String
+  ps -aux | grep $1
+fi
+
+
+############### Beispiel ###############
+### Eingabe ###
+# pf daemon
+### Ausgabe ###
+# root       964  0.0  0.2 378200  2188 ?        Ssl  Sep04   1:58 /usr/lib/accountsservice/accounts-daemon
+# message+   974  0.0  0.1 147732  1824 ?        Ss   Sep04   0:09 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+# daemon    1091  0.0  0.0  20300    36 ?        Ss   Sep04   0:00 /usr/sbin/atd -f
+# acs791   15286  0.0  0.3  13312  3096 pts/1    S+   19:36   0:00 /bin/bash ./pf daemon
+# acs791   15288  0.0  0.0  14856   980 pts/1    S+   19:36   0:00 grep daemon
