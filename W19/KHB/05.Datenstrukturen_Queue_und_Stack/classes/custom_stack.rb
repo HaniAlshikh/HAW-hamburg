@@ -43,7 +43,7 @@ class CustomStack
   # and have the same sequence
   def ==(other)
     return false if other.nil?
-    return true if stack.equal?(other)
+    return true if self.equal?(other)
     return false unless other.is_a?(CustomStack)
     # this result of making CustomStack objects
     # == to objects of a "Special" CustomStack class if it was to exists

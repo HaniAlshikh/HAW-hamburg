@@ -43,7 +43,7 @@ class CustomQueue
   # and have the same sequence
   def ==(other)
     return false if other.nil?
-    return true if queue.equal?(other)
+    return true if self.equal?(other)
     return false unless other.is_a?(CustomQueue)
     # this result of making CustomQueue objects
     # == to objects of a "Special" CustomQueue class if it was to exists
