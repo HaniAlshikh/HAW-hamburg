@@ -1,57 +1,26 @@
-class Pet
+require_relative '../classes/nature'
 
-  attr_reader :born_date
-  attr_accessor :name
+class Pet < Nature
+
+  attr_reader :owner
 
   def initialize(name, owner)
-    @name = name
-    @born_date = Time.now
-    @owner = owner
-    @lifes = 1
-    owner.pets << self
+    super(name)
+    self.owner = owner
   end
 
-  def kill(pet)
-    pet.dead? ? "#{pet.name} is dead" : pet.die(self)
-  end
-
-  def dead?
-    @lifes.zero?
-  end
-
-  alias_method :eql?, :==
-  def ==(other)
-    self.equal?(other)
-  end
-
-  def hash
-    [@name, @born_date, @lifes, @owner].hash
+  def attack(pet)
+    pet.die(self)
   end
 
   def to_s
-    "#{@name} was born on the #{@born_date}"
+    "#{self.class}: #{@name}"\
+    ", Born Date: #{@born_date}"
   end
 
-  # protected
-
-  def die(killer)
-    return dead if dead?
-    return "#{@name} can't kill itself" if killer == self
-    @lifes -= 1
-    dead? ? "#{@name} died" : "#{@name} survived (#{@lifes} lifes left)"
-  end
-
-  def eat(person)
-    dead? ? dead : "#{@name} eating from #{person.name}"
-  end
-
-  def relax(person)
-    dead? ? dead : "#{@name} letting #{person.name} pet it"
-  end
-
-  private
-
-  def dead
-    "#{@name} is dead"
+  def owner=(owner)
+    @owner = owner if check_person?(owner)
+    # unless to break the loop
+    @owner.adopt(self) unless @owner.pets.include?(self)
   end
 end
