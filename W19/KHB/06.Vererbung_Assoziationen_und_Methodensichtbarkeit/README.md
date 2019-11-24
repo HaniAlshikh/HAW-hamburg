@@ -28,10 +28,10 @@ die Datenstruktur Set wurde für die Sammlung Haustiere bzw Personen verwendet, 
 ## Fragen
 
 - gibt es eine bessere lösung als die Nutzung von #pet_condition?  
- unsere erste Idee war die Methoden #sate, #relax protected zu machen, aber dann dürfen Objecte der Klasse Person die Methoden nicht mehr benutzen.  
+ unsere erste Idee war die Methoden #sate, #relax protected zu machen, aber dann dürfen Objekte der Klasse Person die Methoden nicht mehr benutzen.  
  Also allgemein gefragt, kann man der Aufruf einer Methode nur für bestimmten Klassen erlauben, ohne die Klassen von der gleichen Parentklasse vererben zu müssen? 
 - kann man ein Objekt "umbringen"? d.h. kann man z.b. ein Exception raisen, wenn ein Objekt gestorben ist, ohne jedes Mal zu prüfen, ob das Objekt gestorben ist?  
-  unsere Idee war, alle Methoden auf eine Methode (#dead) zu verweisen, in dem wir #alias_method benutzen, wenn das object gestorben ist. 
+  unsere Idee war, alle Methoden auf eine Methode (#dead) zu verweisen, in dem wir #alias_method benutzen, wenn das Objekt gestorben ist. 
 
 
 ##### Quellen
