@@ -1,7 +1,7 @@
 #####################################################################
-# Assigment sheet A04: Mastermind in Ruby.
+# Assigment sheet A06: Inheritance, Association, Methods visibility.
 #
-# this script prints usage info and starts the game
+# small story, that utilize the code functionality
 #
 # Author:: Nick Marvin Rattay
 # Author:: Hani Alshikh
@@ -12,7 +12,7 @@ require_relative 'classes/Cat'
 require_relative 'classes/Dog'
 require_relative 'classes/Person'
 require_relative 'lib/extend'
-require_relative 'lib/custom'
+require_relative 'lib/toolbox'
 
 puts "\n#### Mike, Lara and the story of Cat ####".bold.green
 
@@ -30,7 +30,7 @@ puts mike
 
 puts "\n> lara try to feed Mike's pets...".bold.green
 mike.pets.each do |pet|
-  puts "#{pet.name}: #{Custom.try(ArgumentError) { lara.feed(pet) }}"
+  puts "#{pet.name}: #{Toolbox.try(ArgumentError) { lara.feed(pet) }}"
 end
 
 puts "\n> Mike cats are hungry...".upcase.bold.green
@@ -47,7 +47,7 @@ puts "\n> cat attacks catty...".bold.green
 puts cat.attack(catty)
 
 puts "\n> dog try to revenge for catty...".bold.green
-attack = Custom.try(NoMethodError) { dog.attack(cat) }
+attack = Toolbox.try(NoMethodError) { dog.attack(cat) }
 puts attack.is_a?(NoMethodError) ? "Only cats can attack cats" : attack
 
 puts "\n> doggy loves cat...".bold.green

@@ -1,6 +1,4 @@
 #####################################################################
-# Assigment sheet A04: Mastermind in Ruby.
-#
 # tiny library to extend classes functionality
 #
 # Author:: Nick Marvin Rattay

@@ -1,41 +1,29 @@
-require 'test/unit'
-require_relative '../classes/Cat'
-require_relative '../classes/Dog'
-require_relative '../classes/Person'
+#####################################################################
+# Assigment sheet A06: Inheritance, Association, Methods visibility.
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
 
-class TC_Person < Test::Unit::TestCase
+require_relative 'tc'
 
-  def setup
-    @person = Person.new('person')
-    @cat = Cat.new('cat', @person)
-    @dog = Dog.new('dog', @person)
-  end
-
+# person testcase
+class TC_Person < TC
   def test_adopt
-    adopter = Person.new('adopter')
-
-    assert_raise(ArgumentError) { @person.adopt('') }
-    assert_equal(Set[@dog, @cat], @person.pets, "#{@person.name} should own #{@cat.name}, #{@dog.name}")
-    assert_nothing_raised { adopter.adopt(@dog) }
-    assert_nothing_raised { adopter.adopt(@dog) }
-    assert_equal(Set[@dog], adopter.pets, "#{adopter.name} should own #{@dog.name}")
+    assert_raise(ArgumentError) { @owner.adopt('') }
+    assert_equal(Set[@pet, @cat], @owner.pets)
+    2.times { assert_nothing_raised { @person.adopt(@pet) } }
+    assert_equal(Set[@pet], @person.pets)
   end
 
   def test_feed
-    feeder = Person.new('Feeder')
-
-    assert_nothing_raised { feeder.feed(@dog) }
-    assert_raise(ArgumentError) { feeder.feed(@cat) }
-    assert_nothing_raised { feeder.adopt(@cat) }
-    assert_nothing_raised { feeder.feed(@cat) }
+    assert_nothing_raised { @person.feed(@pet) }
+    assert_raise(ArgumentError) { @person.feed(@cat) }
   end
 
   def test_pet
-    petter = Person.new('{Petter')
-
-    assert_nothing_raised { petter.pet(@dog) }
-    assert_raise(ArgumentError) { petter.pet(@cat) }
-    assert_nothing_raised { petter.adopt(@cat) }
-    assert_nothing_raised { petter.pet(@cat) }
+    assert_nothing_raised { @person.pet(@pet) }
+    assert_raise(ArgumentError) { @person.pet(@cat) }
   end
 end

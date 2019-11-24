@@ -1,47 +1,39 @@
 Professor:: Dr. Bernd Kahlbrandt  
 Author:: Nick Marvin Rattay  
 Author:: Hani Alshikh  
-<div style="text-align: right">03.11.2019</div>
+<div style="text-align: right">24.11.2019</div>
 
-# Mastermind
+# Vererbung, Assoziationen und Methodensichtbarkeit
 
-Das Spiel Mastermind wurde hier simuliert. Der Nutzer kann sowohl der CodeMaker als auch der CodeBreaker sein.
-Es wurden Buchstaben als Farben benutzt. Bei der Bewertung wird B für die direkten Treffer und W für die indirekten Treffer benutzt.
-Der Nutzer kann zwischen Knuth's Algorithmus und Mastermind basic AI auswählen.
+für diese Aufgabe wurde die folgende Struktur entworfen
 
-## Interaktion
+![UML Diagram](UML/Pets.svg)
 
-Alle Interaktionen passieren über die Konsole.
+## Erläuterung
 
-- Es wird sichergestellt, dass alle Ein- und Ausgabe richtig sind
-- Der Nutzer kann so viel spielen, wie er mag und wird danach gefragt
-- Der Nutzer hat die Wahl die Konfigurationen vor jedem Spiel zu ändern
-- Der Nutzer kann auswählen, gegen welchen Algorithm er spielt
-- Es wird am Ende eine Zusammenfassung aller Spiele gezeigt
+da es keine Angaben über die Gleichheit gab, wurde entschieden, dass zwei object der Nature Klasse (Tiere, Personen usw...) nur dann gleich sind, wenn sie Objektidentisch sind.
 
-## Algorithmus/KI
+### Klasse "Nature"
 
-es wird eine basic KI geschrieben die in ~ 12.5 Versuche, den Code erraten.
-<p float="left">
-    <img src="graph/Mastermind AI.svg" alt="Tests Result" width="320"/>
-    <img src="graph/Mastermind AI Guesses Average.svg" alt="Average" width="320"/>
-</p>
+da eine natürliche Reaktion auf aktivitäten wie essen, stricheln und angreifen (sterben) sinnvoll sei wurde die Klasse "Nature" als Oberklasse vom Leben jeglicher Art extra entworfen. 
 
-Knuth's Algorithmus wurde auch dank [zebogen](https://github.com/zebogen) implementiert 
+Alle Reaktionmethoden wie die, sate, relax usw... haben die Sichtbarkeit "Protected", denn sie Folgemethoden und dürfen nicht direkt aufgerufen werden.
 
-<div style="page-break-after: always;"></div>
+die Methode #pet_condition wurde als Hookmethode benutzt, um Fälle zu prüfen, wie Katzen lassen sich nur von ihrem Personal streicheln bzw füttern.
 
-### Struktur
+### Verwendung vom Set 
 
-Eine Übersicht der Struktur kann man vom folgenden Diagramm entnehmen
+die Datenstruktur Set wurde für die Sammlung Haustiere bzw Personen verwendet, um sicherzustellen, dass es keine duplizierung geben könnte.
 
-![UML Diagram](UML/Mastermind.svg)
+## Fragen
+
+- gibt es eine bessere lösung als die Nutzung von #pet_condition?  
+ unsere erste Idee war die Methoden #sate, #relax protected zu machen, aber dann dürfen Objecte der Klasse Person die Methoden nicht mehr benutzen.  
+ Also allgemein gefragt, kann man der Aufruf einer Methode nur für bestimmten Klassen erlauben, ohne die Klassen von der gleichen Parentklasse vererben zu müssen? 
+- kann man ein Objekt "umbringen"? d.h. kann man z.b. ein Exception raisen, wenn ein Objekt gestorben ist, ohne jedes Mal zu prüfen, ob das Objekt gestorben ist?  
+  unsere Idee war, alle Methoden auf eine Methode (#dead) zu verweisen, in dem wir #alias_method benutzen, wenn das object gestorben ist. 
+
 
 ##### Quellen
-- [Ruby DOC](https://ruby-doc.org)
-- [Mastermind Wiki](https://en.wikipedia.org/wiki/Mastermind_(board_game)#Five-guess_algorithm)
-- [method generator trick (config.rb)](https://stackoverflow.com/questions/14257979/create-multiple-identical-methods-in-ruby)
-- [Beating Mastermind](https://github.com/agfor/talks/tree/master/beating_mastermind)
-- [Mastermind-rb](https://github.com/zebogen/mastermind-rb/blob/master/mastermind.rb)
-- [RubyConf 2018 - Beating Mastermind: Winning with the help of Donald Knuth by Adam Forsyth](https://www.youtube.com/watch?v=Okm_t5T1PiA&t=1423s)
-- [efficient solutions for mastermind using genetic algorithm](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.496.276&rep=rep1&type=pdf)
+- [Set](https://ruby-doc.org/stdlib-2.6.5/libdoc/set/rdoc/Set.html#method-i-to_s)
+- [Test::Unit](https://ruby-doc.org/stdlib-1.8.7/libdoc/test/unit/rdoc/Test/Unit.html)
