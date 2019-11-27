@@ -1,7 +1,7 @@
 class Part
 
   attr_accessor :label
-  attr_reader :mass, :sub_parts, :whole
+  attr_reader :mass, :whole
   include Enumerable
 
   def initialize(label, mass = 0, *sub_parts)
@@ -30,42 +30,9 @@ class Part
   end
 
   def replace(part, new_part)
-    sub_parts[sub_parts.index(part)] = new_part if has_part?(part) && check_part?(new_part)
+    @sub_parts[@sub_parts.index(part)] = new_part if has_part?(part) && check_part?(new_part)
     new_part.update_whole(self)
     part
-  end
-
-  def mass=(mass)
-    raise(ArgumentError, "mass musst be a Number") unless mass.is_a?(Numeric)
-    @mass = sub_parts.empty? ? mass : sub_parts.map(&:mass).inject(0, :+)
-  end
-
-  def sub_parts=(sub_parts)
-    sub_parts.empty? ? @sub_parts : [*sub_parts].each { |part| add(part) }
-  end
-
-  def whole=(part)
-    unless @whole == part
-      part.sub_parts << self if check_part?(part)
-      @whole.delete(self)
-      @whole = part
-    end
-    update_whole(part)
-  end
-
-  alias_method :eql?, :==
-  def ==(other)
-    return false unless other.is_a?(Part)
-    return true if self.equal?(other)
-    [@label, @mass, @sub_parts] == [other.label, other.mass, other.sub_parts]
-  end
-
-  def each(&block)
-     block_given? ? @sub_parts.each(&block) : @sub_parts.each
-  end
-
-  def to_s
-    "#{@label}(#{@mass}kg)"
   end
 
   def flatten
@@ -77,6 +44,43 @@ class Part
     flat_list.flatten
   end
 
+  def sub_parts
+    @sub_parts.dup
+  end
+
+  def mass=(mass)
+    raise(ArgumentError, "mass musst be a Number") unless mass.is_a?(Numeric)
+    @mass = sub_parts.empty? ? mass : @sub_parts.map(&:mass).inject(0, :+)
+  end
+
+  def sub_parts=(sub_parts)
+    @sub_parts.empty? ? @sub_parts : [*sub_parts].each { |part| add(part) }
+  end
+
+  def whole=(part)
+    unless @whole == part
+      part << self if check_part?(part)
+      @whole.delete(self)
+      update_whole(part)
+    end
+    update_whole(part)
+  end
+
+  alias_method :eql?, :==
+  def ==(other)
+    return false unless other.is_a?(Part)
+    return true if self.equal?(other)
+    [@label, @mass, @sub_parts, @whole] == [other.label, other.mass, other.sub_parts, other.whole]
+  end
+
+  def each(&block)
+     block_given? ? @sub_parts.each(&block) : @sub_parts.each
+  end
+
+  def to_s
+    "#{@label}(#{@mass}kg)"
+  end
+
   protected
 
   def check_part?(part)
@@ -85,7 +89,7 @@ class Part
 
   def delete(part)
     check_part?(part)
-    return sub_parts.delete(part) if sub_parts.include?(part)
+    return @sub_parts.delete(part) if @sub_parts.include?(part)
     each { |sub_part| sub_part.delete(part) unless sub_part.sub_parts.empty? }
     part
   end
@@ -96,6 +100,11 @@ class Part
 
   def update_whole(whole)
     @whole = whole
+    @whole.mass = 0
+    @whole
   end
 
+  def <<(part)
+    @sub_parts << part
+  end
 end

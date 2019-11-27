@@ -5,7 +5,7 @@ require 'yaml'
 # in diesem Fall YAML -> hash -> Teil objekte
 def partlist(hash)
   partlist = Part.new(hash.keys[0])
-  hash.each do |part, sub_parts|
+  hash.each do |_, sub_parts|
     sub_parts.each { |sub_hash| partlist.add(partlist(sub_hash)) } if sub_parts.is_a?(Array)
     partlist.mass = sub_parts if sub_parts.is_a?(Numeric)
   end
@@ -32,7 +32,7 @@ end
 
 def output(partlist)
   partlist.each do |part|
-    puts("\t"*(nesting(part) + 1) + "#{part}")
+    puts("\t"*(nesting(part) + 1) + part.to_s)
     output(part) unless part.sub_parts.empty?
   end
 end
@@ -71,18 +71,7 @@ output(bicycle)
 puts
 
 
-# bicycle.sub_parts[0].sub_parts[0].whole = bicycle.sub_parts[3]
-# puts "#{bicycle} Part Count: #{partlist_parts_counter(bicycle)}"
-# output(bicycle)
-# puts
-
-# wie verhindere ich das?
-# bicycle.sub_parts[2] = ""
-# puts bicycle
-# output(bicycle)
-# puts
-
-# bicycle.sub_parts << ""
-# puts bicycle
-# output(bicycle)
-# puts
+bicycle.sub_parts[0].sub_parts[0].whole = bicycle.sub_parts[2]
+puts "#{bicycle} Part Count: #{partlist_parts_counter(bicycle)}"
+output(bicycle)
+puts
