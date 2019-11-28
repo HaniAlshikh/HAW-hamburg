@@ -10,9 +10,11 @@
 
 int main () {
 
+	// define variables
    const int cases_num = 4;
    int i = 34; int j = 23; int k = 1155;
 
+   // test cases
    int tests[cases_num] = {
       // i, j und k sind alle ungleich 0
       i ^ 0 && j ^ 0 && k ^ 0,
@@ -24,6 +26,7 @@ int main () {
       (k % 3 == 0 && k % 5 == 0) || (k % 5 == 0 && k % 5 == 7) || (k % 7 == 0 && k % 5 == 11)
    };
 
+   // output
    for (int i = 0; i < cases_num; i++){
       printf("%s\n", tests[i] ? "True" : "False");
    }
