@@ -7,7 +7,7 @@ module Partlist
   def generate(hash)
     partlist = Part.new(hash.keys[0])
     hash.each do |_, sub_parts|
-      sub_parts.each { |sub_hash| partlist.add(partlist(sub_hash)) } if sub_parts.is_a?(Array)
+      sub_parts.each { |sub_hash| partlist.add(generate(sub_hash)) } if sub_parts.is_a?(Array)
       partlist.mass = sub_parts if sub_parts.is_a?(Numeric)
     end
     partlist
@@ -24,14 +24,16 @@ module Partlist
 
 # wer kümmert sich um die eingerückte Ausgabe? das Objekt oder der Nutzer?
   def output(partlist)
-    partlist.each do |part|
-      puts("\t"*(nesting(part) + 1) + part.to_s)
-      output(part) unless part.sub_parts.empty?
-    end
+    puts partlist.to_s
+    sub_part(partlist)
   end
 
-
-  private
+  def sub_part(partlist)
+    partlist.each do |part|
+      puts("\t"*(nesting(part) + 1) + part.to_s)
+      sub_part(part) unless part.sub_parts.empty?
+    end
+  end
 
   def nesting(part)
     nesting = 0

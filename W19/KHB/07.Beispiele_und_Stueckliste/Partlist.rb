@@ -5,9 +5,9 @@ require 'yaml'
 # in diesem Fall YAML -> hash -> Teil objekte
 def partlist(hash)
   partlist = Part.new(hash.keys[0])
-  hash.each do |_, sub_parts|
-    sub_parts.each { |sub_hash| partlist.add(partlist(sub_hash)) } if sub_parts.is_a?(Array)
-    partlist.mass = sub_parts if sub_parts.is_a?(Numeric)
+  hash.each do |_, parts|
+    parts.each { |sub_hash| partlist.add(partlist(sub_hash)) } if parts.is_a?(Array)
+    partlist.mass = parts if parts.is_a?(Numeric)
   end
   partlist
 end
@@ -15,7 +15,7 @@ end
 def partlist_parts_counter(partlist)
   count = 0
   partlist.each do |part|
-    count += part.sub_parts.empty? ? 1 : partlist_parts_counter(part)
+    count += part.parts.empty? ? 1 : partlist_parts_counter(part)
   end
   count
 end
@@ -33,7 +33,7 @@ end
 def output(partlist)
   partlist.each do |part|
     puts("\t"*(nesting(part) + 1) + part.to_s)
-    output(part) unless part.sub_parts.empty?
+    output(part) unless part.parts.empty?
   end
 end
 
@@ -46,13 +46,13 @@ output(bicycle)
 puts
 
 # ist das was mit top gemeint (02. Lesende)?
-puts bicycle.sub_parts[3].sub_parts[0].top
+puts bicycle.parts[3].parts[0].top
 puts
 
-puts bicycle.remove(bicycle.sub_parts[3].sub_parts[2])
+puts bicycle.remove(bicycle.parts[3].parts[2])
 puts
-puts "#{bicycle.sub_parts[3]} Part Count: #{partlist_parts_counter(bicycle.sub_parts[3])}"
-output(bicycle.sub_parts[3])
+puts "#{bicycle.parts[3]} Part Count: #{partlist_parts_counter(bicycle.parts[3])}"
+output(bicycle.parts[3])
 puts
 
 puts car = Part.new('Car', 1000)
@@ -64,14 +64,14 @@ puts "#{car} Part Count: #{partlist_parts_counter(car)}"
 output(car)
 puts
 
-puts bicycle.replace(bicycle.sub_parts[2], car)
+puts bicycle.replace(bicycle.parts[2], car)
 puts
 puts "#{bicycle} Part Count: #{partlist_parts_counter(bicycle)}"
 output(bicycle)
 puts
 
 
-bicycle.sub_parts[0].sub_parts[0].whole = bicycle.sub_parts[2]
+bicycle.parts[0].parts[0].whole = bicycle.parts[2]
 puts "#{bicycle} Part Count: #{partlist_parts_counter(bicycle)}"
 output(bicycle)
 puts

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Test
-  attr_reader :bad, :good
+  attr_reader :bad, :good, :ugly
 
   def initialize
     @good = 'good'
@@ -22,6 +22,8 @@ end
 
 test = Test.new
 
+# this will make no seance as ugly is always nil
+puts test.ugly.class
 # while this wont cause an exception
 puts test.good
 # this will, as bad is not yet defined
