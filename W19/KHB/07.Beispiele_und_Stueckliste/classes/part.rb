@@ -25,18 +25,15 @@ class Part
   end
 
   def replace(part, new_part)
-    @sub_parts[@sub_parts.index(part)] = new_part if has_part?(part) && check_part?(new_part)
-    new_part.update_whole(self)
+    has_part?(part) && check_part?(new_part)
+    part.whole.sub_parts[@sub_parts.index(part)] = new_part
+    new_part.update_whole(part.whole)
     part
   end
 
   def flatten
-    flat_list = []
-    self.each do |part|
-      flat_list << part unless part.sub_parts.empty?
-      flat_list << (part.sub_parts.empty? ? part : part.flatten)
-    end
-    flat_list.flatten
+    flat = [self] << map { |part| part.sub_parts.empty? ? part : part.flatten }
+    flat.flatten
   end
 
   def parts
@@ -54,21 +51,22 @@ class Part
 
   def add(part)
     part.whole = self if check_part?(part)
-    self.mass = 0 # was mache ich mit der Masse, wenn ein Teil schon Teile hat?
     parts
   end
 
   def whole=(part)
-    unless @whole == part
-      part << self if check_part?(part)
-      @whole.delete(self)
-      update_whole(part)
-    end
+    part.add_part(self) if check_part?(part) unless @whole == part
+    # remove the part from it's old whole
+    @whole.delete(self)
     update_whole(part)
   end
 
   def label=(label)
     @label = label.to_s
+  end
+
+  def each(&block)
+    block_given? ? @sub_parts.each(&block) : @sub_parts.each
   end
 
   alias_method :eql?, :==
@@ -78,8 +76,8 @@ class Part
     [@label, @mass, @sub_parts, @whole] == [other.label, other.mass, other.sub_parts, other.whole]
   end
 
-  def each(&block)
-    block_given? ? @sub_parts.each(&block) : @sub_parts.each
+  def hash
+    [@label, @mass, @sub_parts, @whole].hash
   end
 
   def to_s
@@ -92,30 +90,24 @@ class Part
     part.is_a?(Part) ? true : raise(ArgumentError, "#{part} is not a part")
   end
 
-  def delete(part)
-    # if @sub_parts.include?(part)
-    #   @sub_parts.delete(part)
-    #   update_mass
-    # end
-    # each { |sub_parts| sub_parts.delete(part) unless sub_parts.sub_parts.empty? }
-    # part
+  def has_part?(part)
+    flatten.include?(part) ? true : raise(ArgumentError, "#{part} is not a part of #{whole.label}")
+  end
 
+  def delete(part)
     part.whole.sub_parts.delete(part)
     part.whole.update_mass unless part.whole.sub_parts.empty?
     part
   end
 
-  def has_part?(part)
-    flatten.include?(part) ? true : raise(ArgumentError, "#{part} is not a part of #{whole.label}")
-  end
-
   def update_whole(whole)
     @whole = whole
-    @whole.mass = 0
+    @whole.update_mass
+    whole.update_mass
     @whole
   end
 
-  def <<(part)
+  def add_part(part)
     @sub_parts << part
     self.define_singleton_method(:"#{part.label.downcase.gsub(/\s+/, "_")}") do
       part
@@ -123,6 +115,7 @@ class Part
   end
 
   def update_mass
-    @mass = @sub_parts.map(&:mass).inject(0, :+)
+    # @mass = @sub_parts.map(&:mass).inject(0, :+)
+    self.mass = 0
   end
 end
