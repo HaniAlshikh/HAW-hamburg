@@ -6,9 +6,9 @@ module Partlist
 
   def generate(hash)
     partlist = Part.new(hash.keys[0])
-    hash.each do |_, sub_parts|
-      sub_parts.each { |sub_hash| partlist.add(generate(sub_hash)) } if sub_parts.is_a?(Array)
-      partlist.mass = sub_parts if sub_parts.is_a?(Numeric)
+    hash.each do |_, parts|
+      parts.each { |sub_hash| partlist.add(generate(sub_hash)) } if parts.is_a?(Array)
+      partlist.mass = parts if parts.is_a?(Numeric)
     end
     partlist
   end
@@ -17,7 +17,7 @@ module Partlist
   def count(partlist)
     count = 0
     partlist.each do |part|
-      count += part.sub_parts.empty? ? 1 : partlist_parts_counter(part)
+      count += part.parts.empty? ? 1 : partlist_parts_counter(part)
     end
     count
   end
@@ -31,7 +31,7 @@ module Partlist
   def sub_part(partlist)
     partlist.each do |part|
       puts("\t"*(nesting(part) + 1) + part.to_s)
-      sub_part(part) unless part.sub_parts.empty?
+      sub_part(part) unless part.parts.empty?
     end
   end
 

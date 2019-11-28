@@ -11,7 +11,7 @@ require 'yaml'
 require_relative '../classes/part'
 require_relative '../modules/partlist'
 
-class TestPart < Test::Unit::TestCase
+class PartTest < Test::Unit::TestCase
 
   PARTLIST = YAML.load_file(File.join(__dir__, '../partlists/Bicycle.yml')).freeze
 
@@ -46,6 +46,16 @@ class TestPart < Test::Unit::TestCase
   end
 
   def test_whole
+    part = @bicycle.parts[0].parts[0]
+    whole = @bicycle.parts[0]
+    new_whole = @bicycle.parts[1]
+    old_mass = @bicycle.parts[0].mass
+
+    assert_equal(whole, part.whole)
+    assert_nothing_raised { part.whole = new_whole }
+    assert_equal(new_whole, part.whole)
+    assert_not_equal(old_mass, whole.mass)
+    assert_equal(part.mass - old_mass, whole.mass )
   end
 
 

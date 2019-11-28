@@ -1,13 +1,14 @@
 class Part
 
-  attr_reader :label, :mass, :whole
+  attr_reader :label, :mass, :whole, :sub_parts
+  protected :sub_parts
   include Enumerable
 
-  def initialize(label, mass = 0, *parts)
+  def initialize(label, mass = 0, *sub_parts)
     @label = label
-    @parts = []
+    @sub_parts = []
     @whole = self
-    self.parts = parts
+    self.sub_parts = sub_parts
     self.mass = mass
   end
 
@@ -18,12 +19,13 @@ class Part
   end
 
   def remove(part)
+    check_part?(part) && has_part?(part)
     delete(part)
     part.whole = part
   end
 
   def replace(part, new_part)
-    @parts[@parts.index(part)] = new_part if has_part?(part) && check_part?(new_part)
+    @sub_parts[@sub_parts.index(part)] = new_part if has_part?(part) && check_part?(new_part)
     new_part.update_whole(self)
     part
   end
@@ -31,29 +33,29 @@ class Part
   def flatten
     flat_list = []
     self.each do |part|
-      flat_list << part unless part.parts.empty?
-      flat_list << (part.parts.empty? ? part : part.flatten)
+      flat_list << part unless part.sub_parts.empty?
+      flat_list << (part.sub_parts.empty? ? part : part.flatten)
     end
     flat_list.flatten
   end
 
   def parts
-    @parts.dup
+    @sub_parts.dup
   end
 
   def mass=(mass)
     raise(ArgumentError, "mass musst be a Number") unless mass.is_a?(Numeric)
-    @mass = parts.empty? ? mass : @parts.map(&:mass).inject(0, :+)
+    @mass = @sub_parts.empty? ? mass : @sub_parts.map(&:mass).inject(0, :+)
   end
 
-  def parts=(parts)
-    parts.empty? ? @parts : [*parts].each { |part| add(part) }
+  def sub_parts=(sub_parts)
+    sub_parts.empty? ? @sub_parts : [*sub_parts].each { |part| add(part) }
   end
 
   def add(part)
     part.whole = self if check_part?(part)
     self.mass = 0 # was mache ich mit der Masse, wenn ein Teil schon Teile hat?
-    @parts
+    parts
   end
 
   def whole=(part)
@@ -73,11 +75,11 @@ class Part
   def ==(other)
     return false unless other.is_a?(Part)
     return true if self.equal?(other)
-    [@label, @mass, @parts, @whole] == [other.label, other.mass, other.parts, other.whole]
+    [@label, @mass, @sub_parts, @whole] == [other.label, other.mass, other.sub_parts, other.whole]
   end
 
   def each(&block)
-     block_given? ? @parts.each(&block) : @parts.each
+    block_given? ? @sub_parts.each(&block) : @sub_parts.each
   end
 
   def to_s
@@ -91,9 +93,15 @@ class Part
   end
 
   def delete(part)
-    check_part?(part)
-    return @parts.delete(part) if @parts.include?(part)
-    each { |sub_part| sub_part.delete(part) unless sub_part.parts.empty? }
+    # if @sub_parts.include?(part)
+    #   @sub_parts.delete(part)
+    #   update_mass
+    # end
+    # each { |sub_parts| sub_parts.delete(part) unless sub_parts.sub_parts.empty? }
+    # part
+
+    part.whole.sub_parts.delete(part)
+    part.whole.update_mass unless part.whole.sub_parts.empty?
     part
   end
 
@@ -108,9 +116,13 @@ class Part
   end
 
   def <<(part)
-    @parts << part
+    @sub_parts << part
     self.define_singleton_method(:"#{part.label.downcase.gsub(/\s+/, "_")}") do
       part
     end
+  end
+
+  def update_mass
+    @mass = @sub_parts.map(&:mass).inject(0, :+)
   end
 end
