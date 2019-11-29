@@ -13,6 +13,7 @@ require_relative '../Errors/pop_error'
 # Basic implementation of the data structure: Queue
 class CustomStack
   attr_reader :stack
+  protected :stack
 
   def initialize
     @stack = []
@@ -24,19 +25,24 @@ class CustomStack
   # @return [Array] stack elements as an array
   def push(element)
     raise PushError, "element can't be nil" if element.nil?
-    stack.push(element)
+    @stack.push(element)
+    peek
   end
 
   # removes to first element of the stack
   # @raise [destackError] if the stack is empty
   # @return [Object] the removed element
   def pop
-    raise PopError, "poping out an empty stack" if stack.empty?
-    stack.pop
+    raise PopError, "poping out an empty stack" if @stack.empty?
+    @stack.pop
   end
 
   def empty?
-    stack.empty?
+    @stack.empty?
+  end
+
+  def peek
+    @stack.dup
   end
 
   # @return [Boolean] true if the the elements are the same
@@ -50,10 +56,7 @@ class CustomStack
     # but as there is nothing specified about this
     # we decided to go with the convention and make eql? the one
     # responsible for more strict comparision
-    return false unless other.respond_to?(:stack)
-    other = other.stack
-    # empty means all elements are the same
-    stack.size == other.size && stack.zip(other).map { |a,b| a unless a == b }.compact.empty?
+    @stack == other.stack
   end
 
   # @return [Boolean] true if the objects descend from the same direct class
@@ -66,6 +69,6 @@ class CustomStack
   end
 
   def hash
-    stack.hash
+    @stack.hash
   end
 end

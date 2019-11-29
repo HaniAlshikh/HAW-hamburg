@@ -13,6 +13,7 @@ require_relative '../Errors/dequeue_error'
 # Basic implementation of the data structure: Queue
 class CustomQueue
   attr_reader :queue
+  protected :queue
 
   def initialize
     @queue = []
@@ -24,7 +25,8 @@ class CustomQueue
   # @return [Array] queue elements as an array
   def enqueue(element)
     raise EnqueueError, "element can't be nil" if element.nil?
-    queue.push(element)
+    @queue.push(element)
+    peek
   end
 
   # removes to first element of the queue
@@ -32,11 +34,15 @@ class CustomQueue
   # @return [Object] the removed element
   def dequeue
     raise DequeueError, 'dequeing out an empty queue' if queue.empty?
-    queue.shift
+    @queue.shift
   end
 
   def empty?
-    queue.empty?
+    @queue.empty?
+  end
+
+  def peek
+    @queue.dup
   end
 
   # @return [Boolean] true if the the elements are the same
@@ -50,10 +56,7 @@ class CustomQueue
     # but as there is nothing specified about this
     # we decided to go with the convention and make eql? the one
     # responsible for more strict comparision
-    return false unless other.respond_to?(:queue)
-    other = other.queue
-    # empty means all elements are the same
-    queue.size == other.size && queue.zip(other).map { |a,b| a unless a == b }.compact.empty?
+    @queue == other.queue
   end
 
   # @return [Boolean] true if the objects descend from the same direct class
@@ -66,6 +69,6 @@ class CustomQueue
   end
 
   def hash
-    queue.hash
+    @queue.hash
   end
 end

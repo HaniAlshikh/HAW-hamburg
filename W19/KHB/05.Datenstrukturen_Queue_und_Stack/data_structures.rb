@@ -15,10 +15,10 @@ queue = CustomQueue.new
 stack = CustomStack.new
 [1, 2, 3].each { |e| queue.enqueue(e) }
 [1, 2, 3].each { |e| stack.push(e) }
-puts "Queue: #{queue.queue}"
-puts "Stack: #{stack.stack}"
+puts "Queue: #{queue.peek}"
+puts "Stack: #{stack.peek}"
 queue.dequeue
 stack.pop
 puts
-puts "Queue: #{queue.queue}"
-puts "Stack: #{stack.stack}"
+puts "Queue: #{queue.peek}"
+puts "Stack: #{stack.peek}"
