@@ -27,7 +27,6 @@ class TC_Cat < TC
 
   def test_lifes_killer
     assert_nothing_raised { @cat.attack(@cat) }
-    assert_equal(9, @cat.lifes)
     assert_false(@cat.dead?)
     assert_raise(NoMethodError) { @pet.attack(@cat) }
     assert_nothing_raised { Cat.new('Killer', @owner).attack(@cat) until @cat.dead? }

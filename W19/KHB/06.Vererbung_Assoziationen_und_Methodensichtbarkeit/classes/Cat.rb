@@ -11,10 +11,11 @@ require 'set'
 
 # simulate a Cat in a basic level
 class Cat < Pet
-  attr_reader :staff
+  attr_reader :employees
+  protected :employees
 
   def initialize(name, employee)
-    @staff = Set[employee]
+    @employees = Set[employee]
     super(name, employee)
     @lifes = 9
   end
@@ -37,18 +38,22 @@ class Cat < Pet
   # @raise [ArgumentError] if not a Person
   # @return [Set] staff
   def add_employee(employee)
-    check_person?(employee)
-    employee.adopt(self)
-    @staff << employee
-  end
-
-  def to_s
-    super + "#{"\n  Staff: #{@staff.map(&:name) * ', '}" unless @staff.empty?}"
+    employee.adopt(self) if check_person?(employee)
+    @employees << employee
+    employees
   end
 
   def owner=(owner)
-    @staff << owner if check_person?(owner)
+    @employees << owner if check_person?(owner)
     super(owner)
+  end
+
+  def staff
+    @employees.dup
+  end
+
+  def to_s
+    super + "#{"\n  Staff: #{@employees.map(&:name) * ', '}" unless @employees.empty?}"
   end
 
   protected
@@ -60,6 +65,6 @@ class Cat < Pet
 
   # @raise [ArgumentError] if not employee
   def pet_condition(employee)
-    @staff.include?(employee) ? true : (raise ArgumentError, "employee required")
+    @employees.include?(employee) ? true : (raise ArgumentError, "employee required")
   end
 end

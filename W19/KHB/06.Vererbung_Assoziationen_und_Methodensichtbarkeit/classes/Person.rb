@@ -11,18 +11,19 @@ require 'set'
 
 # simulate a Person/Human in a basic level
 class Person < Nature
-  attr_reader :pets
+  attr_reader :pets_set
+  protected :pets_set
 
   def initialize(name)
     super(name)
-    @pets = Set.new
+    @pets_set = Set.new
   end
 
   # @param [Pet] pet to adopt
   # @raise [ArgumentError] if not Pet
   # @return [Person] adopter object
   def adopt(pet)
-    @pets << pet if check_pet?(pet)
+    @pets_set << pet if check_pet?(pet)
     pet.owner = self
   end
 
@@ -40,8 +41,12 @@ class Person < Nature
     pet.relax(self) if check_pet?(pet)
   end
 
+  def pets
+    @pets_set.dup
+  end
+
   def to_s
     "#{self.class}: #{@name}" \
-    "#{"\n  Pets: #{@pets.map(&:name) * ', '}" unless @pets.empty?}"
+    "#{"\n  Pets: #{@pets_set.map(&:name) * ', '}" unless @pets_set.empty?}"
   end
 end

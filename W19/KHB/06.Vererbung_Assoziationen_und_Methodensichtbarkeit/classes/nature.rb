@@ -8,8 +8,9 @@
 
 # simulate nature in a basic level
 class Nature
-  attr_accessor :name
-  attr_reader :born_date, :lifes
+  attr_accessor :name, :born_date
+  attr_reader :lifes
+  protected :lifes
 
   def initialize(name)
     @name = name
