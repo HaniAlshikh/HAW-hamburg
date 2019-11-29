@@ -23,7 +23,7 @@ int main () {
       // j ist ungerade und liegt zwischen 20 und 40.
       j > 20 && j < 40 && j % 2 > 0,
       // k ist Vielfaches von 3 und 5 oder Vielfaches von 5 und 7 oder Vielfaches von 5 und 11.
-      (k % 3 == 0 && k % 5 == 0) || (k % 5 == 0 && k % 5 == 7) || (k % 7 == 0 && k % 5 == 11)
+      k % 5 == 0 && (k % 3 == 0 || k % 7 == 0 || k % 11 == 0)
    };
 
    // output
