@@ -54,6 +54,13 @@ puts
 puts "#{bicycle.parts[3]} Part Count: #{partlist_parts_counter(bicycle.parts[3])}"
 output(bicycle.parts[3])
 puts
+puts bicycle
+puts
+puts bicycle.front_set.handlebar_grip.whole = bicycle.saddle_area
+puts
+output(bicycle)
+puts
+
 
 puts car = Part.new('Car', 1000)
 puts
@@ -65,6 +72,7 @@ output(car)
 puts
 
 puts bicycle.replace(bicycle.parts[2], car)
+puts bicycle.replace(bicycle.parts[0].parts[4], car)
 puts
 puts "#{bicycle} Part Count: #{partlist_parts_counter(bicycle)}"
 output(bicycle)

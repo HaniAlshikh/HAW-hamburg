@@ -8,8 +8,14 @@ class Part
     @label = label
     @sub_parts = []
     @whole = self
-    self.sub_parts = sub_parts
+    add(sub_parts)
     self.mass = mass
+  end
+
+  def add(parts)
+    # [*parts] -> [], buy why?
+    [parts].flatten.each { |part| add_part(part) if check_part?(part) }
+    self.parts
   end
 
   def top
@@ -21,13 +27,14 @@ class Part
   def remove(part)
     check_part?(part) && has_part?(part)
     delete(part)
-    part.whole = part
+    part.update_whole(part)
   end
 
   def replace(part, new_part)
     has_part?(part) && check_part?(new_part)
-    part.whole.sub_parts[@sub_parts.index(part)] = new_part
+    part.whole.sub_parts[part.whole.sub_parts.index(part)] = new_part
     new_part.update_whole(part.whole)
+    new_part.whole.generate_reader(new_part)
     part
   end
 
@@ -42,23 +49,25 @@ class Part
 
   def mass=(mass)
     raise(ArgumentError, "mass musst be a Number") unless mass.is_a?(Numeric)
-    @mass = @sub_parts.empty? ? mass : @sub_parts.map(&:mass).inject(0, :+)
+    @mass = @sub_parts.empty? ? mass : @sub_parts.map(&:mass).sum
   end
 
-  def sub_parts=(sub_parts)
-    sub_parts.empty? ? @sub_parts : [*sub_parts].each { |part| add(part) }
+  def parts=(parts)
+    [parts].flatten.any? { |part| check_part?(part) }
+    @sub_parts = []
+    add(parts)
   end
 
-  def add(part)
-    part.whole = self if check_part?(part)
-    parts
-  end
-
+  # whole is used same as move
+  # if the element to be move already exist in the new whole
+  # it will be simply be deleted.
+  # for duplicates elements
+  # add should be used with remove new_whole.add(old_whole.remove(part))
+  # otherwise duplicates will be created when changin
   def whole=(part)
-    part.add_part(self) if check_part?(part) unless @whole == part
-    # remove the part from it's old whole
+    check_part?(part)
     @whole.delete(self)
-    update_whole(part)
+    part.add_part(self) unless part.parts.include?(self)
   end
 
   def label=(label)
@@ -96,26 +105,30 @@ class Part
 
   def delete(part)
     part.whole.sub_parts.delete(part)
-    part.whole.update_mass unless part.whole.sub_parts.empty?
+    part.whole.update_mass
+    part.whole.top.update_mass
     part
   end
 
   def update_whole(whole)
+    @whole.update_mass
     @whole = whole
     @whole.update_mass
-    whole.update_mass
+    @whole.top.update_mass
     @whole
   end
 
   def add_part(part)
     @sub_parts << part
-    self.define_singleton_method(:"#{part.label.downcase.gsub(/\s+/, "_")}") do
-      part
-    end
+    generate_reader(part)
+    part.update_whole(self)
   end
 
   def update_mass
-    # @mass = @sub_parts.map(&:mass).inject(0, :+)
-    self.mass = 0
+    @sub_parts.empty? ? @mass : self.mass = 0
+  end
+
+  def generate_reader(part)
+    self.define_singleton_method(:"#{part.label.downcase.gsub(/\s+/, "_")}") { part }
   end
 end
