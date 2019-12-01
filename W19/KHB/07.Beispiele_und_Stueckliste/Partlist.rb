@@ -1,85 +1,61 @@
+#####################################################################
+# Assigment sheet A07: Examples and Partlist.
+#
+# this script displays the data structure "Partlist" functionality
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
+
 require_relative 'classes/part'
+require_relative 'modules/partlist'
+require_relative 'lib/extend'
 require 'yaml'
 
-# ist das, was mit der Konstruktion Stücklisten gemeint (05.)?
-# in diesem Fall YAML -> hash -> Teil objekte
-def partlist(hash)
-  partlist = Part.new(hash.keys[0])
-  hash.each do |_, parts|
-    parts.each { |sub_hash| partlist.add(partlist(sub_hash)) } if parts.is_a?(Array)
-    partlist.mass = parts if parts.is_a?(Numeric)
-  end
-  partlist
-end
-
-def partlist_parts_counter(partlist)
-  count = 0
-  partlist.each do |part|
-    count += part.parts.empty? ? 1 : partlist_parts_counter(part)
-  end
-  count
-end
-
-# wer kümmert sich um die eingerückte Ausgabe? das Objekt oder der Nutzer?
-def nesting(part)
-  nesting = 0
-  until part.whole == part.top
-    part = part.whole
-    nesting += 1
-  end
-  nesting
-end
-
-def output(partlist)
-  partlist.each do |part|
-    puts("\t"*(nesting(part) + 1) + part.to_s)
-    output(part) unless part.parts.empty?
-  end
-end
-
 bicycle_blueprint = YAML.load_file(File.join(__dir__, 'partlists/Bicycle.yml')).freeze
+bicycle = Partlist.generate(bicycle_blueprint)
 
-bicycle = partlist(bicycle_blueprint)
+puts "\n#### Partlist data structure functionality overview ####\n\n".bold.green
 
-puts "#{bicycle} Part Count: #{partlist_parts_counter(bicycle)}"
-output(bicycle)
-puts
-
-# ist das was mit top gemeint (02. Lesende)?
-puts bicycle.parts[3].parts[0].top
+puts '> 6.1. generating a Partlist'.green
+Partlist.output(bicycle)
 puts
 
-puts bicycle.remove(bicycle.parts[3].parts[2])
-puts
-puts "#{bicycle.parts[3]} Part Count: #{partlist_parts_counter(bicycle.parts[3])}"
-output(bicycle.parts[3])
-puts
-puts bicycle
-puts
-puts bicycle.front_set.handlebar_grip.whole = bicycle.saddle_area
-puts
-output(bicycle)
+puts '> 6.2. the top part and the total wight'.green
+puts bicycle.back_set.wheel.spokes.top
 puts
 
+puts '> 6.3. total count'.green
+puts "#{bicycle} total count: #{Partlist.count_parts(bicycle)} parts"
 
-puts car = Part.new('Car', 1000)
+puts "\n############ Bonus ############\n\n".bold.green
+
+puts '> 6.4. removing elements'.green
+puts bicycle.remove(bicycle.back_set)
+puts bicycle.remove(bicycle.front_set.wheel)
+puts bicycle.remove(bicycle.frame.top_tube)
+puts
+Partlist.output(bicycle)
 puts
 
-car.add(Part.new('engine', 400))
-car.add(Part.new('frame', 400))
-puts "#{car} Part Count: #{partlist_parts_counter(car)}"
-output(car)
+puts '> 6.5. changing whole (moving) '.green
+part = bicycle.front_set.handlebar_grip
+puts "changing #{part} whole to saddle_area (moving to)"
+puts part.whole = bicycle.saddle_area
+puts
+Partlist.output(bicycle)
 puts
 
-puts bicycle.replace(bicycle.parts[2], car)
-puts bicycle.replace(bicycle.parts[0].parts[4], car)
+puts '> 6.6. replacing'.green
+puts 'create a new partlist car'
+puts car = Part.new('Car')
+puts "\nadding some parts to car"
+car.add(Part.new('engine', mass: 400))
+car.add(Part.new('frame', mass: 400))
+Partlist.output(car)
 puts
-puts "#{bicycle} Part Count: #{partlist_parts_counter(bicycle)}"
-output(bicycle)
+puts 'replace Front Set with the car'
+puts bicycle.replace(bicycle.front_set, car)
 puts
-
-
-bicycle.parts[0].parts[0].whole = bicycle.parts[2]
-puts "#{bicycle} Part Count: #{partlist_parts_counter(bicycle)}"
-output(bicycle)
-puts
+Partlist.output(bicycle)

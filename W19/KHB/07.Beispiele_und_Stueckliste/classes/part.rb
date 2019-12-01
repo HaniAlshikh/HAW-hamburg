@@ -1,73 +1,124 @@
-class Part
+#####################################################################
+# Assigment sheet A07: Examples and Partlist.
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
 
+# partlist data structure implementation
+class Part
   attr_reader :label, :mass, :whole, :sub_parts
   protected :sub_parts
   include Enumerable
 
-  def initialize(label, mass = 0, *sub_parts)
+  def initialize(label, *sub_parts, mass: 0)
     @label = label
     @sub_parts = []
-    @whole = self
-    add(sub_parts)
+    @whole = nil
     self.mass = mass
-  end
-
-  def add(parts)
-    # [*parts] -> [], buy why?
-    [parts].flatten.each { |part| add_part(part) if check_part?(part) }
-    self.parts
-  end
-
-  def top
-    top = self
-    top = top.whole until top.whole == top
-    top
-  end
-
-  def remove(part)
-    check_part?(part) && has_part?(part)
-    delete(part)
-    part.update_whole(part)
-  end
-
-  def replace(part, new_part)
-    has_part?(part) && check_part?(new_part)
-    part.whole.sub_parts[part.whole.sub_parts.index(part)] = new_part
-    new_part.update_whole(part.whole)
-    new_part.whole.generate_reader(new_part)
-    part
-  end
-
-  def flatten
-    flat = [self] << map { |part| part.sub_parts.empty? ? part : part.flatten }
-    flat.flatten
+    add(sub_parts)
   end
 
   def parts
     @sub_parts.dup
   end
 
+  # @return [Part] the root Part
+  def top
+    top = self
+    top = top.whole until top.whole.nil?
+    top
+  end
+
+  # @note if the part to be added has a whole a duplicate will
+  #       be made to avoid editing the same part in multiple places
+  # @param [Part, Array] parts array or one part
+  # @raise [ArgumentError] if not a Part
+  # @return [Array] parts array
+  def add(parts)
+    [parts].flatten.each do |part|
+      check_part?(part)
+      # make sure the same Part is not used twice
+      part = part.dup unless part.whole.nil?
+      @sub_parts << part
+      generate_reader(part)
+      part.update_whole(self)
+    end
+    self.parts
+  end
+
+  # @note removes all items from self that are == to part even if nested
+  #       to remove once use remove_at
+  # @param [Part] part to be removed
+  # @raise [ArgumentError] if not a Part or partlist don't have it
+  # @return [Part] part removed part
+  def remove(part)
+    check_part?(part) && has_part?(part)
+    delete(part)
+    remove_reader(part)
+    part.reset_whole
+    part
+  end
+
+  # @param [Integer] index of the part to be removed
+  # @return [Part] part removed part
+  def remove_at(index)
+    part = @sub_parts.delete_at(index)
+    remove_reader(part) unless @sub_parts.include?(part)
+    update_mass
+    top.update_mass
+    part
+  end
+
+  # replaces a part with another once at first match
+  # @param [Part] part part to be replaced
+  # @param [Part] new_part replacement part
+  # @raise [ArgumentError] if partlist doesn't have the part
+  # @raise [ArgumentError] if new_part is not a Part object
+  # @return [Part] part replaced part
+  def replace(part, new_part)
+    has_part?(part) && check_part?(new_part)
+    part.whole.sub_parts[part.whole.sub_parts.index(part)] = new_part
+    part.whole.remove_reader(part) unless part.whole.sub_parts.include?(part)
+    new_part.update_whole(part.whole)
+    new_part.whole.generate_reader(new_part)
+    part
+  end
+
+  # flattens self and return all of it's objects regardless of the depth
+  # @return [Array] flattened array of all parts
+  def flatten
+    flat = [(self unless whole.nil?)] << map { |part| part.sub_parts.empty? ? part : part.flatten }
+    flat.flatten
+  end
+
+  # @note mass is ignored if part has parts
+  # @param [Numeric] mass part mass
+  # @raise [ArgumentError] if argument is not a Numeric object
+  # @return [Numeric] mass of the Part object
   def mass=(mass)
-    raise(ArgumentError, "mass musst be a Number") unless mass.is_a?(Numeric)
+    raise(ArgumentError, 'mass musst be a Number') unless mass.is_a?(Numeric)
     @mass = @sub_parts.empty? ? mass : @sub_parts.map(&:mass).sum
   end
 
-  def parts=(parts)
-    [parts].flatten.any? { |part| check_part?(part) }
+  # @param [Part, Array] parts array or one part
+  # @raise [ArgumentError] if any of the argument is not Part object
+  # @return [Array] parts added to the Part object
+  def parts=(*parts)
+    parts.flatten.all? { |part| check_part?(part) }
+    @mass = 0
     @sub_parts = []
     add(parts)
   end
 
   # whole is used same as move
-  # if the element to be move already exist in the new whole
-  # it will be simply be deleted.
-  # for duplicates elements
-  # add should be used with remove new_whole.add(old_whole.remove(part))
-  # otherwise duplicates will be created when changin
   def whole=(part)
     check_part?(part)
-    @whole.delete(self)
-    part.add_part(self) unless part.parts.include?(self)
+    raise ArgumentError, "Parts can't have them self as a whole" if equal?(part)
+    @whole&.delete(self)
+    part.add(self)
+    @whole = part
   end
 
   def label=(label)
@@ -78,11 +129,14 @@ class Part
     block_given? ? @sub_parts.each(&block) : @sub_parts.each
   end
 
-  alias_method :eql?, :==
+  # @note @whole was not added as this can cause an endless loop
+  # when compering a partlist with it self or when trying to remove parts
+  # with another parts see test_identity in tests/part_test.rb
+  alias eql? ==
   def ==(other)
     return false unless other.is_a?(Part)
-    return true if self.equal?(other)
-    [@label, @mass, @sub_parts, @whole] == [other.label, other.mass, other.sub_parts, other.whole]
+    return true if equal?(other)
+    [@label, @mass, @sub_parts] == [other.label, other.mass, other.sub_parts]
   end
 
   def hash
@@ -100,28 +154,24 @@ class Part
   end
 
   def has_part?(part)
-    flatten.include?(part) ? true : raise(ArgumentError, "#{part} is not a part of #{whole.label}")
+    flatten.include?(part) ? true : raise(ArgumentError, "#{part} is not a part of #{self.label}")
   end
 
   def delete(part)
-    part.whole.sub_parts.delete(part)
-    part.whole.update_mass
-    part.whole.top.update_mass
-    part
+    update_mass unless @sub_parts.delete(part).nil?
+    @sub_parts.each { |sub_part| sub_part.delete(part) }
+    top.update_mass
   end
 
   def update_whole(whole)
-    @whole.update_mass
     @whole = whole
     @whole.update_mass
     @whole.top.update_mass
     @whole
   end
 
-  def add_part(part)
-    @sub_parts << part
-    generate_reader(part)
-    part.update_whole(self)
+  def reset_whole
+    @whole = nil
   end
 
   def update_mass
@@ -129,6 +179,10 @@ class Part
   end
 
   def generate_reader(part)
-    self.define_singleton_method(:"#{part.label.downcase.gsub(/\s+/, "_")}") { part }
+    define_singleton_method(:"#{part.label.downcase.gsub(/\s+/, '_')}") { part }
+  end
+
+  def remove_reader(part)
+    part.whole.instance_eval { undef :"#{part.label.downcase.gsub(/\s+/, '_')}" }
   end
 end

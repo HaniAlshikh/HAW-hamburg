@@ -1,4 +1,12 @@
-# frozen_string_literal: true
+#####################################################################
+# Assigment sheet A07: Examples and Partlist.
+#
+# Example 02: why not to use attr_reader to define attributes
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
 
 class Test
   attr_reader :bad, :good, :ugly
@@ -30,7 +38,7 @@ puts test.good
 puts test.bad
 
 # in more complex environment it is farley possible to call the method
-# in other way then intended, if by the maker or the user, which
+# in another way then intended, if by maker or user, which
 # could also cause NoMethodError for nil class.
 # debugging such error is really hard, as the description applies to almost
 # every thing.

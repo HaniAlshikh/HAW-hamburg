@@ -1,8 +1,8 @@
 Bicycle:
   - Front Set:
       - handlebar grip: 0.1
-      - head tube: 0.3
-      - shock absorber: 0.5
+      - head tube: 0.4
+      - shock absorber: 0.6
       - front brakers: 0.2
       - fork: 0.6
       - Wheel:
@@ -10,7 +10,7 @@ Bicycle:
           - hub: 0.2
           - rim: 0.4
           - tire: 0.8
-          - valve: 0.05
+          - valve: 0.1
   - Saddle Area:
       - saddle: 0.6
       - seat post: 0.9
@@ -28,7 +28,7 @@ Bicycle:
           - hub: 0.2
           - rim: 0.4
           - tire: 0.8
-          - valve: 0.2
+          - valve: 0.1
   - Frame:
       - top tube: 1
       - down tube: 1.5

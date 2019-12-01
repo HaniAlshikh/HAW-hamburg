@@ -1,5 +1,5 @@
 #####################################################################
-# Assigment sheet A07: Examples and Parts List.
+# Assigment sheet A07: Examples and Partlist.
 #
 # Example 01: deference between alias and alias_method
 #
@@ -45,7 +45,7 @@ puts find_me.location rescue nil
 find_me.if_alias # meaning self is wherever alias is explicitly written, in this case SuperClass
 puts find_me.location
 
-$alias = "Alias works with constants as well"
+$alias = "Alias works with gloable variables as well"
 alias $flexible $alias
 puts $flexible
 

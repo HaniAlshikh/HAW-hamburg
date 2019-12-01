@@ -1,15 +1,15 @@
 #####################################################################
-# Assigment sheet A06: Inheritance, Association, Methods visibility.
+# Assigment sheet A07: Examples and Partlist.
 #
 # Author:: Nick Marvin Rattay
 # Author:: Hani Alshikh
 #
 #####################################################################
 
+require_relative '../modules/partlist'
+require_relative '../classes/part'
 require 'test/unit'
 require 'yaml'
-require_relative '../classes/part'
-require_relative '../modules/partlist'
 
 class PartTest < Test::Unit::TestCase
 
@@ -22,14 +22,24 @@ class PartTest < Test::Unit::TestCase
     @whole_mass = @whole.mass
     @part = @whole.handlebar_grip
     @new_whole = @bicycle.saddle_area
+    @new_part = Part.new("Test", mass: 100)
+  end
+
+  def test_equality
+    test = Part.new("Test", mass: 100)
+    assert_equal(@part, @part)
+    assert_equal(@new_part, test)
+    assert_nothing_raised { @new_part.add(@part) }
+    assert_not_equal(@new_part, test)
+    assert_nothing_raised { test.add(@part) }
+    assert_equal(@new_part, test)
   end
 
   def test_parts
-    test = Part.new("Test", 100)
-    assert_raises(ArgumentError) { Part.new('Test',0, Object.new) }
-    assert_equal(test, Part.new('Test',0, test).parts[0])
-    assert_nothing_raised { test.add(Part.new('Test',0)) }
-    assert_raises(ArgumentError) { test.add(Object.new) }
+    assert_raises(ArgumentError) { Part.new('Test', Object.new) }
+    assert_equal(@new_part, Part.new('Test', @new_part).parts[0])
+    assert_nothing_raised { @new_part.add(Part.new('Test',mass: 100)) }
+    assert_raises(ArgumentError) { @new_part.add(Object.new) }
     assert_nothing_raised { @bicycle.parts = [] }
     assert_equal([], @bicycle.parts)
   end
@@ -42,7 +52,7 @@ class PartTest < Test::Unit::TestCase
     assert_equal("Bike", @part.top.label)
   end
 
-  def test_mass(top_mass = 15.75)
+  def test_mass(top_mass = 15.9)
     assert_equal(top_mass, @bicycle.mass)
     assert_nothing_raised { @bicycle.parts[1].mass = 50 }
     assert_equal(@bicycle.parts[1].parts[0].mass + @bicycle.parts[1].parts[1].mass,
@@ -53,7 +63,7 @@ class PartTest < Test::Unit::TestCase
   end
 
   def test_whole
-    assert_nothing_raised { @bicycle.whole = @bicycle }
+    assert_raises(ArgumentError) { @bicycle.whole = @bicycle }
     assert_equal(@whole, @part.whole)
     assert_nothing_raised { @part.whole = @new_whole }
     assert_equal(@new_whole, @part.whole)
@@ -69,7 +79,7 @@ class PartTest < Test::Unit::TestCase
   end
 
   def test_replace
-    new_part = Part.new("New Part", 100)
+    new_part = Part.new("New Part", mass: 100)
     assert_nothing_raised { @bicycle.replace(@part, new_part) }
     assert_false(@whole.parts.include?(@part))
     assert_equal(@whole_mass - @part.mass + new_part.mass, @whole.mass)
@@ -77,8 +87,16 @@ class PartTest < Test::Unit::TestCase
   end
 
   def test_flatten
-    @part.add(Part.new('Test', 100))
+    @part.add(Part.new('Test', mass: 100))
     @bicycle.parts = @part
     assert_equal(3, @bicycle.flatten.size)
+  end
+
+  def test_identity
+    car = Part.new('Car', @new_part, @part)
+    assert_nothing_raised { @bicycle.add(@new_part) }
+    assert_nothing_raised { @bicycle.remove(@new_part.dup) }
+    assert_false(@bicycle.parts.include?(@new_part))
+    assert_true(car.parts.include?(@new_part))
   end
 end
