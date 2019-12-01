@@ -1,0 +1,37 @@
+Bicycle:
+  - Front Set:
+      - handlebar grip: 0.1
+      - head tube: 0.4
+      - shock absorber: 0.6
+      - front brakers: 0.2
+      - fork: 0.6
+      - Wheel:
+          - spokes: 0.1
+          - hub: 0.2
+          - rim: 0.4
+          - tire: 0.8
+          - valve: 0.1
+  - Saddle Area:
+      - saddle: 0.6
+      - seat post: 0.9
+  - Back Set:
+      - pedal: 0.5
+      - crank arm: 0.5
+      - front derailleur: 0.4
+      - chain: 0.7
+      - chain ring: 0.5
+      - rear brakes: 0.2
+      - cogset: 0.4
+      - rear derailleur: 0.4
+      - Wheel:
+          - spokes: 0.1
+          - hub: 0.2
+          - rim: 0.4
+          - tire: 0.8
+          - valve: 0.1
+  - Frame:
+      - top tube: 1
+      - down tube: 1.5
+      - seat tube: 1.2
+      - seat stay: 1
+      - chain stay: 1
