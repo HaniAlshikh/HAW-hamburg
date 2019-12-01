@@ -9,10 +9,11 @@
 #####################################################################
 
 class Test
-  attr_reader :bad, :good, :ugly
+  attr_reader :bad, :good, :ugly, :protected_list
 
   def initialize
     @good = 'good'
+    @protected_list = []
   end
 
   def testing
@@ -29,6 +30,10 @@ class Test
 end
 
 test = Test.new
+
+# attr_reader exposes the attribute reference, which in many cases
+# allows for object modification.
+puts test.protected_list << "exposed"
 
 # this will make no seance as ugly is always nil
 puts test.ugly.class
