@@ -18,10 +18,13 @@ eine Stückliste darf ein oder mehrere kopien des gleichen (==) Part-Objekts, ab
 ## singleton Methoden
 
 um dem Nutzer das Leben einfacher zu machen, wurden für die jeweiligen Teile einer Stückliste Reader-Methoden dynamisch erstellt. dies vermeidet schreibweisen wie:  
+
 ```ruby
 partlist.parts[0].part[1].part[2]
 ```
+
 und bietet die folgende Schreibweise:
+
 ```ruby
 partlist.first_part_label.second_part_label.thired_part_label
 ```
