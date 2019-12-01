@@ -39,7 +39,7 @@ class Part
   def add(parts)
     [parts].flatten.each do |part|
       check_part?(part)
-      # make sure the same Part is not used twice
+      # make sure the same reference is not used twice
       part = part.dup unless part.whole.nil?
       @sub_parts << part
       generate_reader(part)
