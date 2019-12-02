@@ -40,9 +40,8 @@ class Part
     [parts].flatten.each do |part|
       check_part?(part)
       # make sure the same reference is not used twice
-      part = part.dup unless part.whole.nil?
+      part = Marshal.load(Marshal.dump(part)) unless part.whole.nil? && part.parts.empty?
       @sub_parts << part
-      generate_reader(part)
       part.update_whole(self)
     end
     self.parts
@@ -56,7 +55,6 @@ class Part
   def remove(part)
     check_part?(part) && has_part?(part)
     delete(part)
-    remove_reader(part)
     part.reset_whole
     part
   end
@@ -65,7 +63,6 @@ class Part
   # @return [Part] part removed part
   def remove_at(index)
     part = @sub_parts.delete_at(index)
-    remove_reader(part) unless @sub_parts.include?(part)
     update_mass
     top.update_mass
     part
@@ -80,9 +77,7 @@ class Part
   def replace(part, new_part)
     has_part?(part) && check_part?(new_part)
     part.whole.sub_parts[part.whole.sub_parts.index(part)] = new_part
-    part.whole.remove_reader(part) unless part.whole.sub_parts.include?(part)
     new_part.update_whole(part.whole)
-    new_part.whole.generate_reader(new_part)
     part
   end
 
@@ -178,11 +173,14 @@ class Part
     @sub_parts.empty? ? @mass : self.mass = 0
   end
 
-  def generate_reader(part)
-    define_singleton_method(:"#{part.label.downcase.gsub(/\s+/, '_')}") { part }
+  def method_missing(label, *args, &block)
+    # TODO: deal with duplicates
+    part = @sub_parts.select{ |part| part.label.downcase.gsub(/\s+/, '_') == label.to_s }.first
+    super unless part
+    part
   end
 
-  def remove_reader(part)
-    part.whole.instance_eval { undef :"#{part.label.downcase.gsub(/\s+/, '_')}" }
+  def respond_to_missing?(method_name, include_private = false)
+    @sub_parts.any?{ |part| part.label.downcase.gsub(/\s+/, '_') == method_name.to_s } || super
   end
 end

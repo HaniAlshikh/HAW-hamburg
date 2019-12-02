@@ -93,10 +93,16 @@ class PartTest < Test::Unit::TestCase
   end
 
   def test_identity
+    old_part_id = @part.object_id
+    old_part_whole_id = @part.whole.object_id
     car = Part.new('Car', @new_part, @part)
-    assert_nothing_raised { @bicycle.add(@new_part) }
+    # test reference change when adding to partlist
+    assert_nothing_raised { @bicycle.add(car) }
+    assert_not_equal(old_part_id, @bicycle.car.handlebar_grip.object_id)
+    assert_not_equal(old_part_whole_id, @bicycle.car.handlebar_grip.whole.object_id)
+    # parts still found
     assert_nothing_raised { @bicycle.remove(@new_part.dup) }
-    assert_false(@bicycle.parts.include?(@new_part))
+    assert_false(@bicycle.car.parts.include?(@new_part))
     assert_true(car.parts.include?(@new_part))
   end
 end

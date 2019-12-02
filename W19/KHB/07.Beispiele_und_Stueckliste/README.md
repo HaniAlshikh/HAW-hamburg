@@ -15,9 +15,9 @@ wo die Angaben fehlten, wurde dafür entschieden, was in der Realität zu entneh
 
 eine Stückliste darf ein oder mehrere kopien des gleichen (==) Part-Objekts, aber keins davon teilt die gleiche Identität bzw. den gleichen Speicherplatz. Z.B. bei der erstellung eines Part-Objekts, das an mehrere Stellen der Stückliste hinzugefügt werden sollte, wäre es unmöglich die jeweilige Kopie einem Ganzen zu verweisen, da alle kopien das gleiche Objekt referenzieren
 
-## singleton Methoden
+## method_missing
 
-um dem Nutzer das Leben einfacher zu machen, wurden für die jeweiligen Teile einer Stückliste Reader-Methoden dynamisch erstellt. dies vermeidet schreibweisen wie:  
+um dem Nutzer das Leben einfacher zu machen, wurden für die jeweiligen Teile einer Stückliste Reader-Methoden dynamisch erstellt. Dies vermeidet schreibweisen wie:  
 
 ```ruby
 partlist.parts[0].part[1].part[2]
@@ -35,6 +35,5 @@ partlist.first_part_label.second_part_label.thired_part_label
 - [alias vs alias_method](https://blog.bigbinary.com/2012/01/08/alias-vs-alias-method.html)
 - [What happens when you use string interpolation in ruby?](https://stackoverflow.com/questions/25488902/what-happens-when-you-use-string-interpolation-in-ruby)
 - [Enumerable](https://ruby-doc.org/core-2.6.5/Enumerable.html)
-- [Add method to an instanced object](https://stackoverflow.com/questions/1887845/add-method-to-an-instanced-object)
-- [undef singleton method from ruby object](https://stackoverflow.com/questions/16670669/undef-singleton-method-from-ruby-object)
+- [Always Define respond_to_missing? When Overriding method_missing](https://thoughtbot.com/blog/always-define-respond-to-missing-when-overriding)
 - [List of bicycle parts](https://en.wikipedia.org/wiki/List_of_bicycle_parts)
