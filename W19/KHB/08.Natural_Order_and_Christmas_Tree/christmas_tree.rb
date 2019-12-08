@@ -1,4 +1,12 @@
-
+#####################################################################
+# Assigment sheet A08: Natural Order and Christmas Tree Pattern.
+#
+# Christmas tree demonstration
+#
+# Author:: Nick Marvin Rattay
+# Author:: Hani Alshikh
+#
+#####################################################################
 
 require_relative 'modules/tree'
 

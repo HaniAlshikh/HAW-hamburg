@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'set'
 require_relative '../classes/natural_order'
 
 class NaturalOrderTest < Test::Unit::TestCase
@@ -24,6 +25,7 @@ class NaturalOrderTest < Test::Unit::TestCase
     assert_false(NaturalOrder.new(1, 1) == NaturalOrder.new)
     assert_true(@range === NaturalOrder.new(3))
     assert_false(@range === NaturalOrder.new(9))
+    assert_equal(1, Set[NaturalOrder.new, NaturalOrder.new].size)
   end
 
   def test_parent
