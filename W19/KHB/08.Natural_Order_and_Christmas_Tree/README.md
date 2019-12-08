@@ -7,7 +7,7 @@ Author:: Hani Alshikh
 
 ## kinder
 
-bei den Kindern wurde entschieden das Objekt selber zurückzugeben, wenn es keine kinder mehr gibt, als indikator, dass es keine Kinder mehr gibt. Das kann hilfreich sein, wenn prüfen möchte, ob ein Node kinder hat.
+bei den Kindern wurde entschieden das Objekt selber zurückzugeben, wenn es keine kinder mehr gibt, als indikator, dass es keine Kinder mehr gibt. Das kann hilfreich sein, wenn man prüfen möchte, ob ein Node kinder hat.
 
 ##### Quellen
 - [Range](https://ruby-doc.org/core-2.5.1/Range.html#method-i-3D-3D-3D)
