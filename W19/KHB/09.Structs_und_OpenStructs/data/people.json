@@ -1,0 +1,17 @@
+{
+  "Mike": {
+    "name": "Mike",
+    "age": 25,
+    "website": "www.mike.com",
+    "fax": "91028312093",
+    "phone": "19284821793"
+  },
+
+  "Lara": {
+    "name": "Lara",
+    "age": 20,
+    "website": "www.lara.com",
+    "fax": "91028312093",
+    "phone": "19284821793"
+  }
+}
