@@ -40,7 +40,7 @@ class Cat < Pet
   def add_employee(employee)
     employee.adopt(self) if check_person?(employee)
     @employees << employee
-    employees
+    staff
   end
 
   def owner=(owner)
