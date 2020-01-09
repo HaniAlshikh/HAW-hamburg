@@ -1,0 +1,10 @@
+  SSLRequireSSL
+
+  AuthType Basic
+  AuthName "Pub-Verzeichnis"
+  AuthBasicProvider ldap
+
+  AuthLDAPURL ldap://dir-read.informatik.haw-hamburg.de/ou=dep-inf,o=haw-hamburg?uid??(objectClass=posixAccount) TLS
+
+# Fuer alle User im LDAP Zugang
+  Require valid-user

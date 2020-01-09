@@ -1,0 +1,23 @@
+* {
+  font-family: Helvetica, Arial; 
+}
+
+#name, #absender, #nachricht {
+  margin-bottom: 20px;
+}
+
+#info {
+  display: table;
+}
+
+#h-s_logo {
+  padding: 20px;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+#info_table {
+  padding: 20px;
+  vertical-align: middle;
+  display: table-cell;
+}
