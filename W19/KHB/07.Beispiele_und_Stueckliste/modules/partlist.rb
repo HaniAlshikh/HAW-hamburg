@@ -28,30 +28,23 @@ module Partlist
   # @param [Part] partlist to be counted
   # @return [Integer] count
   def count_parts(partlist)
-    count = 0
-    partlist.each { |part| count += part.parts.empty? ? 1 : count_parts(part) }
-    count
+    partlist.count { |part| part.parts.empty? }
   end
 
   # output a partlist with indentation
   # @param [Part] partlist to be outputted
   def output(partlist)
-    puts "#{partlist} Part Count: #{count_parts(partlist)}"
-    sub_part(partlist)
-  end
-
-  # recursively output evey part in a partlist
-  def sub_part(partlist)
     partlist.each do |part|
-      puts("\t" * (nesting(part) + 1) + part.to_s)
-      sub_part(part) unless part.parts.empty?
+      puts( "\t" * (nest(part)) + part.to_s \
+      + "#{ " Part Count: #{count_parts(partlist)}" if part.whole.nil? }" )
     end
   end
 
   # calculate nesting level for a part in a partlist
   # @note root is not added to the sum
-  def nesting(part)
-    nesting = 0
+  def nest(part)
+    return 0 if part.whole.nil?
+    nesting = 1
     until part.whole == part.top
       part = part.whole
       nesting += 1
@@ -59,5 +52,5 @@ module Partlist
     nesting
   end
 
-  private_class_method :sub_part, :nesting
+  private_class_method :nest
 end

@@ -81,13 +81,6 @@ class Part
     part
   end
 
-  # flattens self and return all of it's objects regardless of the depth
-  # @return [Array] flattened array of all parts
-  def flatten
-    flat = [(self unless whole.nil?)] << map { |part| part.sub_parts.empty? ? part : part.flatten }
-    flat.flatten
-  end
-
   # @note mass is ignored if part has parts
   # @param [Numeric] mass part mass
   # @raise [ArgumentError] if argument is not a Numeric object
@@ -121,7 +114,13 @@ class Part
   end
 
   def each(&block)
-    block_given? ? @sub_parts.each(&block) : @sub_parts.each
+    if block_given?
+      yield self
+      @sub_parts.each{ |part| part.each(&block) }
+      self
+    else
+      enum_for(__method__)
+    end
   end
 
   # @note @whole was not added as this can cause an endless loop
@@ -135,7 +134,7 @@ class Part
   end
 
   def hash
-    [@label, @mass, @sub_parts, @whole].hash
+    [@label, @mass, @sub_parts].hash
   end
 
   def to_s
@@ -149,7 +148,7 @@ class Part
   end
 
   def has_part?(part)
-    flatten.include?(part) ? true : raise(ArgumentError, "#{part} is not a part of #{self.label}")
+    member?(part) ? true : raise(ArgumentError, "#{part} is not a part of #{self.label}")
   end
 
   def delete(part)

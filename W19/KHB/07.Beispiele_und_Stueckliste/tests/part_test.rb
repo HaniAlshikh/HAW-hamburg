@@ -86,12 +86,6 @@ class PartTest < Test::Unit::TestCase
     assert_equal(@whole, @whole.new_part.whole)
   end
 
-  def test_flatten
-    @part.add(Part.new('Test', mass: 100))
-    @bicycle.parts = @part
-    assert_equal(3, @bicycle.flatten.size)
-  end
-
   def test_identity
     old_part_id = @part.object_id
     old_part_whole_id = @part.whole.object_id
