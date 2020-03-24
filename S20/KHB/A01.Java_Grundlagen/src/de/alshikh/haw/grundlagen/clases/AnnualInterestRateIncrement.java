@@ -1,18 +1,18 @@
-/*#####################################################################
-#
-# calculate annual interest rate according to german PAngV by simply
-# guessing the value using addition. This exploits the fact, that
-# the annual interest rate is a bit bigger then the interest rate.
-#
-# Author:: Hani Alshikh
-#
-#######################################################################*/
+/**********************************************************************
+*
+* calculate annual interest rate according to german PAngV by simply
+* guessing the value using addition. This exploits the fact, that
+* the annual interest rate is a bit bigger then the interest rate.
+*
+* @author Hani Alshikh
+*
+************************************************************************/
 
 package de.alshikh.haw.grundlagen.clases;
 
 import java.util.Arrays;
 
-public class AnnualInterestRateIterate {
+public class AnnualInterestRateIncrement {
     private static final double delta = 0.0001;
     private static final double precision = 0.0000001;
 

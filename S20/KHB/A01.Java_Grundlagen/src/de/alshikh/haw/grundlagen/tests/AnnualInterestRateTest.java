@@ -1,3 +1,11 @@
+/**********************************************************************
+ *
+ * basic test cases for the AnnualInterestRate class
+ *
+ * @author Hani Alshikh
+ *
+ ************************************************************************/
+
 package de.alshikh.haw.grundlagen.tests;
 
 import de.alshikh.haw.grundlagen.clases.AnnualInterestRate;
@@ -5,7 +13,6 @@ import de.alshikh.haw.grundlagen.clases.AnnualInterestRate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AnnualInterestRateTest {
-
     @org.junit.jupiter.api.Test
     void calculate() {
         assertEquals(3.95, Math.round(AnnualInterestRate.calculate(10000, 0.0388, 136.14, 84) * 10000.0) / 100.0);

@@ -33,9 +33,19 @@ Zeile ```20``` erstellt eine Variable ```i```, die einen Pointer enthält, der a
 
 ## 2. Numerik in Java
 
-für die Berechnung wird die Formel der PAngV benutzt: 
+für die Berechnung wird die Formel der PAngV benutzt:<br>
 ![PAngV](resources/PAngV.jpg)<br>
-auf der linken Seite ist der mit dem Effektivzinssatz zu rechnen Betrag und auf der rechten Seite ist der Betrag des Kredits. In Code übersetzt (Dank Jannik & Johan) sieht so aus:
+
+Allerdings weichen die Ergebnisse vom Aufgabenblatt ab. Die Ergebnisse wurden von mehreren Online Rechner bestätigt und sollten richtig sein. beim Autokredit war es schwere zu überprüfen, da keinen online Rechner die Möglichkeit anbietet, erste- und Schlussrate anzugeben.
+
+<p float="left">
+    <img src="resources/10000.png" alt="Tests Result" width="330"/>
+    <img src="resources/30000.png" alt="Average" width="330"/>
+</p> 
+
+Quelle: [Finanz Rechner](https://www.finanzen-rechner.net/kreditrechner.php)
+
+auf der linken Seite der Gleichung ist der mit dem Effektivzinssatz zu rechnen Betrag und auf der rechten Seite ist der Betrag des Kredits. In Code übersetzt (Dank Jannik Stuckstätte & Johan Kemper) sieht so aus:
 ```java
 private static double calculateDifference(double amount, double annualInterestRate, double[] monthlyPayments) {
     double sum = 0;
@@ -85,9 +95,9 @@ private static double calculateAnnualInterestRate(double amount, double interest
 }
 ``` 
 
-### Iteration Methode
+### Inkrementieren Methode
 
-man könnte auch, den Fakt ausnutzen, dass der Effektivzinssatz immer größer als der nominal Satz und somit, den Wert des nominalen Satz hochiterieren, bis man auf einen Wert kommt, der die Differenz so nah wie möglich zu 0 annähert.  
+man könnte auch, den Fakt ausnutzen, dass der Effektivzinssatz immer größer als der nominal Satz ist, und somit den Wert des nominalen Satzes solange inkrementieren, bis man auf einen Wert kommt, der die Differenz so nah wie möglich zu 0 annähert.
 
 ##### Quellen
 - [What is a NullPointerException, and how do I fix it?](https://stackoverflow.com/questions/218384/what-is-a-nullpointerexception-and-how-do-i-fix-it)

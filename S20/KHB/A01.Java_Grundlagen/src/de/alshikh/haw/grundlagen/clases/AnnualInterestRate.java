@@ -1,19 +1,19 @@
-/*#####################################################################
-#
-# calculate annual interest rate according to german PAngV using Bisection method
-#
-# Author:: Hani Alshikh
-#
-#######################################################################*/
+/**********************************************************************
+*
+* calculate annual interest rate according to german PAngV using Bisection method
+*
+* @author Hani Alshikh
+*
+************************************************************************/
 
 package de.alshikh.haw.grundlagen.clases;
 
 import java.util.Arrays;
 
 public class AnnualInterestRate {
-    private static final double delta = 0.0001;
-    private static final double precision = 0.000001;
-    private static final double intervalSize = 0.5;
+    private static final double DELTA = 0.0001;
+    private static final double PRECISION = 0.000001;
+    private static final double INTERVAL_SIZE = 0.5;
 
     /**
      * calculate annual interest rate
@@ -63,7 +63,7 @@ public class AnnualInterestRate {
         // the difference between the actual amount and the calculated one
         double difference = 1;
         // if the difference is smaller than the precision value the approximation is achieved
-        while (difference > precision) {
+        while (difference > PRECISION) {
             // Calculate c, the midpoint of the intervalls
             annualInterestRate = (interval[0] + interval[1]) / 2;
             difference = calculateDifference(amount, annualInterestRate, monthlyPayments);
@@ -85,12 +85,12 @@ public class AnnualInterestRate {
      * @return double[] array of starting positive and negative value
      */
     private static double[] calcInterval(double amount, double interestRate, double[] monthlyPayments) {
-        double[] interval = {interestRate, interestRate + intervalSize};
+        double[] interval = {interestRate, interestRate + INTERVAL_SIZE};
         while (calculateDifference(amount, interval[0], monthlyPayments) < 0) {
-            interval[0] += delta;
+            interval[0] += DELTA;
         }
         while (calculateDifference(amount, interval[1], monthlyPayments) > 0) {
-            interval[1] -= delta;
+            interval[1] -= DELTA;
         }
         return interval;
     }
