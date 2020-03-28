@@ -8,16 +8,10 @@ public class Cartesian {
 
     private double real;
     private double imag;
-    private int errorMargin;
 
-    public Cartesian(double real, double imaginary, int errorMargin) {
+    public Cartesian(double real, double imag) {
         this.real = real;
-        this.imag = imaginary;
-        this.errorMargin = errorMargin;
-    }
-
-    public Cartesian(double real, double imaginary) {
-        this(real,imaginary,6);
+        this.imag = imag;
     }
 
     public Polar toPolar() {
@@ -32,23 +26,6 @@ public class Cartesian {
         return imag;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Cartesian || o instanceof Polar || o instanceof Complex) {
-            Cartesian num = o instanceof Polar ? ((Polar) o).toCartesian() :
-                            o instanceof Complex ? ((Complex) o).getCartesian() : (Cartesian) o;
-            return (Math.abs(num.real) - Math.abs(real) < Math.pow(1, errorMargin * -1) &&
-                    Math.abs(num.imag) - Math.abs(imag) < Math.pow(1, errorMargin * -1));
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(Math.floor(real * Math.pow(1, errorMargin)) / Math.pow(1, errorMargin),
-                                    Math.floor(imag * Math.pow(1, errorMargin)) / Math.pow(1, errorMargin));
-    }
 
     @Override
     public String toString() {

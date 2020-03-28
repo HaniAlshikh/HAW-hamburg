@@ -6,18 +6,9 @@ public class Complex {
 
     private Cartesian cartesian;
     private Polar polar;
+    private int errorMargin;
 
-    public Complex(Cartesian cartesian) {
-        this.polar = cartesian.toPolar();
-        this.cartesian = cartesian;
-    }
-
-    public Complex(Polar polar) {
-        this.cartesian = polar.toCartesian();
-        this.polar = polar;
-    }
-
-    public Complex(double real_or_abs, double imag_or_rad, boolean isPolar) {
+    public Complex(double real_or_abs, double imag_or_rad, boolean isPolar, int errorMargin) {
         if (isPolar) {
             this.polar = new Polar(real_or_abs, imag_or_rad);
             this.cartesian = ComplexMath.toCartesian(this.polar);
@@ -25,7 +16,35 @@ public class Complex {
             this.cartesian = new Cartesian(real_or_abs, imag_or_rad);
             this.polar = ComplexMath.toPolar(this.cartesian);
         }
+        this.errorMargin = errorMargin;
     }
+
+    public Complex(double real_or_abs, double imag_or_rad, boolean isPolar) {
+        this(real_or_abs, imag_or_rad, isPolar, 6);
+    }
+
+    public Complex(double real_or_abs, double imag_or_rad) {
+        this(real_or_abs, imag_or_rad, false, 6);
+    }
+
+    public Complex(Cartesian cartesian, int errorMargin) {
+        this(cartesian.getReal(), cartesian.getImag(), false, errorMargin);
+    }
+
+    public Complex(Cartesian cartesian) {
+        this(cartesian, 6);
+    }
+
+    public Complex(Polar polar, int errorMargin) {
+        this(polar.getAbs(), polar.getRad(), true, errorMargin);
+    }
+
+    public Complex(Polar polar) {
+        this(polar, 6);
+    }
+
+
+
 
     public Complex add(Cartesian cartesian) {
         update(this.cartesian.getReal() + cartesian.getReal(),
@@ -86,17 +105,20 @@ public class Complex {
         return div(complex.getPolar());
     }
 
-
     private void update(double real, double imag) {
         this.cartesian = new Cartesian(real, imag);
         this.polar = this.cartesian.toPolar();
     }
+
+
+
 
     public Cartesian getCartesian() {
         return cartesian;
     }
 
     public void setCartesian(Cartesian cartesian) {
+        this.polar = cartesian.toPolar();
         this.cartesian = cartesian;
     }
 
@@ -105,25 +127,44 @@ public class Complex {
     }
 
     public void setPolar(Polar polar) {
+        this.cartesian = polar.toCartesian();
         this.polar = polar;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Complex) {
-            return cartesian.equals(((Complex) o).cartesian);
-        } else if (o instanceof Cartesian) {
-            return cartesian.equals(o);
-        } else if (o instanceof Polar) {
-            return polar.equals(o);
+    public int getErrorMargin() {
+        return errorMargin;
+    }
+
+    public void setErrorMargin(int errorMargin) {
+        this.errorMargin = errorMargin;
+    }
+
+    public static boolean equals(Object complex, Object other, int errorMargin) {
+        if (isComplex (complex) && isComplex(other)) {
+            Cartesian c = complex instanceof Polar ? ((Polar) complex).toCartesian() :
+                    complex instanceof Complex ? ((Complex) complex).getCartesian() : (Cartesian) complex;
+            Cartesian o = other instanceof Polar ? ((Polar) other).toCartesian() :
+                    other instanceof Complex ? ((Complex) other).getCartesian() : (Cartesian) other;
+            return (Math.abs(c.getReal()) - Math.abs(o.getReal()) < Math.pow(1, errorMargin * -1) &&
+                    Math.abs(c.getImag()) - Math.abs(o.getImag()) < Math.pow(1, errorMargin * -1));
         } else {
             return false;
         }
     }
 
     @Override
+    public boolean equals(Object o) {
+        return equals(this, o, errorMargin);
+    }
+
+    @Override
     public int hashCode() {
-        return polar.hashCode();
+        return Objects.hash(Math.floor(polar.getAbs() * Math.pow(1, errorMargin)) / Math.pow(1, errorMargin),
+                                    Math.floor(polar.getRad() * Math.pow(1, errorMargin)) / Math.pow(1, errorMargin));
+    }
+
+    public static boolean isComplex(Object o) {
+        return o instanceof Cartesian || o instanceof Polar || o instanceof Complex;
     }
 
     @Override

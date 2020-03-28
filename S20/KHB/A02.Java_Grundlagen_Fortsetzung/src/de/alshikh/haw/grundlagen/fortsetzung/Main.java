@@ -21,14 +21,16 @@ public class Main {
         Complex num6 = new Complex(5, 2.214297435588181, true);
 
 
-        Complex test = new Complex(10, Math.PI, true);
-        Complex test1 = new Complex(-10, 0, false);
-        System.out.println(test);
-        System.out.println(test1);
+        System.out.println(num1);
+        System.out.println(num2);
+        System.out.println(num3);
+        System.out.println(num4);
+        System.out.println(cartesian);
+        System.out.println(polar);
+        System.out.println(num5);
+        System.out.println(num6);
 
-
-        System.out.println(Math.floor(10 * 1000000) / 1000000);
-        System.out.println(0.000001*1000000);
+        System.out.println(num3.equals(num4));
 
     }
 }

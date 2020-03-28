@@ -73,8 +73,8 @@ class ComplexTest {
     @Test
     void testEquals() {
         assertEquals(num1, num2);
-        assertEquals(num3.getCartesian(), num4.getPolar());
-        assertEquals(cartesian, polar);
+        assertTrue(Complex.equals(num3.getCartesian(), num4.getPolar(), 6));
+        assertTrue(Complex.equals(cartesian, polar, 6));
         assertEquals(num5, num6);
     }
 
