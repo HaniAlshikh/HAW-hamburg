@@ -39,7 +39,9 @@ class ComplexTest {
 
     @Test
     void testComplex() {
-//        Complex num = new Complex()
+        Complex num = new Complex(-5, Math.E);
+        assertTrue(Complex.equals(new Polar(5.691138383393137, Math.E), num, 6));
+        assertEquals("(-5 + 2.718281828459045i)", num.toString());
     }
 
     @Test
@@ -85,7 +87,18 @@ class ComplexTest {
     }
 
     @Test
+    void testMutable() {
+        num1.setCartesian(cartesian);
+        assertTrue(Complex.equals(num1, cartesian, 6));
+        num1.setPolar(polar);
+        assertTrue(Complex.equals(num1, polar, 6));
+        num1.setErrorMargin(10);
+        assertEquals(10, num1.getErrorMargin());
+    }
+
+    @Test
     void testToString() {
         assertEquals("(10 + 5i)", num1.toString());
+        assertEquals("(11.180339887498949 + e^0.4636476090008061i)", num2.toStringPolar());
     }
 }

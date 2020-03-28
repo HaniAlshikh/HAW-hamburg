@@ -2,8 +2,6 @@ package de.alshikh.haw.grundlagen.fortsetzung.clases;
 
 import de.alshikh.haw.grundlagen.fortsetzung.lib.ToolBox;
 
-import java.util.Objects;
-
 public class Cartesian {
 
     private double real;

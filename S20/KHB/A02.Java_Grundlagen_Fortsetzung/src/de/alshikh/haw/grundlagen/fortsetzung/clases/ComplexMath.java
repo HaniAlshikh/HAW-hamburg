@@ -1,9 +1,9 @@
 package de.alshikh.haw.grundlagen.fortsetzung.clases;
 
-public class ComplexMath {
+public final class ComplexMath {
 
     private ComplexMath(){
-        throw new IllegalStateException();
+        throw new UnsupportedOperationException();
     }
 
     public static Polar toPolar(Cartesian cartesian) {
