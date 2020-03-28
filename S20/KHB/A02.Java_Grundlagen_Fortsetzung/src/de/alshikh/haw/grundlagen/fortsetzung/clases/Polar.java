@@ -1,3 +1,11 @@
+/**********************************************************************
+ *
+ * basic implementation for the polar from of the complex numbers
+ *
+ * Author: Hani Alshikh
+ *
+ ***********************************************************************/
+
 package de.alshikh.haw.grundlagen.fortsetzung.clases;
 
 import de.alshikh.haw.grundlagen.fortsetzung.lib.ToolBox;

@@ -1,3 +1,11 @@
+/**********************************************************************
+*
+* Assigment sheet A02: Java Basics follow-up.
+*
+* Author:: Hani Alshikh
+*
+************************************************************************/
+
 package de.alshikh.haw.grundlagen.fortsetzung.clases;
 
 import java.util.HashSet;

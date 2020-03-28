@@ -88,12 +88,9 @@ class ComplexTest {
 
     @Test
     void testMutable() {
-        num1.setCartesian(cartesian);
-        assertTrue(Complex.equals(num1, cartesian, 6));
-        num1.setPolar(polar);
-        assertTrue(Complex.equals(num1, polar, 6));
-        num1.setErrorMargin(10);
-        assertEquals(10, num1.getErrorMargin());
+        assertTrue(Complex.equals(num1.setCartesian(cartesian), cartesian, 6));
+        assertTrue(Complex.equals(num1.setPolar(polar), polar, 6));
+        assertEquals(10, num1.setErrorMargin(10).getErrorMargin());
     }
 
     @Test

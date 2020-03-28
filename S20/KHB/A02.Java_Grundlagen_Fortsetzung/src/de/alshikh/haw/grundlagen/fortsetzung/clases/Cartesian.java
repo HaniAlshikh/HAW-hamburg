@@ -1,3 +1,11 @@
+/**********************************************************************
+ *
+ * basic implementation for the cartesian from of the complex numbers
+ *
+ * Author: Hani Alshikh
+ *
+ ***********************************************************************/
+
 package de.alshikh.haw.grundlagen.fortsetzung.clases;
 
 import de.alshikh.haw.grundlagen.fortsetzung.lib.ToolBox;
@@ -23,7 +31,6 @@ public class Cartesian {
     public double getImag() {
         return imag;
     }
-
 
     @Override
     public String toString() {
