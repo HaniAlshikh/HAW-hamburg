@@ -6,18 +6,20 @@ Author:: Hani Alshikh
 
 ## 1. Java Denksportaufgaben
 
-### 1.1 Fehlender Hash Methode
+### 1.1 fehlender Hash Methode
 
-warum es zu der Ausgabe kommt?
 es wird false ausgegeben, da die hash Methode nicht überschrieben wurde.
 
-für eine korekte Impliementierung sollte man die Mathode überschreiben, wie folgt ist ein Beispiel
+für eine verbesserte Implementierung sollte man die Methode ```hashCode()``` überschreiben, wie folgt ist ein Beispiel.
 
-```java
-public int hashCode() {
-    return 31 * first.hashCode() + last.hashCode();
-}
-``` 
+### 2.2. equals überladen
+
+es wird wieder false ausgegeben, da die equals Methode flasche implementiert ist. die Methode wird in diesem Fall überladen und gar nicht für den Vergleich benutzt, sondern nur die die im Objekt ist.
+
+Zum Verbessern, sollte man den Parameter typ mit ```Objekt``` ersetzen und mindestens prüfen, dass der zu vergleichenden Objekt die Methode ```first()``` und ```last()``` hat.
+
+
+
 
 ##### Quellen
 - [What is a NullPointerException, and how do I fix it?](https://stackoverflow.com/questions/218384/what-is-a-nullpointerexception-and-how-do-i-fix-it)
