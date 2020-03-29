@@ -10,10 +10,16 @@ package de.alshikh.haw.grundlagen.clases;
 
 import java.util.Arrays;
 
-public class AnnualInterestRate {
+public final class AnnualInterestRate {
     private static final double DELTA = 0.0001;
     private static final double PRECISION = 0.000001;
     private static final double INTERVAL_SIZE = 0.5;
+
+
+    // Private constructor to prevent instantiation
+    private AnnualInterestRate() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * calculate annual interest rate
