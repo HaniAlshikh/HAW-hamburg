@@ -2,7 +2,8 @@
  *
  * various complex number methods and formel
  *
- * Author: Hani Alshikh
+ * @author Mateusz Chylewski
+ * @author Hani Alshikh
  *
  ***********************************************************************/
 

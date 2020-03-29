@@ -2,7 +2,8 @@
 *
 * Assigment sheet A02: Java Basics follow-up.
 *
-* Author:: Hani Alshikh
+ * @author Mateusz Chylewski
+ * @author Hani Alshikh
 *
 ************************************************************************/
 

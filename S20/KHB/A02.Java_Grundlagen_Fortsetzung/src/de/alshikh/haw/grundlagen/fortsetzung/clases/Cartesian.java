@@ -2,7 +2,8 @@
  *
  * basic implementation for the cartesian from of the complex numbers
  *
- * Author: Hani Alshikh
+ * @author Mateusz Chylewski
+ * @author Hani Alshikh
  *
  ***********************************************************************/
 

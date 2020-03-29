@@ -2,7 +2,8 @@
  *
  * various practical methods
  *
- * Author: Hani Alshikh
+ * @author Mateusz Chylewski
+ * @author Hani Alshikh
  *
  ***********************************************************************/
 
