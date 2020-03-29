@@ -1,6 +1,6 @@
-Professor:: Dr. Bernd Kahlbrandt  
-Author:: Hani Alshikh  
-<div style="text-align: right">28.03.2020</div>
+Professor: Dr. Bernd Kahlbrandt  
+Author: Hani Alshikh  
+<div style="text-align: right">29.03.2020</div>
 
 # A01: Java Grundlagen Forsetzung
 
@@ -30,4 +30,7 @@ beim addieren, subtrahieren und multiplizieren werden die kartesische Koordinate
 
 
 ##### Quellen
-- 
+- [Komplexe Zahl](https://de.wikipedia.org/wiki/Komplexe_Zahl)
+- [komplexe-zahlen](https://www.mathebibel.de/komplexe-zahlen)
+- [Correct way to compare floats or doubles in Java](https://howtodoinjava.com/java/basics/correctly-compare-float-double/)
+- [Rechner](https://keisan.casio.com/exec/system/1223527679)
