@@ -1,17 +1,15 @@
-/**********************************************************************
-*
-* Assigment sheet A02: Java Basics follow-up.
-*
- * @author Mateusz Chylewski
- * @author Hani Alshikh
-*
-************************************************************************/
-
-package de.alshikh.haw.grundlagen.fortsetzung.clases;
+package de.alshikh.haw.grundlagen.fortsetzung.classes;
 
 import java.util.HashSet;
 import java.util.Set;
 
+/**********************************************************************
+ *
+ * Assigment sheet A02: Java Basics follow-up.
+ *
+ * @author Hani Alshikh
+ *
+ ************************************************************************/
 public class Name {
     private String first, last;
 

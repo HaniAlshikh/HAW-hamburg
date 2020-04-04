@@ -1,6 +1,6 @@
 Professor: Dr. Bernd Kahlbrandt  
-Author: Hani Alshikh  
-<div style="text-align: right">29.03.2020</div>
+Author: Hani Alshikh
+<div style="text-align: right">04.04.2020</div>
 
 # A01: Java Grundlagen Forsetzung
 
@@ -22,15 +22,7 @@ Zum Verbessern, sollte man den Parameter typ mit ```Objekt``` ersetzen und minde
 
 ![UML Diagram](UML/java_grundlagen.svg)
 
-eine Komplexe Zahl kann sowohl aus den Koordinaten als auch einem Objekt der Klasse Cartesian/Polar erzeugt.
-
-die Berechnung der Komplexen Zahlen erfolgt nach einem bestimmten genauigkeitsgrad, der man definieren kann. By default hat er den Wert 6 (also 6 nachkomme Zahlen).
-
-beim addieren, subtrahieren und multiplizieren werden die kartesische Koordinaten und beim Dividieren die Polarkoordinaten benutzt, da dies jeweils einfache und genauere Formeln anbieten.
-
+Eine Komplexe Zahl kann sowohl aus den kartesischen Koordinaten als auch den polaren erzeugt werden.
 
 ##### Quellen
-- [Komplexe Zahl](https://de.wikipedia.org/wiki/Komplexe_Zahl)
-- [komplexe-zahlen](https://www.mathebibel.de/komplexe-zahlen)
-- [Correct way to compare floats or doubles in Java](https://howtodoinjava.com/java/basics/correctly-compare-float-double/)
-- [Rechner](https://keisan.casio.com/exec/system/1223527679)
+| - [Komplexe Zahl](https://de.wikipedia.org/wiki/Komplexe_Zahl) | - [komplexe-zahlen](https://www.mathebibel.de/komplexe-zahlen) | - [Correct way to compare floats or doubles in Java](https://howtodoinjava.com/java/basics/correctly-compare-float-double/) | - [Rechner](https://keisan.casio.com/exec/system/1223527679) |

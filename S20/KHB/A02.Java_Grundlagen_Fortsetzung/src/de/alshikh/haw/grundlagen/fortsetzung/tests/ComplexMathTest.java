@@ -1,45 +1,25 @@
-/**********************************************************************
- *
- * @author Mateusz Chylewski
- * @author Hani Alshikh
- *
- ***********************************************************************/
-
 package de.alshikh.haw.grundlagen.fortsetzung.tests;
 
-import de.alshikh.haw.grundlagen.fortsetzung.clases.Cartesian;
-import de.alshikh.haw.grundlagen.fortsetzung.clases.Complex;
-import de.alshikh.haw.grundlagen.fortsetzung.clases.Polar;
-import org.junit.jupiter.api.BeforeEach;
+import de.alshikh.haw.grundlagen.fortsetzung.classes.ComplexMath;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**********************************************************************
+ *
+ * @author Hani Alshikh
+ *
+ ***********************************************************************/
 class ComplexMathTest {
-
-    private Cartesian cartesian;
-    private Polar polar;
-    private Cartesian cart;
-    private Polar pol;
-
-    @BeforeEach
-    void setUp() {
-        this.cartesian = new Cartesian(6,3);
-        this.polar = new Polar(6.708203932499369, 0.4636476090008061);
-        this.pol = new Polar(0, Math.PI * 2);
-        this.cart = new Cartesian(0,0);
-
-    }
-
     @Test
     void toPolar() {
-        assertTrue(Complex.equals(polar, cartesian.toPolar(), 6));
-        assertTrue(Complex.equals(pol, cart.toPolar(), 6));
+        assertArrayEquals(new double[]{6.708203932499369, 0.4636476090008061}, ComplexMath.toPolar(6,3));
+        assertArrayEquals(new double[]{9.899494936611665, -0.7853981633974483}, ComplexMath.toPolar(7,-7));
     }
 
     @Test
     void toCartesian() {
-        assertTrue(Complex.equals(cartesian, polar.toCartesian(), 6));
-        assertTrue(Complex.equals(cart, pol.toCartesian(), 6));
+        assertArrayEquals(new double[]{9.649660284921133, -2.6237485370392877}, ComplexMath.toCartesian(10,50));
+        assertArrayEquals(new double[]{-2.2403680806458506, 4.4699833180027895}, ComplexMath.toCartesian(5,90));
     }
 }
