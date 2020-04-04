@@ -1,9 +1,8 @@
 Professor: Dr. Bernd Kahlbrandt  
-Author: Mateusz Chylewski  
 Author: Hani Alshikh
 <div style="text-align: right">04.04.2020</div>
 
-# A01: Java Grundlagen Initialisierung
+# A03: Java Grundlagen Initialisierung
 
 ## 1. Java Denksportaufgaben
 
