@@ -1,15 +1,6 @@
-/**********************************************************************
- *
- * @author Mateusz Chylewski
- * @author Hani Alshikh
- *
- ***********************************************************************/
-
 package de.alshikh.haw.grundlagen.fortsetzung.tests;
 
-import de.alshikh.haw.grundlagen.fortsetzung.clases.Cartesian;
-import de.alshikh.haw.grundlagen.fortsetzung.clases.Complex;
-import de.alshikh.haw.grundlagen.fortsetzung.clases.Polar;
+import de.alshikh.haw.grundlagen.fortsetzung.classes.Complex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +10,11 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**********************************************************************
+ *
+ * @author Hani Alshikh
+ *
+ ***********************************************************************/
 class ComplexTest {
 
     private Complex num1;
@@ -27,81 +23,71 @@ class ComplexTest {
     private Complex num4;
     private Complex num5;
     private Complex num6;
-    private Cartesian cartesian;
-    private Polar polar;
 
 
     @BeforeEach
     void setUp() {
-        this.num1 = new Complex(new Cartesian(10,5));
-        this.num2 = new Complex(new Polar(11.180339887498949,0.4636476090008061));
-        this.num3 = new Complex(-3, 4, false);
-        this.num4 = new Complex(5, 2.214297435588181, true);
-        this.num5 = new Complex(10, Math.PI, true);
-        this.num6 = new Complex(-10, 0, false);
-        this.cartesian = new Cartesian(6,3);
-        this.polar = new Polar(6.708203932499369, 0.4636476090008061);
+        this.num1 = new Complex(10,5);
+        this.num2 = Complex.polar(11.180339887498949,0.4636476090008061);
+        this.num3 = new Complex(6,3);
+        this.num4 = Complex.polar(5, 2.214297435588181);
+        this.num5 = Complex.polar(6.708203932499369, 0.4636476090008061);
+        this.num6 = new Complex(-10, 0);
     }
 
 
     @Test
-    void testComplex() {
-        Complex num = new Complex(-5, Math.E);
-        assertTrue(Complex.equals(new Polar(5.691138383393137, Math.E), num, 6));
-        assertEquals("(-5 + 2.718281828459045i)", num.toString());
-    }
-
-    @Test
-    void testAdd() {
+    void Add() {
         assertEquals("(20 + 10i)", num1.add(num2).toString());
-        assertEquals("(26 + 13i)", num1.add(cartesian).toString());
-        assertEquals("(16 + 8i)", num2.add(polar).toString());
+        assertEquals("(26 + 13i)", num1.add(num3).toString());
+        assertEquals("(16 + 8i)", num2.add(num5).toString());
     }
 
     @Test
-    void testSub() {
+    void Sub() {
         assertEquals("0", num1.sub(num2).toString());
-        assertEquals("(-6 - 3i)", num1.sub(cartesian).toString());
-        assertEquals("(4 + 2i)", num2.sub(polar).toString());
+        assertEquals("(-6 - 3i)", num1.sub(num3).toString());
+        assertEquals("(4 + 2i)", num2.sub(num5).toString());
     }
 
     @Test
-    void testMult() {
+    void Mult() {
         assertEquals("(75 + 100i)", num1.mult(num2).toString());
-        assertEquals("(150 + 825i)", num1.mult(cartesian).toString());
-        assertEquals("(45 + 60i)", num2.mult(polar).toString());
+        assertEquals("(150 + 825i)", num1.mult(num3).toString());
+        assertEquals("(45 + 60i)", num2.mult(num5).toString());
     }
 
     @Test
-    void testDiv() {
-        assertEquals("(1 + e^0i)", num1.div(num2).toStringPolar());
-        assertEquals("(0.14907119849998599 + e^-0.4636476090008061i)", num1.div(cartesian).toStringPolar());
-        assertEquals("(1.6666666666666667 + e^0i)", num2.div(polar).toStringPolar());
+    void Div() {
+        assertEquals("1", num1.div(num2).toStringPolar());
+        assertEquals("(0.14907119849998596 + e^-0.4636476090008061i)", num1.div(num3).toStringPolar());
+        assertEquals("1.6666666666666667", num2.div(num5).toStringPolar());
     }
 
     @Test
-    void testEquals() {
-        assertEquals(num1, num2);
-        assertTrue(Complex.equals(num3.getCartesian(), num4.getPolar(), 6));
-        assertTrue(Complex.equals(cartesian, polar, 6));
-        assertEquals(num5, num6);
+    void Equals() {
+        assertEquals(num1, new Complex(10,5));
+        assertEquals(num4, Complex.polar(5, 2.214297435588181));
+        assertEquals(num6, new Complex(-10, 0));
     }
 
     @Test
-    void testHashCode() {
-        Set<Object> set = new HashSet<>(Arrays.asList(num1,num2,num3,num4,num5,num6));
+    void HashCode() {
+        Set<Object> set = new HashSet<>(Arrays.asList(num1,new Complex(10,5),
+                num4, Complex.polar(5, 2.214297435588181),
+                num5, Complex.polar(6.708203932499369, 0.4636476090008061)));
         assertEquals(3, set.size());
     }
 
     @Test
-    void testMutable() {
-        assertTrue(Complex.equals(num1.setCartesian(cartesian), cartesian, 6));
-        assertTrue(Complex.equals(num1.setPolar(polar), polar, 6));
-        assertEquals(10, num1.setErrorMargin(10).getErrorMargin());
+    void Mutability() {
+        num1.setReal(6);
+        num1.setImag(3);
+        assertEquals(num1, num3);
     }
 
     @Test
-    void testToString() {
+    void ToString() {
         assertEquals("(10 + 5i)", num1.toString());
         assertEquals("(11.180339887498949 + e^0.4636476090008061i)", num2.toStringPolar());
     }

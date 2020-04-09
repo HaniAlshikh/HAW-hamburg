@@ -1,14 +1,12 @@
+package de.alshikh.haw.grundlagen.fortsetzung.lib;
+
 /**********************************************************************
  *
  * various practical methods
  *
- * @author Mateusz Chylewski
  * @author Hani Alshikh
  *
  ***********************************************************************/
-
-package de.alshikh.haw.grundlagen.fortsetzung.lib;
-
 public final class ToolBox {
 
     // Private constructor to prevent instantiation
