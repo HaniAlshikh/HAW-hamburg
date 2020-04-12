@@ -1,10 +1,10 @@
 % KOMPONIST(KNR, VORNAME, NAME, GEBOREN, GESTORBEN).
 
 % KNR ist Schluessel.
-% null-Werte sind möglich
+% null-Werte sind mÃ¶glich
 % Tupel 11 - 51.
 
-komponist(11, 'Georg Friedrich', 'Händel', 1685, 1759).
+komponist(11, 'Georg Friedrich', 'HÃ¤ndel', 1685, 1759).
 komponist(12, 'Serge', 'Prokofiev', 1891, 1953).
 komponist(13, 'Claudio', 'Monteverdi', 1567, 1643).
 komponist(14, 'Antonin', 'Dvorak', 1841, 1904).
@@ -53,7 +53,7 @@ komponist(52, null, 'Boulez', 4288, 8842).
 
 % SNR ist Schluessel.
 % KNR ist Fremdschluessel, der auf KOMPONIST verweist.
-% null-Werte sind möglich
+% null-Werte sind mÃ¶glich
 % Tupel 1001 - 1178.
 
 stueck(1001, 11, 'Concerto grosso op.6 Nr.7', 'B-dur', 'Op.6 Nr.7').
@@ -70,8 +70,8 @@ stueck(1011, 15, 'Der Sommer', 'g-moll', 'Op.8 Nr.2 RV315').
 stueck(1012, 15, 'Der Herbst', 'F-dur', 'Op.8 Nr.3 RV293').
 stueck(1013, 15, 'Der Winter', 'f-moll', 'Op.8 Nr.4 RV297').
 stueck(1014, 16, 'Sinfonia D-Dur mit Dudelsack und Drehleier', 'D-dur', null).
-stueck(1015, 17, 'Serenada C-Dur mit dem Nachwächterlied', 'C-dur', null).
-stueck(1016, null, 'Kleine Stücke für Dudelsack und Drehleier', null, null).
+stueck(1015, 17, 'Serenada C-Dur mit dem NachwÃ¤chterlied', 'C-dur', null).
+stueck(1016, null, 'Kleine StÃ¼cke fÃ¼r Dudelsack und Drehleier', null, null).
 stueck(1017, 15, 'Concerto per archi e cembalo', 'G-dur', null).
 stueck(1018, 15, 'Sinfonia C-Dur', 'C-dur', null).
 stueck(1019, 15, 'Concerto per violino e archi', 'a-moll', 'Op.3 Nr.6').
@@ -96,15 +96,15 @@ stueck(1037, 19, 'Mass for five voices', null, null).
 stueck(1038, 19, 'Mass for four voices', null, null).
 stueck(1039, 19, 'Mass for three voices', null, null).
 stueck(1040, 19, 'Ave verum corpus', null, null).
-stueck(1041, 21, 'Die Geschöpfe des Prometheus, Ouvertüre', null, 'Op.43').
-stueck(1042, 20, 'Die Entführung aus dem Serail, Ouvertüre', null, 'KV 384').
-stueck(1043, 21, 'Fidelio, Ouvertüre', null, 'Op.94').
-stueck(1044, 20, 'Die Zauberflöte, Ouvertüre', null, 'KV 620').
-stueck(1045, 21, 'Egmont, Ouvertüre', null, 'Op.84').
-stueck(1046, 20, 'Die Hochzeit des Figaro, Ouvertüre', null, 'KV 492').
-stueck(1047, 21, 'Leonore III, Ouvertüre', null, 'Op.72b').
-stueck(1048, 20, 'Titus, Ouvertüre', null, 'KV 621').
-stueck(1049, 21, 'Coriolan, Ouvertüre', null, 'Op.62').
+stueck(1041, 21, 'Die GeschÃ¶pfe des Prometheus, OuvertÃ¼re', null, 'Op.43').
+stueck(1042, 20, 'Die EntfÃ¼hrung aus dem Serail, OuvertÃ¼re', null, 'KV 384').
+stueck(1043, 21, 'Fidelio, OuvertÃ¼re', null, 'Op.94').
+stueck(1044, 20, 'Die ZauberflÃ¶te, OuvertÃ¼re', null, 'KV 620').
+stueck(1045, 21, 'Egmont, OuvertÃ¼re', null, 'Op.84').
+stueck(1046, 20, 'Die Hochzeit des Figaro, OuvertÃ¼re', null, 'KV 492').
+stueck(1047, 21, 'Leonore III, OuvertÃ¼re', null, 'Op.72b').
+stueck(1048, 20, 'Titus, OuvertÃ¼re', null, 'KV 621').
+stueck(1049, 21, 'Coriolan, OuvertÃ¼re', null, 'Op.62').
 stueck(1050, 13, 'Cantate Domine - Motet', null, null).
 stueck(1051, 13, 'Mass for four voices (1650)', null, null).
 stueck(1052, 13, 'Domine, ne in furore - Motet', null, null).
@@ -158,8 +158,8 @@ stueck(1099, 18, 'Violinkonzert Nr.8', 'G-dur', null).
 stueck(1100, 18, 'Violinkonzert Nr.3', 'D-dur', null).
 stueck(1101, 18, 'Violinkonzert Nr.9', 'g-moll', null).
 stueck(1102, 20, 'Missa in c `Grosse Messe\'', 'c-moll', 'KV 427 (417a)').
-stueck(1103, 27, 'Konzert für Violine und Orchester D-dur', 'D-dur', 'Op.35').
-stueck(1104, 28, 'Konzert für Violine und Orchester e-moll','e-moll', 'Op.64').
+stueck(1103, 27, 'Konzert fÃ¼r Violine und Orchester D-dur', 'D-dur', 'Op.35').
+stueck(1104, 28, 'Konzert fÃ¼r Violine und Orchester e-moll','e-moll', 'Op.64').
 stueck(1105, 22, 'Brandenburgisches Konzert Nr.1', 'F-dur', 'BWV 1046').
 stueck(1106, 22, 'Brandenburgisches Konzert Nr.2', 'F-dur', 'BWV 1047').
 stueck(1107, 22, 'Brandenburgisches Konzert Nr.3', 'G-dur', 'BWV 1048').
@@ -190,9 +190,9 @@ stueck(1131, 33, 'Klaviertrio Nr.1', 'D-dur', 'Op.5').
 stueck(1132, 33, 'Klaviertrio Nr.2', 'Fis-dur', 'Op.7').
 stueck(1133, 33, 'Klavierquintett', 'Des-dur', 'Op.6').
 stueck(1134, 33, 'Streichquintett', 'C-dur', 'Op.24').
-stueck(1135, 34, 'Ungarische Tänze Nr.1,3,10,17-21', null, null).
+stueck(1135, 34, 'Ungarische TÃ¤nze Nr.1,3,10,17-21', null, null).
 stueck(1136, 34, 'Symphonie Nr.2', 'D-dur', 'Op.73').
-stueck(1137, 11, '`Messias\' (Höhepunkte)', null, null).
+stueck(1137, 11, '`Messias\' (HÃ¶hepunkte)', null, null).
 stueck(1138, 20, '`Salzburger Sinfonie\' Nr.1', 'D-dur', 'KV 136').
 stueck(1139, 20, '`Salzburger Sinfonie\' Nr.2', 'B-dur', 'KV 137').
 stueck(1140, 20, '`Salzburger Sinfonie\' Nr.3', 'F-dur', 'KV 138').
@@ -212,13 +212,13 @@ stueck(1153, 13, 'L\'Orfeo', null, null).
 stueck(1154, 13, 'Il Ritorno d\'Ulisse in Patria', null, null).
 stueck(1155, 13, 'L\'Incoronazione di Poppea', null, null).
 stueck(1156, 42, 'Intrada', null, null).
-stueck(1157, 43, 'Von üppiklichen Dingen', null, null).
+stueck(1157, 43, 'Von Ã¼ppiklichen Dingen', null, null).
 stueck(1158, 44, 'Ballo francese', null, null).
 stueck(1159, 45, 'L\'armor, dona, ch\'io te porto', null, null).
 stueck(1160, null, 'Mit ganzem Willen (ca.1460)', null, null).
 stueck(1161, 46, 'Questo mostrarsi adirata di fore', null, null).
 stueck(1162, null, 'Passamezzo antico `Caminata\' (ca.1510)', null, null).
-stueck(1163, null, 'Es hett ein schwab ein töchterlein (ca.1530)', null, null).
+stueck(1163, null, 'Es hett ein schwab ein tÃ¶chterlein (ca.1530)', null, null).
 stueck(1164, 46, 'Fortuna desperata', null, null).
 stueck(1165, null, 'Il marchese do Soluzzo (ca.1550)', null, null).
 stueck(1166, null, 'Merce te chiamo (15.Jh.)', null, null).
@@ -240,20 +240,20 @@ stueck(null, 88, 'error', 'exception', 'Op.4/2').
 % CD(CDNR, NAME, HERSTELLER, ANZ_CDS, GESAMTSPIELZEIT).
 
 % CDNR ist Schluessel.
-% null-Werte sind möglich
+% null-Werte sind mÃ¶glich
 % Tupel 101 - 143.
 
-cd(101, 'Händel: Feuerwerksmusik', 'zyx classic', 1, 60).
+cd(101, 'HÃ¤ndel: Feuerwerksmusik', 'zyx classic', 1, 60).
 cd(102, 'Serge Prokofiev: Die Violinkonzerte', 'DG', 1, 49).
 cd(103, 'Monteverdi: Vespro Della Beata Vergine 1610', 'Decca', 2, 100).
-cd(104, 'Antonin Dvorak: Slawische Tänze', 'DG', 1, 70).
+cd(104, 'Antonin Dvorak: Slawische TÃ¤nze', 'DG', 1, 70).
 cd(105, 'Vivaldi: Le Quattro Stagioni (I Musici)', 'Philips', 1, 42).
 cd(106, 'Leopold Mozart: Sinfonia D-Dur ...', 'Orfeo', 1, 44).
 cd(107, 'Vivaldi: Die vier Jahreszeiten', 'zyx classic', 1, 64).
 cd(108, 'Heinrich Ignaz Franz Biber: Battalia ...', 'Teldec', 1, 51).
 cd(109, 'Telemann: Trompetenkonzerte', 'Nimbus Records', 1, 76).
 cd(110, 'William Byrd: The Three Masses', 'Gimell', 1, 67).
-cd(111, 'Mozart/Beethoven: Klassische Ouvertüren', 'zyx classic', 1, 64).
+cd(111, 'Mozart/Beethoven: Klassische OuvertÃ¼ren', 'zyx classic', 1, 64).
 cd(112, 'Monteverdi: Mass for four voices, ...', 'Hyperion', 1, 57).
 cd(113, 'Bach: Violinkonzerte', 'Philips', 1, 61).
 cd(114, 'Sergej Prokofiew: Symphonie Classique ...', 'DG', 1, 57).
@@ -279,8 +279,8 @@ cd(132, 'Schostakowitsch: Symphonien 9+12', 'eurodisc', 1, 68).
 cd(133, 'Claudio Monteverdi: Madrigali Amorosi ...', 'Intercord', 1, 39).
 cd(134, 'Josquin Desprez: Missa di dadi ...', 'L\'oiseau-Lyre', 1, 52).
 cd(135, 'Wolf-Ferrari: Kammermusik', 'Dabringhaus/Grimm', 2, 118).
-cd(136, 'Brahms: Ungarische Tänze', 'zyx classic', 1, 60).
-cd(137, 'G. F. Händel: `Messias\' (Höhepunkte)', 'DD classique', 1, 53).
+cd(136, 'Brahms: Ungarische TÃ¤nze', 'zyx classic', 1, 60).
+cd(137, 'G. F. HÃ¤ndel: `Messias\' (HÃ¶hepunkte)', 'DD classique', 1, 53).
 cd(138, 'Mozart: Salzburger Sinfonien', 'zyx classic', 1, 61).
 cd(139, 'Oboenkonzerte', 'Da Camera Magna', 1, 43).
 cd(140, 'Corelli,Albinoni,Scarlatti,Manfredini,...', 'zyx classic', 1, 66).
@@ -292,7 +292,7 @@ cd(143, null, 'pointer exception', 42, 88).
 
 % CDNR und SNR zusammen sind Schluessel.
 % CDNR verweist auf CD, SNR auf STUECK.
-% null-Werte sind möglich
+% null-Werte sind mÃ¶glich
 % Tupel 101,1001 - 142, 1178.
 
 aufnahme(101, 1001, 'London Festival Orchestra', 'Sidney Lark').
@@ -308,16 +308,16 @@ aufnahme(105, 1010, 'I Musici', null).
 aufnahme(105, 1011, 'I Musici', null).
 aufnahme(105, 1012, 'I Musici', null).
 aufnahme(105, 1013, 'I Musici', null).
-aufnahme(106, 1014, 'Münchner Kammerorchester', 'Hans Stadlmair').
-aufnahme(106, 1015, 'Münchner Kammerorchester', 'Hans Stadlmair').
+aufnahme(106, 1014, 'MÃ¼nchner Kammerorchester', 'Hans Stadlmair').
+aufnahme(106, 1015, 'MÃ¼nchner Kammerorchester', 'Hans Stadlmair').
 aufnahme(106, 1016, null, null).
-aufnahme(107, 1010, 'Südwest-Studioorchester', 'Heribert Münchner').
-aufnahme(107, 1011, 'Südwest-Studioorchester', 'Heribert Münchner').
-aufnahme(107, 1012, 'Südwest-Studioorchester', 'Heribert Münchner').
-aufnahme(107, 1013, 'Südwest-Studioorchester', 'Heribert Münchner').
+aufnahme(107, 1010, 'SÃ¼dwest-Studioorchester', 'Heribert MÃ¼nchner').
+aufnahme(107, 1011, 'SÃ¼dwest-Studioorchester', 'Heribert MÃ¼nchner').
+aufnahme(107, 1012, 'SÃ¼dwest-Studioorchester', 'Heribert MÃ¼nchner').
+aufnahme(107, 1013, 'SÃ¼dwest-Studioorchester', 'Heribert MÃ¼nchner').
 aufnahme(107, 1017, 'Die Zagreber Solisten', null).
 aufnahme(107, 1018, 'Die Zagreber Solisten', null).
-aufnahme(107, 1019, 'Südwest-Studioorchester', 'Heribert Münchner').
+aufnahme(107, 1019, 'SÃ¼dwest-Studioorchester', 'Heribert MÃ¼nchner').
 aufnahme(108, 1020, 'Concentus musicus Wien', 'Nikolaus Harnoncourt').
 aufnahme(108, 1021, 'Concentus musicus Wien', 'Nikolaus Harnoncourt').
 aufnahme(108, 1022, 'Concentus musicus Wien', 'Nikolaus Harnoncourt').
@@ -361,7 +361,7 @@ aufnahme(113, 1056, 'Les Solistes Romands', 'Arpad Gerecz').
 aufnahme(113, 1057, 'New Philharmonia Orchestra', 'Edo De Waart').
 aufnahme(114, 1058, 'Berliner Philharmoniker', 'Herbert von Karajan').
 aufnahme(114, 1059, 'Berliner Philharmoniker', 'Herbert von Karajan').
-aufnahme(115, 1060, 'Sinfonieorchester des Südwestfunks', 'Michael Gielen').
+aufnahme(115, 1060, 'Sinfonieorchester des SÃ¼dwestfunks', 'Michael Gielen').
 aufnahme(116, 1061, 'Boston Symphony Orchestra', 'Sir Colin Davis').
 aufnahme(116, 1062, 'Boston Symphony Orchestra', 'Sir Colin Davis').
 aufnahme(116, 1063, 'Boston Symphony Orchestra', 'Sir Colin Davis').
@@ -409,20 +409,20 @@ aufnahme(123, 1101, 'Academy of St.Martin-in-the-Fields', 'Iona Brown').
 aufnahme(124, 1102, 'Concentus musicus Wien', 'Nikolaus Harnoncourt').
 aufnahme(125, 1103, 'Wiener Philharmoniker', 'Claudio Abbado').
 aufnahme(125, 1104, 'Wiener Philharmoniker', 'Claudio Abbado').
-aufnahme(126, 1105, 'Camerata Würzburg', 'Prof. H. Reinartz').
-aufnahme(126, 1107, 'Camerata Würzburg', 'Prof. H. Reinartz').
-aufnahme(126, 1108, 'Camerata Würzburg', 'Prof. H. Reinartz').
-aufnahme(126, 1110, 'Camerata Würzburg', 'Prof. H. Reinartz').
-aufnahme(127, 1105, 'Südwest-Studioorchester', 'Heribert Münchner').
-aufnahme(127, 1106, 'Südwest-Studioorchester', 'Heribert Münchner').
-aufnahme(127, 1107, 'Südwest-Studioorchester', 'Heribert Münchner').
-aufnahme(127, 1109, 'Südwest-Studioorchester', 'Heribert Münchner').
+aufnahme(126, 1105, 'Camerata WÃ¼rzburg', 'Prof. H. Reinartz').
+aufnahme(126, 1107, 'Camerata WÃ¼rzburg', 'Prof. H. Reinartz').
+aufnahme(126, 1108, 'Camerata WÃ¼rzburg', 'Prof. H. Reinartz').
+aufnahme(126, 1110, 'Camerata WÃ¼rzburg', 'Prof. H. Reinartz').
+aufnahme(127, 1105, 'SÃ¼dwest-Studioorchester', 'Heribert MÃ¼nchner').
+aufnahme(127, 1106, 'SÃ¼dwest-Studioorchester', 'Heribert MÃ¼nchner').
+aufnahme(127, 1107, 'SÃ¼dwest-Studioorchester', 'Heribert MÃ¼nchner').
+aufnahme(127, 1109, 'SÃ¼dwest-Studioorchester', 'Heribert MÃ¼nchner').
 aufnahme(128, 1111, 'Philharm. Festspielorchester', 'Vladimir Petroschoff').
 aufnahme(128, 1112, 'Philharm. Festspielorchester', 'Vladimir Petroschoff').
 aufnahme(128, 1113, null, null).
-aufnahme(128, 1114, 'Symponisches Orchester Berlin', 'Carl-August Bünte').
-aufnahme(129, 1115, 'Münchner Rundfunkorchester', 'Kurt Eichhorn').
-aufnahme(129, 1116, 'Münchner Rundfunkorchester', 'Kurt Eichhorn').
+aufnahme(128, 1114, 'Symponisches Orchester Berlin', 'Carl-August BÃ¼nte').
+aufnahme(129, 1115, 'MÃ¼nchner Rundfunkorchester', 'Kurt Eichhorn').
+aufnahme(129, 1116, 'MÃ¼nchner Rundfunkorchester', 'Kurt Eichhorn').
 aufnahme(130, 1058, 'London Philharmonic Orchestra', 'Enrique Batiz').
 aufnahme(130, 1117, 'London Philharmonic Orchestra', 'Enrique Batiz').
 aufnahme(130, 1118, 'London Philharmonic Orchestra', 'Enrique Batiz').
@@ -440,10 +440,10 @@ aufnahme(133, 1127, 'Die Prager Madrigalisten/Musica Antiqua Wien', 'Venhoda/Cle
 aufnahme(133, 1128, 'Die Prager Madrigalisten/Musica Antiqua Wien', 'Venhoda/Clemencic').
 aufnahme(134, 1129, 'The Medieval Ensemble of London', 'P.Davies/T.Davies').
 aufnahme(134, 1130, 'The Medieval Ensemble of London', 'P.Davies/T.Davies').
-aufnahme(135, 1131, 'Münchner Klaviertrio', null).
-aufnahme(135, 1132, 'Münchner Klaviertrio', null).
-aufnahme(135, 1133, 'Leopolder-Quartett München', null).
-aufnahme(135, 1134, 'Leopolder-Quartett München', null).
+aufnahme(135, 1131, 'MÃ¼nchner Klaviertrio', null).
+aufnahme(135, 1132, 'MÃ¼nchner Klaviertrio', null).
+aufnahme(135, 1133, 'Leopolder-Quartett MÃ¼nchen', null).
+aufnahme(135, 1134, 'Leopolder-Quartett MÃ¼nchen', null).
 aufnahme(136, 1135, 'London Festival Orchestra', 'Julian Armstrong').
 aufnahme(136, 1136, 'London Festival Orchestra', 'Julian Armstrong').
 aufnahme(137, 1137, 'Westminster Choir / New York Philharmonic', 'Leonard Bernstein').
@@ -462,41 +462,41 @@ aufnahme(140, 1149, 'Radio-Sinfonieorchester Stuttgart', 'Garcia Navarro').
 aufnahme(140, 1150, 'Radio-Sinfonieorchester Stuttgart', 'Garcia Navarro').
 aufnahme(140, 1151, null, null).
 aufnahme(140, 1152, 'Die Zagreber Solisten', null).
-aufnahme(141, 1153, 'Monteverdi Ensemble/Opernhaus Zürich',
+aufnahme(141, 1153, 'Monteverdi Ensemble/Opernhaus ZÃ¼rich',
                    'Nikolaus Harnocourt').
-aufnahme(141, 1154, 'Monteverdi Ensemble/Opernhaus Zürich',
+aufnahme(141, 1154, 'Monteverdi Ensemble/Opernhaus ZÃ¼rich',
                    'Nikolaus Harnocourt').
-aufnahme(141, 1155, 'Monteverdi Ensemble/Opernhaus Zürich',
+aufnahme(141, 1155, 'Monteverdi Ensemble/Opernhaus ZÃ¼rich',
                    'Nikolaus Harnocourt').
-aufnahme(142, 1156, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1157, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1158, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1159, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1160, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1161, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1162, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1163, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1164, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1165, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1166, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1167, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1168, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1169, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1170, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1171, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1172, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1173, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1174, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1175, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1176, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1177, 'Ensemble für frühe Musik Augsburg', null).
-aufnahme(142, 1178, 'Ensemble für frühe Musik Augsburg', null).
+aufnahme(142, 1156, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1157, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1158, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1159, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1160, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1161, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1162, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1163, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1164, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1165, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1166, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1167, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1168, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1169, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1170, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1171, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1172, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1173, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1174, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1175, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1176, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1177, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
+aufnahme(142, 1178, 'Ensemble fÃ¼r frÃ¼he Musik Augsburg', null).
 
 % SOLIST(CDNR, SNR, NAME, INSTRUMENT).
 
 % NAME ist Schluessel.
 % CDNR und SNR zusammen sind ein Fremdschluessel, der auf AUFNAHE verweist.
-% null-Werte sind möglich
+% null-Werte sind mÃ¶glich
 % Tupel 102 - 140.
 
 solist(102, 1005, 'Shlomo Mintz', 'Violine').
