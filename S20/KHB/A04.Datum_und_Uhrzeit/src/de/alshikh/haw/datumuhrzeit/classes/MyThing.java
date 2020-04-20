@@ -1,5 +1,13 @@
 package de.alshikh.haw.datumuhrzeit.classes;
 
+/**********************************************************************
+ *
+ * a child class
+ *
+ * @author Hani Alshikh
+ *
+ ************************************************************************/
+
 public class MyThing extends Thing {
 
     private final int INCENSE;
@@ -13,7 +21,10 @@ public class MyThing extends Thing {
         this(Something.thing());
     }
 
-    public int getINCENSE() {
-        return INCENSE;
+    @Override
+    public String toString() {
+        return "MyThing{" +
+                "INCENSE = " + INCENSE +
+                '}';
     }
 }

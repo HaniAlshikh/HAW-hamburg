@@ -14,14 +14,23 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Stream;
 
+/**********************************************************************
+ *
+ * demonstrating the solution of the 4.th assigment
+ *
+ * @author Hani Alshikh
+ *
+ ************************************************************************/
+
 public class Main {
 
     public static void main(String[] args) {
 
-        // erste teilAufgabe
+        // region ****************** 1.1. MyThing ******************
 
-        System.out.println(new MyThing().getINCENSE());
+        System.out.println(new MyThing());
 
+        // endregion
 
 
         List<Integer> test = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
