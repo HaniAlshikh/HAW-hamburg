@@ -97,6 +97,5 @@ public class Main {
         System.out.println("\t- mielady: " + Sformatter.format(dateNow));
 
         // endregion
-
     }
 }
