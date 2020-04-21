@@ -1,18 +1,14 @@
 package de.alshikh.haw.datumuhrzeit;
 
-import de.alshikh.haw.datumuhrzeit.classes.AnnualInterestRate;
 import de.alshikh.haw.datumuhrzeit.classes.MyThing;
-import de.alshikh.haw.datumuhrzeit.classes.Payment;
 
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.time.*;
-import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.HijrahDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalAdjusters;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.Date;
+import java.util.Locale;
 
 /**********************************************************************
  *
@@ -28,17 +24,17 @@ public class Main {
 
         // region ****************** 1.1. MyThing ******************
 
+        System.out.println("******** 1.1. MyThing demonstration ********\n");
         System.out.println(new MyThing());
+        System.out.println();
 
         // endregion
 
 
-        List<Integer> test = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
-//        test.forEach(i -> i + 5);
+        // region ****************** 2. Date and Time Units ******************
 
+        System.out.println("******** 2. Date and Time units demonstration ********\n");
 
-
-        // working with time
         LocalDateTime start = LocalDateTime.of(1995, Month.AUGUST, 9, 6, 9);
         LocalDateTime end = LocalDateTime.now();
         Period period = Period.between(start.toLocalDate(), end.toLocalDate());
@@ -49,7 +45,6 @@ public class Main {
         System.out.println("Ending Date: " + end.format(pattern));
         System.out.println();
 
-        // In welchen Einheiten können Sie die „Länge“ eines Zeitraums ermitteln, wie machen Sie das?
         System.out.println("Possible Units from a period:\n" + period.getUnits());
         System.out.println("Possible Units from a duration:\n" + duration.getUnits());
         System.out.println();
@@ -68,60 +63,40 @@ public class Main {
         }
         System.out.println();
 
-//        System.out.println(Duration.ofDays(365).toHours());
-//
-//        LocalDate date = LocalDate.now().plus(Period.ofDays(365));
-//
-//        System.out.println(ChronoUnit.DAYS.between(LocalDate.now(), date));
+        // endregion
+
+        // region ****************** 3. Date and Time Representation ******************
+
+        System.out.println("******** 3. Date and Time Representation ********\n");
+
+        ZonedDateTime now = ZonedDateTime.now();
+        System.out.println("1. using DateTimeFormatter:");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.println("\t- basic: " + now.format(formatter));
+        formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a z");
+        System.out.println("\t- with zone: " + now.format(formatter));
+        formatter = DateTimeFormatter.ofPattern("E, MMM dd yyy h:mm a");
+        System.out.println("\t- presentable: " + now.format(formatter));
+        formatter = DateTimeFormatter.ofPattern("EEEE d MMMM uuuu", new Locale("ar"));
+        System.out.println("\t- mielady: " + now.format(formatter));
+        System.out.println("\t- Hijrah: " + HijrahDate.now().format(formatter));
+        System.out.println();
 
 
-//        Payment payment = new Payment(136.31, LocalDate.of(2020, Month.MAY,1));
-//        System.out.println(AnnualInterestRate.rawPayment(
-//                payment,
-//                LocalDate.of(2020,Month.APRIL,1),
-//                0.0399));
+        Date dateNow = new Date();
+        System.out.println("2. using SimpleDateFormat:");
+        SimpleDateFormat Sformatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println("\t- basic: " + Sformatter.format(dateNow));
+        Sformatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a z");
+        System.out.println("\t- with zone: " + Sformatter.format(dateNow));
+        Sformatter = new SimpleDateFormat("E, MMM dd yyy h:mm a");
+        System.out.println("\t- presentable: " + Sformatter.format(dateNow));
+        Sformatter = new SimpleDateFormat("EEEE d MMMM YYYY", new Locale("ar"));
+        // interessant hier, dass eine Variant der indischen Zahlen benutzt wird, die
+        // Araber eigentlich auch benutzen. Araber benutzen die arabische Zahlen nicht :).
+        System.out.println("\t- mielady: " + Sformatter.format(dateNow));
 
-        LocalDate today = LocalDate.now().withDayOfMonth(1);
-        Payment loan = new Payment(10000, today);
-        int term = 84;
-        List<Payment> payments = new ArrayList<>();
-        for (int i = 0; i < term; i++) {
-            payments.add(i, new Payment(136.31, today.plusMonths(i + 1)));
-        }
-//        payments.forEach(System.out::println);
-
-        System.out.println(AnnualInterestRate.calculate(loan, 0.0388, payments));
-
-//        System.out.println(payments.stream().mapToDouble(payment -> payment.getValue()).sum());
-
-//        loan = new Payment(684.90, today);
-//        term = 24;
-//        payments = new Payment[term];
-//        for (int i = 0; i < term; i++) {
-//            payments[i] = new Payment(31.84, today.plusMonths(i + 1));
-//        }
-//        System.out.println(AnnualInterestRate.calculate(loan, 0.1195, payments));
-//        System.out.println(AnnualInterestRate.rawPayment(payments, loan.getDate(), 0.1195));
-
-
-//        System.out.println(AnnualInterestRate.rawPayment(
-//                payments,
-//                LocalDate.of(2020,Month.APRIL,1),
-//                0.0399));
-
-//        System.out.println(Arrays.toString(AnnualInterestRate.rawPayment(
-//                "2020-04-01",new double[]{136.31, 200, 300, 400},10000, "2018-04-14", 0.0399)));
-//
-
-//        System.out.println(AnnualInterestRate.algoTest(10000, 0.0399, 136.31));
-
-
-//        for (int i = 1; i <= 84 ; i++) {
-//            double zins = Math.pow((1 + 0.0399), -(1.0 / 12.0 * i));
-//            System.out.println(zins + " * " + "136.31 = " + zins * 136.31);
-//        }
-
+        // endregion
 
     }
-
 }

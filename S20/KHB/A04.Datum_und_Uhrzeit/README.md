@@ -30,6 +30,13 @@ Author: Hani Alshikh
     weil das sehr verwierend ist, besonders für Fremdleser und gegen der Konvention. Static Methode sollten durch die Klasse aufgerufen werden und nicht durch die Instanzen.
 
 ##### Quellen
-- [Understanding null in Java](https://dev.to/dj_devjournal/understanding-null-in-java-4o31)
-- [Java – static variable with example](https://beginnersbook.com/2013/05/static-variable/)
-- [static keyword in java](https://www.geeksforgeeks.org/static-keyword-java/)
+
+- [Java Docs](https://docs.oracle.com/javase/8/docs/api/index.html)
+- [Introduction to the Java 8 Date/Time API](https://www.baeldung.com/java-8-date-time-intro)
+- [How to convert a string to date in Java](https://attacomsian.com/blog/java-convert-string-to-date)
+- [Effektiver Jahreszins](https://de.wikipedia.org/wiki/Effektiver_Jahreszins#Berechnung_des_eff._Jahreszinssatzes_bei_Anleihen)
+- [Beispiel für flexible Zahlung](https://www.zinsen-berechnen.de/darlehensrechner.php?paramid=gdl8e53adb)
+- [überprüfen von Ergebnisse](https://www.finanzen-rechner.net/kreditrechner.php)
+- [Java 8 DateTimeFormatter](https://howtodoinjava.com/java/date-time/java8-datetimeformatter-example/)
+- [Java date time in arabic](https://stackoverflow.com/questions/19923498/java-date-time-in-arabic)
+- [Java SimpleDateFormat – Java Date Format](https://www.journaldev.com/17899/java-simpledateformat-java-date-format)

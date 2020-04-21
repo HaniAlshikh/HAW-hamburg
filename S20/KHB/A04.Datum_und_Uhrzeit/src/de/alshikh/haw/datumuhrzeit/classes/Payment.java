@@ -2,6 +2,14 @@ package de.alshikh.haw.datumuhrzeit.classes;
 
 import java.time.LocalDate;
 
+/**********************************************************************
+ *
+ * basic class to represent a payment with it's date
+ *
+ * @author Hani Alshikh
+ *
+ ************************************************************************/
+
 public class Payment {
 
     private final double value;

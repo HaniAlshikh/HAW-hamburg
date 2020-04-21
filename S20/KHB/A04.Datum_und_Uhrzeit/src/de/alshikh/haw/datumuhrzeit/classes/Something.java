@@ -4,7 +4,6 @@ import java.util.Random;
 
 /**********************************************************************
  *
- * a utility class
  * generate input for Thing/myThing class
  *
  * @author Hani Alshikh
