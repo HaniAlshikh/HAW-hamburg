@@ -4,17 +4,31 @@ import de.alshikh.haw.generische.clasess.Deque;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
+
+/**********************************************************************
+ *
+ * basic test cases for the Deque class
+ *
+ * @author Hani Alshikh
+ *
+ ************************************************************************/
 
 class DequeTest {
 
     Deque<Integer> intDeque;
     Deque<String> strDeque;
+    Deque<Object> empty;
 
     @BeforeEach
     void setUp() {
         intDeque = new Deque<>();
         strDeque = new Deque<>();
+        empty = new Deque<>();
 
         strDeque.push("middle");
         strDeque.addFirst("first");
@@ -27,69 +41,137 @@ class DequeTest {
 
     @Test
     void addFirst() {
-        Deque<Integer> addFirstTest = new Deque<>();
-        assertThrows(IllegalArgumentException.class, ()-> addFirstTest.addFirst(0) );
+        assertThrows(IllegalArgumentException.class, ()-> empty.addFirst("0") );
         assertDoesNotThrow(() -> strDeque.addFirst("new first"));
         assertEquals("new first", strDeque.getFirst());
     }
 
     @Test
     void addLast() {
+        assertThrows(IllegalArgumentException.class, ()-> empty.addLast("0") );
+        assertDoesNotThrow(() -> strDeque.addLast("new last"));
+        assertEquals("new last", strDeque.getLast());
     }
 
     @Test
     void push() {
+        assertEquals("last", strDeque.getLast());
+        assertDoesNotThrow(() -> strDeque.push("new last"));
+        assertEquals("new last", strDeque.getLast());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void offerFirst() {
+        assertFalse(empty.offerFirst("0"));
+        assertTrue(strDeque.offerFirst("new first"));
+        assertEquals("new first", strDeque.getFirst());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void offerLast() {
+        assertFalse(empty.offerLast("0"));
+        assertTrue(strDeque.offerLast("new last"));
+        assertEquals("new last", strDeque.getLast());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void removeFirst() {
+        assertThrows(NoSuchElementException.class, ()-> empty.removeFirst());
+        assertEquals("first", strDeque.getFirst());
+        assertDoesNotThrow(() -> strDeque.removeFirst());
+        assertEquals("middle", strDeque.removeFirst());
+        assertEquals("last", strDeque.removeFirst());
+        assertThrows(NoSuchElementException.class, ()-> strDeque.getFirst());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void removeLast() {
+        assertThrows(NoSuchElementException.class, ()-> empty.removeLast());
+        assertEquals("last", strDeque.getLast());
+        assertDoesNotThrow(() -> strDeque.removeLast());
+        assertEquals("middle", strDeque.removeLast());
+        assertEquals("first", strDeque.removeLast());
+        assertThrows(NoSuchElementException.class, ()-> strDeque.getLast());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void pop() {
+        removeLast();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void pollFirst() {
+        removeFirst();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void pollLast() {
+        removeLast();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getFirst() {
+        assertThrows(NoSuchElementException.class, ()-> empty.getFirst());
+        assertEquals("first", strDeque.getFirst());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getLast() {
+        assertThrows(NoSuchElementException.class, ()-> empty.getLast());
+        assertEquals("last", strDeque.getLast());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void peekFirst() {
+        assertNull(empty.peekFirst());
+        assertEquals("first", strDeque.peekFirst());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void peekLast() {
+        assertNull(empty.peekLast());
+        assertEquals("last", strDeque.peekLast());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void size() {
+        assertEquals(0, empty.size());
+        assertEquals(3, strDeque.size());
     }
 
-    @org.junit.jupiter.api.Test
-    void dump() {
+
+    @Test
+    void equals() {
+        assertEquals(empty, empty);
+        assertNotEquals(strDeque, empty);
+        empty.push("middle");
+        empty.addFirst("first");
+        empty.addLast("last");
+        assertEquals(strDeque, strDeque);
+        assertNotEquals(strDeque, intDeque);
+        assertEquals(strDeque, empty);
+        empty.pop();
+        assertNotEquals(strDeque, empty);
+        empty.push("new first");
+        assertNotEquals(strDeque, empty);
+        assertNotEquals(strDeque, "");
+    }
+
+    @Test
+    void testHashCode() {
+        Set<Deque<?>> hash = new HashSet<>();
+        hash.add(strDeque);
+        assertEquals(1, hash.size());
+        hash.add(empty);
+        assertEquals(2, hash.size());
+        hash.add(new Deque<>());
+        assertEquals(2, hash.size());
+        empty.push("middle");
+        empty.addFirst("first");
+        empty.addLast("last");
+        hash.add(empty);
+        assertEquals(2, hash.size());
+        hash.add(intDeque);
+        assertEquals(3, hash.size());
     }
 }

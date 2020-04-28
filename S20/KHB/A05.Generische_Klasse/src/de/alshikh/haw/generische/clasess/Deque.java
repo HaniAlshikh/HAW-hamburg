@@ -3,115 +3,155 @@ package de.alshikh.haw.generische.clasess;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+/**********************************************************************
+ *
+ * basic LinkedList implementation
+ *
+ * @author Hani Alshikh
+ *
+ ************************************************************************/
+
 public class Deque<E> implements de.alshikh.haw.generische.interfaces.Deque<E> {
 
     private Node<E> head = null;
     private Node<E> tail = null;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addFirst(E e) {
         if (head == null) throw new IllegalArgumentException("Deque is empty");
-        shift(e);
+        unshift(e);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addLast(E e) {
         if (tail == null) throw new IllegalArgumentException("Deque is empty");
         push(e);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void push(E e) {
         Node<E> node = new Node<>(e);
-        if(head == null) {
-            // first node
-            head = node;
-        } else {
-            tail.next = node;
-        }
+        if(head == null) head = node; else tail.next = node;
         tail = node;
-
     }
 
-    private void shift(E e) {
-        Node<E> node = new Node<>(e);
-        if(head == null) {
-            // first node
-            tail = node;
-        } else {
-            node.next = head;
-        }
-        head = node;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean offerFirst(E e) {
         if (head == null) return false;
-        shift(e);
+        unshift(e);
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean offerLast(E e) {
-        if (tail == null) return false;
+        if (head == null) return false;
         push(e);
-        return false;
+        return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E removeFirst() {
+        if (head == null) throw new NoSuchElementException("Deque is empty");
         Node<E> first = head;
         head = head.next;
+        if (head == null) tail = null;
         return first.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E removeLast() {
-        // TODO
-        if (tail == null) throw new IllegalArgumentException("Deque is empty");
-        return pop();
-    }
-
-    @Override
-    public E pop() {
+        if (head == null) throw new NoSuchElementException("Deque is empty");
         Node<E> last = tail;
         tail = prev(tail);
         tail.next = null;
+        if (last == tail) {tail = null;head = null;}
         return last.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public E pollFirst() {
-        if (head     == null) throw new NoSuchElementException("Deque is empty");
-        return removeFirst();
-    }
-
-    @Override
-    public E pollLast() {
-        if (tail == null) throw new NoSuchElementException("Deque is empty");
+    public E pop() {
         return removeLast();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public E pollFirst() {
+        return removeFirst();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public E pollLast() {
+        return removeLast();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E getFirst() {
+        if (head == null) throw new NoSuchElementException("Deque is empty");
         return head.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E getLast() {
+        if (head == null) throw new NoSuchElementException("Deque is empty");
         return tail.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E peekFirst() {
-        return null;
+        if (head == null) return null;
+        return head.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E peekLast() {
-        return null;
+        if (head == null) return null;
+        return tail.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     // Iterator would be better but not part of the assigment
     public int size() {
@@ -120,21 +160,33 @@ public class Deque<E> implements de.alshikh.haw.generische.interfaces.Deque<E> {
         return size;
     }
 
-    public void dump() {
-        for (Node<E> n = head; n != null; n = n.next)
-            System.out.println(n.value + " ");
+    /**
+     * add an element to the beginning of the Deque
+     *
+     * @param e the element to be added
+     */
+    private void unshift(E e) {
+        Node<E> node = new Node<>(e);
+        if(head == null) tail = node; else node.next = head;
+        head = node;
     }
 
-    // we would link the previous node to each node
-    // but to stick with assigment we went with this
-    // solution
+    /**
+     * @param node from which the previous node is returned
+     * @return the previous node
+     */
+    // we would link the previous node to the node itself
+    // but to stick with the assigment we went with this solution
     private Node<E> prev(Node<E> node) {
         Node<E> prev = head;
-        while (prev.next != node)
+        while (prev.next != node && prev.next != null)
             prev = prev.next;
         return prev;
     }
 
+    /**
+     * empty Deque are considered equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -153,24 +205,20 @@ public class Deque<E> implements de.alshikh.haw.generische.interfaces.Deque<E> {
     public int hashCode() {
         int hash = Objects.hash(size());
         for (Node<E> n = head; n != null; n = n.next) {
-            hash += Objects.hash(n);
+            hash += n.value.hashCode();
         }
         return hash;
     }
 
     @Override
     public String toString() {
-        return "Deque{" +
-                "head=" + head +
-                ", tail=" + tail +
-                '}';
+        return "Deque{" + head + '}';
     }
 
-    private static class Node<E> {
-        E value;
-        Node<E> next;
-        // Node constructor links the node as a new head
-        Node(E value) {
+    private static class Node<N> {
+        N value;
+        Node<N> next;
+        Node(N value) {
             this.value = value;
         }
 

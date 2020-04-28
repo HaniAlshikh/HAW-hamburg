@@ -23,8 +23,8 @@ public class Pair<T> {
     }
 
     public static void main(String[] args) {
-        Pair<Object> p = new Pair(23, "skidoo"); // raw
-        for (String s : p.stringList()) {
+        Pair<Object> p = new Pair<>(23, "skidoo");
+        for (Object s : p.stringList()) {
             System.out.print(s + " ");
         }
     }
