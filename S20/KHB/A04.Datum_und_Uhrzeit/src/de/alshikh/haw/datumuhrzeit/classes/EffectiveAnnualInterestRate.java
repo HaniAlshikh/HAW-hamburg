@@ -13,16 +13,14 @@ import java.util.List;
  *
  ************************************************************************/
 
-public final class AnnualInterestRate {
+public final class EffectiveAnnualInterestRate {
     private static final double DELTA = 10e-6;
     private static final double PRECISION = 10e-6;
     private static final double INTERVAL_SIZE = 0.5;
 
 
     // Private constructor to prevent instantiation
-    private AnnualInterestRate() {
-        throw new UnsupportedOperationException();
-    }
+    private EffectiveAnnualInterestRate() {}
 
     /**
      * calculate annual interest rate for a loan with it's payments.

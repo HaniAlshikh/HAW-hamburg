@@ -1,6 +1,6 @@
 package de.alshikh.haw.datumuhrzeit.tests;
 
-import de.alshikh.haw.datumuhrzeit.classes.AnnualInterestRate;
+import de.alshikh.haw.datumuhrzeit.classes.EffectiveAnnualInterestRate;
 import de.alshikh.haw.datumuhrzeit.classes.Payment;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  ************************************************************************/
 
-class AnnualInterestRateTest {
+class EffectiveAnnualInterestRateTest {
 
     private LocalDate payOut =  LocalDate.now().withDayOfMonth(1);
     private Function<Double, Payment> toLoan = v -> new Payment(v, payOut);
@@ -37,19 +37,19 @@ class AnnualInterestRateTest {
 
     @Test
     void calculate() {
-        assertEquals(3.99, Math.round(AnnualInterestRate.calculate(
+        assertEquals(3.99, Math.round(EffectiveAnnualInterestRate.calculate(
                 toLoan.apply(10000.0), 0.0388, generatePayments.apply(136.31, 84)) * 10000.0) / 100.0);
-        assertEquals(4.07, Math.round(AnnualInterestRate.calculate(
+        assertEquals(4.07, Math.round(EffectiveAnnualInterestRate.calculate(
                 toLoan.apply(30000.0), 0.04, generatePayments.apply(410.06, 84)) * 10000.0) / 100.0);
-        assertEquals(3.04, Math.round(AnnualInterestRate.calculate(
+        assertEquals(3.04, Math.round(EffectiveAnnualInterestRate.calculate(
                 toLoan.apply(100000.0), 0.03, generatePayments.apply(965.61, 120)) * 10000.0) / 100.0);
     }
 
     @Test
     void rawPayment() {
-        assertEquals(10000,AnnualInterestRate.rawPayment(
+        assertEquals(10000, EffectiveAnnualInterestRate.rawPayment(
                 generatePayments.apply(136.31, 84), payOut, 0.0399), 5);
-        assertEquals(100000, AnnualInterestRate.rawPayment(
+        assertEquals(100000, EffectiveAnnualInterestRate.rawPayment(
                 generatePayments.apply(965.61, 120), payOut, 0.0304), 5);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         Payment loan = new Payment(5000, LocalDate.parse("22.08.2016", formatter));
@@ -60,7 +60,7 @@ class AnnualInterestRateTest {
                 new Payment(2500, LocalDate.parse("29.05.2017", formatter)),
                 new Payment(350.16, LocalDate.parse("25.07.2017", formatter))
         ));
-        assertEquals(loan.getValue(), AnnualInterestRate.rawPayment(
+        assertEquals(loan.getValue(), EffectiveAnnualInterestRate.rawPayment(
                 payments, loan.getDate(), 0.035), 5);
     }
 }

@@ -1,6 +1,7 @@
 Professor: Dr. Bernd Kahlbrandt  
+Author: Mateusz Chylewski  
 Author: Hani Alshikh
-<div style="text-align: right">20.04.2020</div>
+<div style="text-align: right">28.04.2020</div>
 
 # A04: Datum und Uhrzeit
 
@@ -22,7 +23,7 @@ Author: Hani Alshikh
     Null test = null;
     test.greet(); // -> Null.greet()
     Null myVar = new Null();
-    myVar.greet(); -> Null.greet();
+    myVar.greet(); // -> Null.greet();
     ```
   
 - Warum „tut man das nicht“? Nur weil man dickfällig genug ist, Compiler- Warnungen zu ignorieren?

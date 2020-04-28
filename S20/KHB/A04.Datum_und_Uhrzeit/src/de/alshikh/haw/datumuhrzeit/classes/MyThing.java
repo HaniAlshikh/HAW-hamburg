@@ -12,7 +12,7 @@ public class MyThing extends Thing {
 
     private final int INCENSE;
 
-    public MyThing(int i) {
+    private MyThing(int i) {
         super(i);
         this.INCENSE = i;
     }
