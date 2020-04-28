@@ -2,12 +2,11 @@ package de.alshikh.haw.generische.clasess;
 
 /**********************************************************************
  *
- * Type Parameter Hiding
+ * Type Parameter Hiding & static nested classes
  *
  * @author Hani Alshikh
  *
  ************************************************************************/
-
 public class LinkedList<E> {
 
     // old solution

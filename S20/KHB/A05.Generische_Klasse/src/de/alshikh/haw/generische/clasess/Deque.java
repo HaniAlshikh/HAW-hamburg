@@ -10,7 +10,6 @@ import java.util.Objects;
  * @author Hani Alshikh
  *
  ************************************************************************/
-
 public class Deque<E> implements de.alshikh.haw.generische.interfaces.Deque<E> {
 
     private Node<E> head = null;

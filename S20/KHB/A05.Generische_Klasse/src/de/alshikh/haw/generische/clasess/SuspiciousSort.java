@@ -4,12 +4,11 @@ import java.util.*;
 
 /**********************************************************************
  *
- * 1.1. Compere implementation
+ * Compere implementation
  *
  * @author Hani Alshikh
  *
  ************************************************************************/
-
 public class SuspiciousSort {
 
     public static void main(String[] args) {

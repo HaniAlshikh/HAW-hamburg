@@ -3,6 +3,13 @@ package de.alshikh.haw.generische.clasess;
 import java.util.Arrays;
 import java.util.List;
 
+/**********************************************************************
+ *
+ * Type Parameter Hiding & static nested classes
+ *
+ * @author Hani Alshikh
+ *
+ ************************************************************************/
 public class Pair<T> {
 
     private final T first;
