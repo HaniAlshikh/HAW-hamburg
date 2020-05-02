@@ -1,5 +1,4 @@
 Professor: Dr. Bernd Kahlbrandt  
-Author: Mateusz Chylewski  
 Author: Hani Alshikh
 <div style="text-align: right">28.04.2020</div>
 
@@ -21,7 +20,7 @@ Author: Hani Alshikh
     ```java
     ((Null) null).greet(); // -> Null.greet();
     Null test = null;
-    test.greet(); // -> Null.greet()
+    test.greet(); // -> Null.greet();
     Null myVar = new Null();
     myVar.greet(); // -> Null.greet();
     ```

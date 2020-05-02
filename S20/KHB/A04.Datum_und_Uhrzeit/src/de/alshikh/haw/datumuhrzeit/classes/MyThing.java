@@ -10,11 +10,11 @@ package de.alshikh.haw.datumuhrzeit.classes;
 
 public class MyThing extends Thing {
 
-    private final int INCENSE;
+    private final int INSTANCE;
 
     private MyThing(int i) {
         super(i);
-        this.INCENSE = i;
+        this.INSTANCE = i;
     }
 
     public MyThing() {
@@ -24,7 +24,7 @@ public class MyThing extends Thing {
     @Override
     public String toString() {
         return "MyThing{" +
-                "INCENSE = " + INCENSE +
+                "INCENSE = " + INSTANCE +
                 '}';
     }
 }
