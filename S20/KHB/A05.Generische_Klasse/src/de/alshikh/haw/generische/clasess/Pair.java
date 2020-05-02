@@ -31,10 +31,8 @@ public class Pair<T> {
 
     public static void main(String[] args) {
         Pair<Object> p = new Pair<>(23, "skidoo");
-        for (Object s : p.stringList()) {
+        for (String s : p.stringList()) {
             System.out.print(s + " ");
         }
-        System.out.printf(Integer.MAX_VALUE + "");
-        System.out.printf(Integer.MIN_VALUE + "");
     }
 }
