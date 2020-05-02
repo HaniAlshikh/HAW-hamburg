@@ -101,12 +101,22 @@ class DequeTest {
 
     @Test
     void pollFirst() {
-        removeFirst();
+        assertNull(empty.pollFirst());
+        assertEquals("first", strDeque.getFirst());
+        assertNotNull(strDeque.pollFirst());
+        assertEquals("middle", strDeque.pollFirst());
+        assertEquals("last", strDeque.pollFirst());
+        assertNull(strDeque.pollFirst());
     }
 
     @Test
     void pollLast() {
-        removeLast();
+        assertNull(empty.pollLast());
+        assertEquals("last", strDeque.getLast());
+        assertNotNull(strDeque.pollLast());
+        assertEquals("middle", strDeque.pollLast());
+        assertEquals("first", strDeque.pollLast());
+        assertNull(strDeque.pollLast());
     }
 
     @Test

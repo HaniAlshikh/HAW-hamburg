@@ -101,7 +101,11 @@ public class Deque<E> implements de.alshikh.haw.generische.interfaces.Deque<E> {
      */
     @Override
     public E pollFirst() {
-        return removeFirst();
+        try {
+            return removeFirst();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     /**
@@ -109,7 +113,11 @@ public class Deque<E> implements de.alshikh.haw.generische.interfaces.Deque<E> {
      */
     @Override
     public E pollLast() {
-        return removeLast();
+        try {
+            return removeLast();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     /**

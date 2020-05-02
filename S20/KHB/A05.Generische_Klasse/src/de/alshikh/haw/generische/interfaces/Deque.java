@@ -19,13 +19,13 @@ public interface Deque<E> {
     /**
      * Adds the element to the front of this Deque.
      * @param e
-     * @return true, if the elements could be added, false otherwise.
+     * @return true, if the element could be added, false otherwise.
      */
     boolean offerFirst(E e);
     /**
      * Adds the element to the end of this Deque.
      * @param e
-     * @return true, if the elements could be added, false otherwise.
+     * @return true, if the element could be added, false otherwise.
      */
     boolean offerLast(E e);
     /**
@@ -45,21 +45,21 @@ public interface Deque<E> {
      */
     E pop();
     /**
-     * Removes the first element from this Deque and returns it. Throws a {@link NoSuchElementException}
+     * Removes the first element from this Deque and returns it. Returns null
      * if this Deque is empty.
-     * @return The last element
+     * @return The last element if there is one, null otherwise
      */
     E pollFirst();
     /**
-     * Removes the last element from this Deque and returns it. Throws a {@link NoSuchElementException}
+     * Removes the last element from this Deque and returns it. Returns null
      * if this Deque is empty.
-     * @return The last element
+     * @return The last element if there is any, null otherwise
      */
     E pollLast();
     /**
      * Returns the first element of this Deque. Throws a {@link NoSuchElementException}
      * if this Deque is empty.
-     * @return The first element of the Deque.
+     * @return The first element of this Deque or null if it is empty.
      */
     E getFirst();
     /**
