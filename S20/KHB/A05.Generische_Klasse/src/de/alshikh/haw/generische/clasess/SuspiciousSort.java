@@ -4,7 +4,7 @@ import java.util.*;
 
 /**********************************************************************
  *
- * Compere implementation
+ * Integer Overflow and Underflow
  *
  * @author Hani Alshikh
  *
@@ -17,22 +17,18 @@ public class SuspiciousSort {
         for (int i = 0; i < arr.length; i++)
             arr[i] = rnd.nextInt();
 
-
         // using compareTo
         //Comparator<Integer> cmp = new Comparator<Integer>() {
         //    @Override
         //    public int compare(Integer i1, Integer i2) {
-        //        return i1.compareTo(i2); }
+        //        return i2.compareTo(i1); }
         //};
 
         // make it to lambda
-        //Comparator<Integer> cmp = (i1, i2) -> i1.compareTo(i2);
+        //Comparator<Integer> cmp = (i1, i2) -> i2.compareTo(i1);
 
         // to Method reference
-        //Arrays.sort(arr, Integer::compareTo);
-
-        // but for basic Integere sort it's not needed
-        Arrays.sort(arr);
+        Arrays.sort(arr, Comparator.reverseOrder());
 
         System.out.println(order(arr));
     }

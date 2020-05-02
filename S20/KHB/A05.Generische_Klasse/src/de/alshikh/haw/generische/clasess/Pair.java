@@ -34,5 +34,7 @@ public class Pair<T> {
         for (Object s : p.stringList()) {
             System.out.print(s + " ");
         }
+        System.out.printf(Integer.MAX_VALUE + "");
+        System.out.printf(Integer.MIN_VALUE + "");
     }
 }

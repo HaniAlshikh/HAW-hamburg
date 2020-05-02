@@ -6,9 +6,11 @@ Author: Hani Alshikh
 
 ## 1. Java Denksportaufgaben
 
-### 1.1. Compere implementierung
+### 1.1. Integer Overflow and Underflow
 
-Die Compare Methode erwartet eine positive Zahl, wenn x > y, negative, wenn x < y und 0 wenn x = y.
+Die Compare Methode erwartet eine positive Zahl, wenn x > y, negative, wenn x < y und 0 wenn x = y.  
+
+Um die Reihenfolge zu vertauschen, vertauscht man einfach x mit y
 
 - 1.1.1. Was gibt diese Program aus?
 
@@ -16,13 +18,13 @@ Die Compare Methode erwartet eine positive Zahl, wenn x > y, negative, wenn x < 
 
 - 1.1.2. Wie kommt die Ausgabe zustande?
 
-    Durch die falsche implementierung der Compare Methode. Z.B. 10 - -11 ergibt eine positive Zahl, deswegen werden die Zahlen getaucht, obwohl -11 kleiner 10.
+    da die Compare Methode die Zahlen einfach subtrahiert, kann es bei Zahlen, deren Differenz größer ```Integer.MAX_VALUE``` 2^31 - 1 oder kleiner ```Integer.MIN_VALUE``` -2^31 zu Overflow bzw. Underflow kommen.
 
 - 1.1.3. Wie machen Sie das richtig?
 
-    Man könnte entsprechend if bedienungen schreiben, oder besser die Arbeit an die compareTo Methode der Integer Klasse delegieren.
+    zu erwarten sollte DESCENDING sein.
 
-    Außerdem Arrays.sort kann schon mit Integers umgehen und sie sortieren. Man braucht keinen Comparator zu übergeben.
+    Man könnte entsprechend if bedienungen schreiben, oder besser die Arbeit an die compareTo Methode der Integer Klasse delegieren.
 
 ### 1.2. Raw Types
 
@@ -70,6 +72,7 @@ Die Compare Methode erwartet eine positive Zahl, wenn x > y, negative, wenn x < 
   - Das E von LinkedList ist nicht das gleiche E von Node und ein best practise ist, dass man ein anderes für die nested klasse auswählt z.B. N.
 
 ##### Quellen
+- [Overflow And Underflow of Data Types in Java](https://dzone.com/articles/overflow-and-underflow-data)
 - [The Basics of Java Generics](https://www.baeldung.com/java-generics)
 - [Type Erasure](https://www.youtube.com/watch?v=eWDJP6iHgLA)
 - [Raw Types in Java](https://www.baeldung.com/raw-types-java)
