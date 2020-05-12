@@ -1,6 +1,6 @@
 Professor: Dr. Bernd Kahlbrandt  
 Author: Hani Alshikh
-<div style="text-align: right">11.05.2020</div>
+<div style="text-align: right">12.05.2020</div>
 
 # A04: Sreams
 
@@ -37,7 +37,7 @@ Zu erwarten sollte eine zufällige Zahle zwischen 0 und die Grenze ```n```. Also
     
 - Ist sie korrekt?
 
-    Korrekt ist sie nicht, allerdings nach unsere tests bei verschiedenen Szenarien hat sie immer funktioniert.
+    Korrekt ist sie nicht, allerdings nach unsere Tests bei verschiedenen Szenarien hat sie immer funktioniert.
 
 - Wenn nicht, was ist falsch?
 
@@ -45,7 +45,7 @@ Zu erwarten sollte eine zufällige Zahle zwischen 0 und die Grenze ```n```. Also
     
     > "If the value p being boxed is the result of evaluating a constant expression (§15.29) of type boolean, byte, char, short, int, or long, and the result is true, false, a character in the range '\u0000' to '\u007f' inclusive, or an integer in the range -128 to 127 inclusive, then let a and b be the results of any two boxing conversions of p. It is always the case that a == b."
     
-    das heißt, sowohl bei == als auch bei > gibt die Methode 1 zurück. Das führt dazu die Zahlen zu vertauschen, auch wenn es nicht notwendig ist. Deswegen funktioniert die Methode trotz der falschen implementierung.
+    das heißt, sowohl bei == als auch bei > gibt die Methode 1 zurück. Das führt dazu die Zahlen zu vertauschen, auch wenn das nicht notwendig ist. Deswegen funktioniert die Methode trotz der falschen implementierung.
     
     ```java
     System.out.println(naturalOrder().compare(130, 128)); // -> 1, wie erwartet
@@ -54,7 +54,7 @@ Zu erwarten sollte eine zufällige Zahle zwischen 0 und die Grenze ```n```. Also
 
 - und wie macht man das richtig?
 
-    die Arbeit entsprechend and die CompareTo Methode delegieren, allerdings ist die Methode in diesem Fall überflüssig, da Integeres schon Natural Order haben.
+    die Arbeit entsprechend an ```CompareTo()``` delegieren, allerdings ist die Methode in diesem Fall überflüssig, da Integeres schon Natural Order haben.
 
 ## 2. Lambdas und Streams
 
@@ -66,13 +66,13 @@ Zu erwarten sollte eine zufällige Zahle zwischen 0 und die Grenze ```n```. Also
 
 ##### Quellen
 
-- [Count word in file Java8 using reduce method](https://stackoverflow.com/questions/49043471/count-word-in-file-java8-using-reduce-method)
-- [Efficient Word Frequency Calculator in Java](https://www.baeldung.com/java-word-frequency)
-- [Hierarchy For Package java.util.function](https://docs.oracle.com/javase/8/docs/api/java/util/function/package-tree.html)
-- [How to combine all predicates from List<Predicate<MyClass>>](https://stackoverflow.com/questions/47424197/how-to-combine-all-predicates-from-listpredicatemyclass)
 - [Java Math.abs random vs. nextInt()](https://stackoverflow.com/questions/39176165/java-math-abs-random-vs-nextint)
 - [How to compute absolute value of signed random integer](https://stackoverflow.com/questions/23435875/how-to-compute-absolute-value-of-signed-random-integer)
-- [Primitive Type Streams in Java 8](https://www.baeldung.com/java-8-primitive-streams)
 - [Java – Generate random integers in a range](https://mkyong.com/java/java-generate-random-integers-in-a-range/)
-- [Stream builder() in Java with Examples](https://www.geeksforgeeks.org/stream-builder-java-examples/)
 - [Boxing Conversion](https://docs.oracle.com/javase/specs/jls/se14/html/jls-5.html#jls-5.1.7)
+- [Count word in file Java8 using reduce method](https://stackoverflow.com/questions/49043471/count-word-in-file-java8-using-reduce-method)
+- [Efficient Word Frequency Calculator in Java](https://www.baeldung.com/java-word-frequency)
+- [Stream builder() in Java with Examples](https://www.geeksforgeeks.org/stream-builder-java-examples/)
+- [Hierarchy For Package java.util.function](https://docs.oracle.com/javase/8/docs/api/java/util/function/package-tree.html)
+- [How to combine all predicates from List<Predicate<MyClass>>](https://stackoverflow.com/questions/47424197/how-to-combine-all-predicates-from-listpredicatemyclass)
+- [Primitive Type Streams in Java 8](https://www.baeldung.com/java-8-primitive-streams)

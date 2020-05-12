@@ -1,5 +1,6 @@
 package de.alshikh.haw.streams;
 
+import de.alshikh.haw.streams.interfaces.Better;
 import de.alshikh.haw.streams.toolbox.Toolbox;
 
 import java.io.IOException;
@@ -11,6 +12,14 @@ import java.time.Year;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Stream;
+
+/**********************************************************************
+ *
+ * Lambdas and Streams basic usage demonstration
+ *
+ * @author Hani Alshikh
+ *
+ ************************************************************************/
 
 public class Main {
 
@@ -45,6 +54,7 @@ public class Main {
 
         // with limit
         System.out.println("Fridays that fall on the 13th of a month:");
+        System.out.println("- With limit: ");
         Stream.iterate(startDate, date -> date.plusDays(1))
             .filter(isFriday.and(dayNum13))
             .limit(5)
@@ -52,12 +62,14 @@ public class Main {
         System.out.println();
 
         // with a predicate
+        System.out.println("- With a predicate: ");
         Stream.iterate(startDate, date-> date.getYear() < 2024, date -> date.plusDays(1))
                 .filter(isFriday.and(dayNum13))
                 .forEach(s -> System.out.print(s + " "));
         System.out.println();
 
         // with take while
+        System.out.println("- With take while: ");
         startDate.datesUntil(LocalDate.MAX)
             .takeWhile(date-> date.getYear() < 2024)
             .filter(isFriday.and(dayNum13))
@@ -65,6 +77,7 @@ public class Main {
         System.out.println();
 
         // with findFirst (or any terminal operation with valid syntax)
+        System.out.println("- With terminal operation: ");
         LocalDate ignore = Stream.iterate(startDate, date -> date.plusDays(1))
             .peek(date ->{ if(isFriday.and(dayNum13).test(date)) System.out.print(date + " ");})
             .filter(date -> date.getYear() > 2023)
@@ -72,14 +85,15 @@ public class Main {
             .orElse(startDate);
         System.out.println(ignore.toString().replaceAll(".*", ""));
 
-        // with Stream Builder
+        // with stream builder
+        System.out.println("- With stream builder: ");
         Stream.Builder<LocalDate> datesStream = Stream.builder();
         for (LocalDate date = startDate; date.getYear() != 2024; date = date.plusDays(1))
             datesStream.add(date);
         datesStream.build()
                 .filter(isFriday.and(dayNum13))
                 .forEach(s -> System.out.print(s + " "));
-        System.out.println();
+        System.out.println("\n");
 
         // endregion
 
@@ -91,15 +105,18 @@ public class Main {
 
         try (Stream<String> lines = Files.lines(Paths.get(file))) {
 
+            System.out.println("Words count:");
+
             // using collect and Collectors
-            //Map<String, Long> result = lines
+            //Map<String, Long> resultCollect = lines
             //        .filter(line -> !line.equals(""))
             //        .flatMap(toWordsNoPunct)
             //        .map(String::toLowerCase)
             //        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+            //System.out.println(resultCollect + "\n");
 
             // using reduce
-            Map<String, Integer> result = lines
+            Map<String, Integer> resultReduce = lines
                 .filter(line -> !line.equals(""))
                 .flatMap(toWordsNoPunct)
                 .map(String::toLowerCase)
@@ -111,9 +128,7 @@ public class Main {
                     // Combiner
                     (countMap, accuMap) -> countMap = accuMap
                 );
-
-            System.out.println("Words count:");
-            System.out.println(result + "\n");
+            System.out.println(resultReduce + "\n");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,12 +138,17 @@ public class Main {
 
         // region ****************** 2.4. Better compare ******************
 
-        System.out.println("Which is better method:");
-        System.out.println(Toolbox.customCompare("I am better", "I am not",
-                (f, s) -> f.length() > s.length()) + "\n");
+        //BiPredicate<String, String> better = (f, s) -> f.length() > s.length();
+        Better<String, String> better = (f, s) -> f.length() > s.length();
 
-        Predicate<Integer> all = Toolbox.allPredicate(Arrays.asList(x -> x > 0, x -> x < 100, x -> x % 10 == 0));
-        Predicate<Integer> any = Toolbox.anyPredicate(Arrays.asList(x -> x > 0, x -> x < 100, x -> x % 10 == 0));
+        System.out.println("Which is better method:");
+        System.out.println(Toolbox.customCompare("I am better", "I am not", better) + "\n");
+
+        Predicate<Integer> all = Toolbox.allPredicate(
+                Arrays.asList(x -> x > 0, x -> x < 100, x -> x % 10 == 0));
+        Predicate<Integer> any = Toolbox.anyPredicate(
+                Arrays.asList(x -> x > 0, x -> x < 100, x -> x % 10 == 0));
+
         System.out.println("61 is > 0 and < 100 and divisible by 10?");
         System.out.println(all.test(61));
         System.out.println("61 is > 0 or < 100 or divisible by 10?");
