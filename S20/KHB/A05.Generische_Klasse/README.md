@@ -1,6 +1,6 @@
 Professor: Dr. Bernd Kahlbrandt  
 Author: Hani Alshikh
-<div style="text-align: right">28.04.2020</div>
+<div style="text-align: right">02.05.2020</div>
 
 # A05: Generics
 
