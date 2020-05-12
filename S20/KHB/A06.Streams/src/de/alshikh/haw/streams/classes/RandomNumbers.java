@@ -9,7 +9,6 @@ import java.util.Random;
  * @author Hani Alshikh
  *
  ************************************************************************/
-
 public class RandomNumbers {
 
     static Random rand = new Random();

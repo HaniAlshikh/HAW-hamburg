@@ -2,7 +2,7 @@ Professor: Dr. Bernd Kahlbrandt
 Author: Hani Alshikh
 <div style="text-align: right">12.05.2020</div>
 
-# A04: Sreams
+# A06: Sreams
 
 ## 1. Denksportaufgaben
 
@@ -58,7 +58,7 @@ Zu erwarten sollte eine zufällige Zahle zwischen 0 und die Grenze ```n```. Also
 
 ## 2. Lambdas und Streams
 
-## 2.4.2. Functional Interface 
+### 2.4.2. Functional Interface
 
 - Können Sie das auch mit einem funktionalen Interface aus java.util erreichen? Welches Interface eignet sich ggf. am besten?
 

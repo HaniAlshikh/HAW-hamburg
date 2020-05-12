@@ -17,10 +17,10 @@ import java.util.stream.Stream;
  *
  * Lambdas and Streams basic usage demonstration
  *
+ * @author Mateusz Chylewski
  * @author Hani Alshikh
  *
  ************************************************************************/
-
 public class Main {
 
     public static void main(String[] args) {
