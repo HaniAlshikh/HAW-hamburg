@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        ArrayDeque<Integer> ints = new ArrayDeque<>(3);
+        ArrayDeque<Integer> ints = new ArrayDeque<>(0);
 
         ints.addLast(3);
         ints.addFirst(2);
@@ -19,10 +19,12 @@ public class Main {
         ints.addFirst(0); // ?
 
 
+        System.out.println(ints);
+
         System.out.println(-1 % 16);
 
 
-        Deque<Integer> test = new Deque<>(4);
+        Deque<Integer> test = new Deque<>(0);
 
         test.enqueue(2);
         test.enqueue(1);

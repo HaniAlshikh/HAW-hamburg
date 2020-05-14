@@ -1,6 +1,5 @@
 package de.alshikh.haw.generics_streams.clasess;
 
-import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -14,19 +13,17 @@ import java.util.Objects;
 public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Deque<E> {
 
     private int head;
-    private int tail;
+    private int tail; // tail points to last + 1 (tail is always null, otherwise deque is full)
     private Object[] es;
 
     public static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
     public Deque(int size) {
-        // or stetment should be gone if head and tail = 0
-        if (size == 0) size = 16;
-        es = new Object[size];
+        es = new Object[Math.max(size, 1)];
     }
 
     public Deque() {
-        es = new Object[16];
+        this(16);
     }
 
     /**
@@ -182,7 +179,6 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
      */
     @Override
     public E peekLast() {
-        // if moved to 0 default ist null just return es[tail]
         try {
             return getLast();
         } catch (NoSuchElementException e) {
@@ -195,7 +191,6 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
      */
     @Override
     public int size() {
-        //return isEmpty() ? 0 : (es.length - head + tail) % es.length + 1;
         return sub(tail, head, es.length);
     }
 
