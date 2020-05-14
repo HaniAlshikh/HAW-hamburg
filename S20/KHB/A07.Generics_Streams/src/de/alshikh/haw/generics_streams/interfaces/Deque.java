@@ -7,10 +7,10 @@ public interface Deque<E> {
      */
     void addFirst(E e);
     /**
-     * Adds the element to the bottom (start) of this Deque. (Queue terminology)
+     * Adds the element to the front of this Deque
      * @param e The element to add.
      */
-    void enqueue(E e);
+    void unshift(E e);
     /**
      * Adds the element to the end of this Deque. Throws a {@link IllegalArgumentException} if this is not possible.
      * @param e
