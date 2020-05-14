@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 /**********************************************************************
  *
- * basic LinkedList implementation
+ * basic Array Deque implementation using circular array
  *
  * @author Hani Alshikh
  *
@@ -88,11 +88,10 @@ public class ArrDeque<E> implements de.alshikh.haw.generics_streams.interfaces.D
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public E removeFirst() {
         if (isEmpty()) throw new NoSuchElementException("Deque is empty");
-        E first = (E) es[head];
+        E first = elementAt(head);
         head = inc(head, es.length);
         return first;
     }
@@ -100,11 +99,10 @@ public class ArrDeque<E> implements de.alshikh.haw.generics_streams.interfaces.D
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public E removeLast() {
         if (isEmpty()) throw new NoSuchElementException("Deque is empty");
-        E last = (E) es[tail = dec(tail, es.length)];
+        E last = elementAt(tail = dec(tail, es.length));
         es[tail] = null;
         return last;
     }
@@ -139,12 +137,6 @@ public class ArrDeque<E> implements de.alshikh.haw.generics_streams.interfaces.D
         } catch (NoSuchElementException e) {
             return null;
         }
-    }
-
-    @SuppressWarnings("unchecked") // only E elements can be added
-    private E elementAt(int i) {
-        if (isEmpty()) throw new NoSuchElementException("Deque is empty");
-        return (E) es[i];
     }
 
     /**
@@ -214,6 +206,14 @@ public class ArrDeque<E> implements de.alshikh.haw.generics_streams.interfaces.D
         return queueStream.build();
     }
 
+
+    @SuppressWarnings("unchecked") // only E elements can be added
+    private E elementAt(int i) {
+        if (isEmpty()) throw new NoSuchElementException("Deque is empty");
+        return (E) es[i];
+    }
+
+
     private boolean isFull() {
         return head == tail;
     }
@@ -246,7 +246,7 @@ public class ArrDeque<E> implements de.alshikh.haw.generics_streams.interfaces.D
      * Circularly increments i, mod modulus.
      * Precondition and postcondition: 0 <= i < modulus.
      */
-    int inc(int i, int modulus) {
+    private int inc(int i, int modulus) {
         if (++i >= modulus) i = 0;
         return i;
     }
@@ -255,7 +255,7 @@ public class ArrDeque<E> implements de.alshikh.haw.generics_streams.interfaces.D
      * Circularly decrements i, mod modulus.
      * Precondition and postcondition: 0 <= i < modulus.
      */
-    int dec(int i, int modulus) {
+    private int dec(int i, int modulus) {
         if (--i < 0) i = modulus - 1;
         return i;
     }

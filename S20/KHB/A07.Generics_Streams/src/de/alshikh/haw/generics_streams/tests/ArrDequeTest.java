@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**********************************************************************
  *
- * basic test cases for the Deque class
+ * basic test cases for the ArrDeque class
  *
  * @author Hani Alshikh
  *
