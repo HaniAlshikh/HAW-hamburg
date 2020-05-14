@@ -1,5 +1,6 @@
 package de.alshikh.haw.generics_streams.clasess;
 
+import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -12,22 +13,20 @@ import java.util.Objects;
  ************************************************************************/
 public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Deque<E> {
 
-    private int head = -1;
-    private int tail = head;
+    private int head;
+    private int tail;
     private Object[] es;
-    // if two deque have the same elements but different capacity they are still equal?
-    private int capacity = 16;
 
     public static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
     public Deque(int size) {
         // or stetment should be gone if head and tail = 0
-        if (size == 0) size = capacity;
+        if (size == 0) size = 16;
         es = new Object[size];
     }
 
     public Deque() {
-        es = new Object[capacity];
+        es = new Object[16];
     }
 
     /**
@@ -35,7 +34,7 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
      */
     @Override
     public void addFirst(E e) {
-        if (head == -1) throw new IllegalArgumentException("Deque is empty");
+        if (isEmpty()) throw new IllegalArgumentException("Deque is empty");
         enqueue(e);
     }
 
@@ -43,11 +42,9 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
      * {@inheritDoc}
      */
     public void enqueue(E e) {
+        if (e == null) throw new NullPointerException();
+        es[head = dec(head, es.length)] = e;
         if (isFull()) grow(1);
-        if (head == -1) head = tail = 0;
-        else if (head == 0) head = es.length - 1;
-        else head--;
-        es[head] = e;
     }
 
     /**
@@ -55,7 +52,7 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
      */
     @Override
     public void addLast(E e) {
-        if (tail == -1) throw new IllegalArgumentException("Deque is empty");
+        if (isEmpty()) throw new IllegalArgumentException("Deque is empty");
         push(e);
     }
 
@@ -64,11 +61,9 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
      */
     @Override
     public void push(E e) {
-        if (isFull()) grow(1);
-        if (tail == -1) tail = head = 0;
-        else if (tail == es.length - 1) tail = 0;
-        else tail++;
+        if (e == null) throw new NullPointerException();
         es[tail] = e;
+        if (head == (tail = inc(tail, es.length))) grow(1);
     }
 
     /**
@@ -99,9 +94,7 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
     public E removeFirst() {
         if (isEmpty()) throw new NoSuchElementException("Deque is empty");
         E first = (E) es[head];
-        if (head == tail) head = tail = -1;
-        else if (head == es.length - 1) head = 0;
-        else head++;
+        head = inc(head, es.length);
         return first;
     }
 
@@ -112,10 +105,8 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
     @Override
     public E removeLast() {
         if (isEmpty()) throw new NoSuchElementException("Deque is empty");
-        E last = (E) es[tail];
-        if (head == tail) head = tail = -1;
-        else if (tail == 0) tail = es.length - 1;
-        else tail--;
+        E last = (E) es[tail = dec(tail, es.length)];
+        es[tail] = null;
         return last;
     }
 
@@ -171,8 +162,7 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
      */
     @Override
     public E getLast() {
-        return elementAt(tail);
-
+        return elementAt(dec(tail, es.length));
     }
 
     /**
@@ -205,15 +195,21 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
      */
     @Override
     public int size() {
-        return isEmpty() ? 0 : (es.length - head + tail) % es.length + 1;
+        //return isEmpty() ? 0 : (es.length - head + tail) % es.length + 1;
+        return sub(tail, head, es.length);
+    }
+
+    private int sub(int i, int j, int modulus) {
+        if ((i -= j) < 0) i += modulus;
+        return i;
     }
 
     private boolean isFull() {
-        return head == (tail + 1) % es.length;
+        return head == tail;
     }
 
     private boolean isEmpty() {
-        return head == -1;
+        return es[head] == null;
     }
 
     private void grow(int needed) {
@@ -226,15 +222,15 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
                 || (newCapacity = (oldCapacity + jump)) - MAX_ARRAY_SIZE > 0)
             newCapacity = newCapacity(needed, jump);
 
+
         Object[] temp = es;
         es = new Object[newCapacity];
 
-        for (int i = head, y = 0; i != tail; i = (i + 1) % oldCapacity, y++) {
-            es[y] = temp[i];
+        // size is called i times
+        for (int i = 0, j = head; i < oldCapacity; i++, j = inc(j, oldCapacity)) {
+            es[i] = temp[j];
         }
-        es[temp.length - 1] = temp[tail];
-
-        head = 0; tail = temp.length - 1;
+        head = 0; tail = temp.length;
     }
 
 
@@ -254,6 +250,24 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
     }
 
     /**
+     * Circularly increments i, mod modulus.
+     * Precondition and postcondition: 0 <= i < modulus.
+     */
+    int inc(int i, int modulus) {
+        if (++i >= modulus) i = 0;
+        return i;
+    }
+
+    /**
+     * Circularly decrements i, mod modulus.
+     * Precondition and postcondition: 0 <= i < modulus.
+     */
+    int dec(int i, int modulus) {
+        if (--i < 0) i = modulus - 1;
+        return i;
+    }
+
+    /**
      * empty Deque are considered equal
      */
     @Override
@@ -263,13 +277,11 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
         Deque<?> other = (Deque<?>) o;
         if (size() != other.size()) return false;
         if (isEmpty() && other.isEmpty()) return true;
-        //for (int i = head; i != tail; i = (i + 1) % es.length) {
-        //    if (!es[i].equals(other.es[i])) return false;
-        //}
-        //return es[tail] == other.es[tail];
-        for (int i = 0; i < size(); i++) {
-            if (!es[(head + i) % capacity].equals(other.es[(other.head + i) % other.capacity])) return false;
+        for (int i = 0, j = head, y = other.head; i < size(); i++, j = inc(j, es.length), y = inc(y, other.es.length)) {
+            if (!es[j].equals(other.es[y])) return false;
         }
+
+
         return true;
     }
 
@@ -277,10 +289,9 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
     public int hashCode() {
         int hash = Objects.hash(size());
         if (!isEmpty()) {
-            for (int i = head; i != tail; i = (i + 1) % es.length) {
-                hash += es[i].hashCode();
+            for (int i = 0, j = head; i < size(); i++, j = inc(j, es.length)) {
+                hash += es[j].hashCode();
             }
-            hash += es[tail].hashCode();
         }
         return hash;
     }
@@ -288,7 +299,8 @@ public class Deque<E> implements de.alshikh.haw.generics_streams.interfaces.Dequ
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
-        for (int i = head; i != tail; i = (i + 1) % es.length) output.append(es[i]).append(", ");
-        return output.append(es[tail]).insert(0,"[").append("]").toString();
+        for (int i = 0, j = head; i < size() - 1; i++, j = inc(j, es.length))
+            output.append(es[j]).append(", ");
+        return output.append(es[dec(tail, es.length)]).insert(0,"[").append("]").toString();
     }
 }

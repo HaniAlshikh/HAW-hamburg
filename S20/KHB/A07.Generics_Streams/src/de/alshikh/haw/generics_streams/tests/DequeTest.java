@@ -164,7 +164,7 @@ class DequeTest {
         assertDoesNotThrow(()-> intDeque.addLast(4));
         assertDoesNotThrow(()-> intDeque.addLast(5));
         assertEquals(5, intDeque.size());
-
+        //assertDoesNotThrow(()-> {for (int i = 0; i < Integer.MAX_VALUE; i++) intDeque.push(i);});
     }
 
     @Test

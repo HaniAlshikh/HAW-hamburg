@@ -2,17 +2,33 @@ package de.alshikh.haw.generics_streams;
 
 import de.alshikh.haw.generics_streams.clasess.Deque;
 
+import java.util.ArrayDeque;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        Deque<Integer> test = new Deque<>();
+
+        ArrayDeque<Integer> ints = new ArrayDeque<>(3);
+
+        ints.addLast(3);
+        ints.addFirst(2);
+        ints.addFirst(1); // head
+        ints.removeFirst();
+        ints.addLast(1); // tail
+        ints.addFirst(0); // ?
+
+
+        System.out.println(-1 % 16);
+
+
+        Deque<Integer> test = new Deque<>(4);
 
         test.enqueue(2);
         test.enqueue(1);
         test.push(3);
         test.push(4);
-        //test.push(5);
+        test.push(5);
 
         //int head = 3;
         //int tail = 2;
@@ -26,12 +42,13 @@ public class Main {
         //ArrayDeque<Integer> ints = new ArrayDeque<>(Integer.MAX_VALUE);
         //Deque<Integer> ints = new Deque<>(-1);
 
+
         System.out.println(test);
         System.out.println(test.size());
-        System.out.println(test.removeFirst());
-        System.out.println(test.removeLast());
-        System.out.println(test);
-        System.out.println(test.size());
+        //System.out.println(test.removeFirst());
+        //System.out.println(test.removeLast());
+        //System.out.println(test);
+        //System.out.println(test.size());
 
 
     }
