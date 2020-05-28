@@ -27,7 +27,7 @@ Zu erwarten sollte eine zufällige Zahle zwischen 0 und die Grenze ```n```. Also
 
 - Wie ist die aktuelle Empfehlung (seit ca. 10 Jahren), wie Sie das machen sollten?
 
-    Leider sind wir darauf nicht gekommen.
+    ```ThreadLocalRandom.current().nextInt(n);```
 
 ### 1.2. Boxing conversion
 

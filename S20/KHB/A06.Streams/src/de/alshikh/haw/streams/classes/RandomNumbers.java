@@ -1,6 +1,7 @@
 package de.alshikh.haw.streams.classes;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**********************************************************************
  *
@@ -15,7 +16,7 @@ public class RandomNumbers {
 
     static int random(int n) {
         try {
-            return rand.nextInt(n);
+            return ThreadLocalRandom.current().nextInt(n);
         } catch (IllegalArgumentException e) {
             System.out.println("n musst be > 0");
             throw new IllegalArgumentException();
