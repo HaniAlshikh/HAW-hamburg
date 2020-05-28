@@ -1,6 +1,7 @@
 package de.alshikh.haw.parallele_sequentielle_streams_IO.tests;
 
-import de.alshikh.haw.parallele_sequentielle_streams_IO.classes.ArrDeque;
+import de.alshikh.haw.parallele_sequentielle_streams_IO.Toolbox.Toolbox;
+import de.alshikh.haw.parallele_sequentielle_streams_IO.classes.ArrDequeProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,18 +20,18 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  ************************************************************************/
 
-class ArrDequeTest {
+class ArrDequeProxyTest {
 
-    ArrDeque<Integer> intArrDeque;
-    ArrDeque<String> strArrDeque;
-    ArrDeque<Object> empty;
+    ArrDequeProxy<Integer> intArrDeque;
+    ArrDequeProxy<String> strArrDeque;
+    ArrDequeProxy<Object> empty;
     int capacity = 3;
 
     @BeforeEach
     void setUp() {
-        intArrDeque = new ArrDeque<>(capacity);
-        strArrDeque = new ArrDeque<>(capacity);
-        empty = new ArrDeque<>(0);
+        intArrDeque = new ArrDequeProxy<>(capacity);
+        strArrDeque = new ArrDequeProxy<>(capacity);
+        empty = new ArrDequeProxy<>(0);
 
         strArrDeque.push("middle");
         strArrDeque.addFirst("first");
@@ -40,6 +41,22 @@ class ArrDequeTest {
         intArrDeque.addFirst(1);
         intArrDeque.addLast(3);
     }
+
+
+    @Test
+    void serializing() {
+        // write
+        assertDoesNotThrow(() -> Toolbox.serializeObject(strArrDeque, "ArrDequeProxy.ser"));
+
+        // read
+        @SuppressWarnings("unchecked")
+        ArrDequeProxy<String> readTest = (ArrDequeProxy<String>)
+                assertDoesNotThrow(() -> Toolbox.deSerializeObject("ArrDequeProxy.ser"));
+
+        // verify the object state
+        assertEquals(strArrDeque, readTest);
+    }
+
 
     @Test
     void addFirst() {
@@ -197,12 +214,12 @@ class ArrDequeTest {
 
     @Test
     void testHashCode() {
-        Set<ArrDeque<?>> hash = new HashSet<>();
+        Set<ArrDequeProxy<?>> hash = new HashSet<>();
         hash.add(strArrDeque);
         assertEquals(1, hash.size());
         hash.add(empty);
         assertEquals(2, hash.size());
-        hash.add(new ArrDeque<>());
+        hash.add(new ArrDequeProxy<>());
         assertEquals(2, hash.size());
         empty.push("middle");
         empty.addFirst("first");

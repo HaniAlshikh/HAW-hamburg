@@ -1,5 +1,6 @@
 package de.alshikh.haw.parallele_sequentielle_streams_IO.classes;
 
+import de.alshikh.haw.parallele_sequentielle_streams_IO.interfaces.*;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -10,7 +11,7 @@ import java.util.Objects;
  * @author Hani Alshikh
  *
  ************************************************************************/
-public class Deque<E> implements de.alshikh.haw.parallele_sequentielle_streams_IO.interfaces.Deque<E> {
+public class DequeCustom<E> implements Deque<E> {
 
     private Node<E> head = null;
     private Node<E> tail = null;
@@ -198,7 +199,7 @@ public class Deque<E> implements de.alshikh.haw.parallele_sequentielle_streams_I
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Deque<?> other = (Deque<?>) o;
+        DequeCustom<?> other = (DequeCustom<?>) o;
         Node<?> otherNode = other.head;
         if (size() != other.size()) return false;
         if (head == null && otherNode == null) return true;

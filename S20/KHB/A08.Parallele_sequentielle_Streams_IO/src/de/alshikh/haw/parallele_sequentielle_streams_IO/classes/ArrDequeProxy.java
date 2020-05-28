@@ -1,5 +1,8 @@
 package de.alshikh.haw.parallele_sequentielle_streams_IO.classes;
 
+import de.alshikh.haw.parallele_sequentielle_streams_IO.interfaces.*;
+
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -12,7 +15,7 @@ import java.util.stream.Stream;
  * @author Hani Alshikh
  *
  ************************************************************************/
-public class ArrDeque<E> implements de.alshikh.haw.parallele_sequentielle_streams_IO.interfaces.Deque<E> {
+public class ArrDequeProxy<E> implements Deque<E>, Serializable {
 
     private int head;
     private int tail; // tail points to last + 1 (tail is always null, otherwise deque is full)
@@ -20,11 +23,11 @@ public class ArrDeque<E> implements de.alshikh.haw.parallele_sequentielle_stream
 
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
-    public ArrDeque(int size) {
+    public ArrDequeProxy(int size) {
         es = new Object[Math.max(size, 1)];
     }
 
-    public ArrDeque() {
+    public ArrDequeProxy() {
         this(16);
     }
 
@@ -267,7 +270,7 @@ public class ArrDeque<E> implements de.alshikh.haw.parallele_sequentielle_stream
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ArrDeque<?> other = (ArrDeque<?>) o;
+        ArrDequeProxy<?> other = (ArrDequeProxy<?>) o;
         return Arrays.equals(queueStream().toArray(), other.queueStream().toArray());
         //if (size() != other.size()) return false;
         //if (isEmpty() && other.isEmpty()) return true;
@@ -290,6 +293,45 @@ public class ArrDeque<E> implements de.alshikh.haw.parallele_sequentielle_stream
         //for (int i = 0, j = head, size = size(); i < size - 1; i++, j = inc(j, es.length))
         //    output.append(es[j]).append(", ");
         //return output.append(es[dec(tail, es.length)]).insert(0,"[").append("]").toString();
+    }
+
+    /**
+     * writeReplace method for the proxy pattern
+     * @return
+     */
+    private Object writeReplace() {
+        return new ArrDequeInnerProxy<>(this);
+    }
+
+    // Nested static class - Proxy
+    private static class ArrDequeInnerProxy<E> implements Serializable {
+
+        private static final long serialVersionUID = 623286517279433635L;
+        private int head;
+        //private int tail; // tail points to last + 1 (tail is always null, otherwise deque is full)
+        private int size;
+        private Object[] es;
+
+        ArrDequeInnerProxy(ArrDequeProxy<E> o) {
+            this.head = o.head;
+            //this.tail = o.tail;
+            this.size = o.size();
+            this.es = o.es;
+        }
+
+        // readResolve method for Person.PersonProxy
+        private Object readResolve() {
+            ArrDequeProxy<E> arrDeque = new ArrDequeProxy<>(size);
+            for (int i = 0, j = head; i < size; i++, j = inc(j, es.length)) {
+                arrDeque.push((E) es[i]);
+            }
+            return arrDeque; // Uses public constructor
+        }
+
+        private int inc(int i, int modulus) {
+            if (++i >= modulus) i = 0;
+            return i;
+        }
     }
 }
 

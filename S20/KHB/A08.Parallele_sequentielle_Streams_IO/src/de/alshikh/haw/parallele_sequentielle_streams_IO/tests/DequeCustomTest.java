@@ -1,6 +1,6 @@
 package de.alshikh.haw.parallele_sequentielle_streams_IO.tests;
 
-import de.alshikh.haw.parallele_sequentielle_streams_IO.classes.Deque;
+import de.alshikh.haw.parallele_sequentielle_streams_IO.classes.DequeCustom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,17 +18,17 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  ************************************************************************/
 
-class DequeTest {
+class DequeCustomTest {
 
-    Deque<Integer> intDeque;
-    Deque<String> strDeque;
-    Deque<Object> empty;
+    DequeCustom<Integer> intDeque;
+    DequeCustom<String> strDeque;
+    DequeCustom<Object> empty;
 
     @BeforeEach
     void setUp() {
-        intDeque = new Deque<>();
-        strDeque = new Deque<>();
-        empty = new Deque<>();
+        intDeque = new DequeCustom<>();
+        strDeque = new DequeCustom<>();
+        empty = new DequeCustom<>();
 
         strDeque.push("middle");
         strDeque.addFirst("first");
@@ -169,12 +169,12 @@ class DequeTest {
 
     @Test
     void testHashCode() {
-        Set<Deque<?>> hash = new HashSet<>();
+        Set<DequeCustom<?>> hash = new HashSet<>();
         hash.add(strDeque);
         assertEquals(1, hash.size());
         hash.add(empty);
         assertEquals(2, hash.size());
-        hash.add(new Deque<>());
+        hash.add(new DequeCustom<>());
         assertEquals(2, hash.size());
         empty.push("middle");
         empty.addFirst("first");
