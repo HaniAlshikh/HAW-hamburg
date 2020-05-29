@@ -1,12 +1,9 @@
 package de.alshikh.haw.parallele_sequentielle_streams_IO.classes;
 
-import de.alshikh.haw.parallele_sequentielle_streams_IO.interfaces.*;
+import de.alshikh.haw.parallele_sequentielle_streams_IO.interfaces.Deque;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 /**********************************************************************
  *
@@ -15,288 +12,16 @@ import java.util.stream.Stream;
  * @author Hani Alshikh
  *
  ************************************************************************/
-public class ArrDequeCustom<E> implements Deque<E>, Serializable {
-
-
-
-    private int head;
-    private int tail; // tail points to last + 1 (tail is always null, otherwise deque is full)
-    private Object[] es;
-
-    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+public class ArrDequeCustom<E> extends ArrDeque<E>
+        implements Deque<E>, Serializable {
 
     public ArrDequeCustom(int size) {
-        es = new Object[Math.max(size, 1)];
+        super(size);
     }
 
     public ArrDequeCustom() {
-        this(16);
+        super();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addFirst(E e) {
-        if (isEmpty()) throw new IllegalArgumentException("Deque is empty");
-        unshift(e);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void unshift(E e) {
-        if (e == null) throw new NullPointerException();
-        es[head = dec(head, es.length)] = e;
-        if (isFull()) grow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addLast(E e) {
-        if (isEmpty()) throw new IllegalArgumentException("Deque is empty");
-        push(e);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void push(E e) {
-        if (e == null) throw new NullPointerException();
-        es[tail] = e;
-        if (head == (tail = inc(tail, es.length))) grow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean offerFirst(E e) {
-        if (isEmpty()) return false;
-        unshift(e);
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean offerLast(E e) {
-        if (isEmpty()) return false;
-        push(e);
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E removeFirst() {
-        if (isEmpty()) throw new NoSuchElementException("Deque is empty");
-        E first = elementAt(head);
-        head = inc(head, es.length);
-        return first;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E removeLast() {
-        if (isEmpty()) throw new NoSuchElementException("Deque is empty");
-        E last = elementAt(tail = dec(tail, es.length));
-        es[tail] = null;
-        return last;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E pop() {
-        return removeLast();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E pollFirst() {
-        try {
-            return removeFirst();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E pollLast() {
-        try {
-            return removeLast();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E getFirst() {
-        return elementAt(head);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E getLast() {
-        return elementAt(dec(tail, es.length));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E peekFirst() {
-        try {
-            return getFirst();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E peekLast() {
-        try {
-            return getLast();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int size() {
-        int size = tail;
-        if ((size -= head) < 0) size += es.length;
-        return size;
-    }
-
-    public Stream<E> stackStream() {
-        Stream.Builder<E> stackStream = Stream.builder();
-        for (int i = 0, j = tail - 1, size = size(); i < size; i++, j = dec(j, es.length)) {
-            stackStream.add(elementAt(j));
-        }
-        return stackStream.build();
-    }
-
-    public Stream<E> queueStream() {
-        Stream.Builder<E> queueStream = Stream.builder();
-        for (int i = 0, j = head, size = size(); i < size; i++, j = inc(j, es.length)) {
-            queueStream.add(elementAt(j));
-        }
-        return queueStream.build();
-    }
-
-
-    @SuppressWarnings("unchecked") // only E elements can be added
-    private E elementAt(int i) {
-        if (isEmpty()) throw new NoSuchElementException("Deque is empty");
-        return (E) es[i];
-    }
-
-
-    private boolean isFull() {
-        return head == tail;
-    }
-
-    private boolean isEmpty() {
-        return es[head] == null;
-    }
-
-    private void grow() {
-        final int oldCapacity = es.length;
-        int newCapacity;
-        // Double capacity if small; else grow by 50%
-        int jump = (oldCapacity < 64) ? (oldCapacity + 2) : (oldCapacity >> 1);
-
-        // unfortunately we don't have enough memory to test this
-        if ((newCapacity = (oldCapacity + jump)) < 0)
-            if (oldCapacity < MAX_ARRAY_SIZE)
-                newCapacity = MAX_ARRAY_SIZE;
-            else throw new IllegalStateException("Sorry, deque too big");
-
-        Object[] temp = es;
-        es = new Object[newCapacity];
-        for (int i = 0, j = head; i < oldCapacity; i++, j = inc(j, oldCapacity)) {
-            es[i] = temp[j];
-        }
-        head = 0; tail = temp.length;
-    }
-
-    /**
-     * Circularly increments i, mod modulus.
-     * Precondition and postcondition: 0 <= i < modulus.
-     */
-    private int inc(int i, int modulus) {
-        if (++i >= modulus) i = 0;
-        return i;
-    }
-
-    /**
-     * Circularly decrements i, mod modulus.
-     * Precondition and postcondition: 0 <= i < modulus.
-     */
-    private int dec(int i, int modulus) {
-        if (--i < 0) i = modulus - 1;
-        return i;
-    }
-
-    /**
-     * empty Deque are considered equal
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ArrDequeCustom<?> other = (ArrDequeCustom<?>) o;
-        return Arrays.equals(queueStream().toArray(), other.queueStream().toArray());
-        //if (size() != other.size()) return false;
-        //if (isEmpty() && other.isEmpty()) return true;
-        //for (int i = 0, j = head, y = other.head, size = size(); i < size;
-        //     i++, j = inc(j, es.length), y = inc(y, other.es.length))
-        //    if (!es[j].equals(other.es[y])) return false;
-        //return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = Objects.hash(size());
-        return queueStream().map(Objects::hashCode).reduce(hash,Integer::sum);
-    }
-
-    @Override
-    public String toString() {
-        return Arrays.toString(queueStream().toArray());
-        //StringBuilder output = new StringBuilder();
-        //for (int i = 0, j = head, size = size(); i < size - 1; i++, j = inc(j, es.length))
-        //    output.append(es[j]).append(", ");
-        //return output.append(es[dec(tail, es.length)]).insert(0,"[").append("]").toString();
-    }
-
 
     private static final long serialVersionUID = 5888241769701361418L;
 
@@ -310,7 +35,14 @@ public class ArrDequeCustom<E> implements Deque<E>, Serializable {
      * first-to-last order.
      */
     private void writeObject(java.io.ObjectOutputStream s)
-            throws java.io.IOException {
+            throws IOException {
+        // ensure that object is in desired state. Possibly run any business rules if applicable.
+        // checkUserInfo();
+
+        // use java default serialization mechanism
+        // The class of each serializable object is encoded including the class
+        // name and signature of the class, the values of the object's fields and arrays,
+        // and the closure of any other objects referenced from the initial objects.
         s.defaultWriteObject();
         // Write out size
         s.writeInt(size());
@@ -325,13 +57,29 @@ public class ArrDequeCustom<E> implements Deque<E>, Serializable {
      * @param s the stream
      * @throws ClassNotFoundException if the class of a serialized object
      *         could not be found
-     * @throws java.io.IOException if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     private void readObject(java.io.ObjectInputStream s)
-            throws java.io.IOException, ClassNotFoundException {
+            throws IOException, ClassNotFoundException {
+
+        // The objects must be read back from the corresponding ObjectInputstream
+        // with the same types and in the same order as they were written
+
+        // use java default deserialization mechanism
         s.defaultReadObject();
         // Read in size and allocate array
         int size = s.readInt();
+        // ObjectInputValidation
+        //@Override
+        //public void validateObject() {
+        //    System.out.println("Validating age.");
+        //    if (age < 18 || age > 70)
+        //    {
+        //        throw new IllegalArgumentException("Not a valid age to create an employee");
+        //    }
+        //}
+        // ensure that object state has not been corrupted or tampered with malicious code
+        //validateUserInfo();
         //SharedSecrets.getJavaObjectInputStreamAccess().checkArray(s, Object[].class, size + 1);
         es = new Object[size];
         this.tail = size;
@@ -340,6 +88,21 @@ public class ArrDequeCustom<E> implements Deque<E>, Serializable {
         for (int i = 0; i < size; i++)
             es[i] = s.readObject();
     }
+
+    // we don't support this case...
+
+    // For serializable objects, the readObjectNoData method allows a class
+    // to control the initialization of its own fields in the event that a subclass
+    // instance is deserialized and the serialization stream does not list
+    // the class in question as a superclass of the deserialized object.
+    // This may occur in cases where the receiving party uses a different
+    // version of the deserialized instance's class than the sending party,
+    // and the receiver's version extends classes that are not extended by the sender's version.
+    // This may also occur if the serialization stream has been tampered; hence,
+    // readObjectNoData is useful for initializing deserialized
+    // objects properly despite a "hostile" or incomplete source stream.
+
+    //private void readObjectNoData() throws ObjectStreamException;
 
 }
 

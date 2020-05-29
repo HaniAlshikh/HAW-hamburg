@@ -8,7 +8,8 @@ public class Toolbox {
      * @param obj
      * @param fileName
      */
-    public static void serializeObject(Object obj, String fileName){
+    public static void serializeObject(Object obj, String fileName) {
+        // FileOutputStream is meant for writing streams of raw bytes
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(fileName)))){
             oos.writeObject(obj);
 

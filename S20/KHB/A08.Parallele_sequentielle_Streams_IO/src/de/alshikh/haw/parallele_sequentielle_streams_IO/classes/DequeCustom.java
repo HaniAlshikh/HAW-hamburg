@@ -1,8 +1,7 @@
 package de.alshikh.haw.parallele_sequentielle_streams_IO.classes;
 
-import de.alshikh.haw.parallele_sequentielle_streams_IO.interfaces.*;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+
+import java.io.IOException;
 
 /**********************************************************************
  *
@@ -11,233 +10,74 @@ import java.util.Objects;
  * @author Hani Alshikh
  *
  ************************************************************************/
-public class DequeCustom<E> implements Deque<E> {
+public class DequeCustom<E> extends Deque<E> {
 
-    private Node<E> head = null;
-    private Node<E> tail = null;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addFirst(E e) {
-        if (head == null) throw new IllegalArgumentException("Deque is empty");
-        unshift(e);
+    public DequeCustom() {
+        super();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addLast(E e) {
-        if (tail == null) throw new IllegalArgumentException("Deque is empty");
-        push(e);
-    }
+    private static final long serialVersionUID = 5888241769701361418L;
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void push(E e) {
-        Node<E> node = new Node<>(e);
-        if(head == null) head = node; else tail.next = node;
-        tail = node;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean offerFirst(E e) {
-        if (head == null) return false;
-        unshift(e);
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean offerLast(E e) {
-        if (head == null) return false;
-        push(e);
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E removeFirst() {
-        if (head == null) throw new NoSuchElementException("Deque is empty");
-        Node<E> first = head;
-        head = head.next;
-        if (head == null) tail = null;
-        return first.value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E removeLast() {
-        if (head == null) throw new NoSuchElementException("Deque is empty");
-        Node<E> last = tail;
-        tail = prev(tail);
-        tail.next = null;
-        if (last == tail) {tail = null;head = null;}
-        return last.value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E pop() {
-        return removeLast();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E pollFirst() {
-        try {
-            return removeFirst();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E pollLast() {
-        try {
-            return removeLast();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E getFirst() {
-        if (head == null) throw new NoSuchElementException("Deque is empty");
-        return head.value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E getLast() {
-        if (head == null) throw new NoSuchElementException("Deque is empty");
-        return tail.value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E peekFirst() {
-        if (head == null) return null;
-        return head.value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public E peekLast() {
-        if (head == null) return null;
-        return tail.value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    // Iterator would be better but not part of the assigment
-    public int size() {
-        int size = 0;
-        for (Node<E> n = head; n != null; n = n.next) size++;
-        return size;
-    }
-
-    /**
-     * add an element to the beginning of the Deque
+     * Saves this deque to a stream (that is, serializes it).
      *
-     * @param e the element to be added
+     * @param s the stream
+     * @throws java.io.IOException if an I/O error occurs
+     * @serialData The current size ({@code int}) of the deque,
+     * followed by all of its elements (each an object reference) in
+     * first-to-last order.
      */
-    private void unshift(E e) {
-        Node<E> node = new Node<>(e);
-        if(head == null) tail = node; else node.next = head;
-        head = node;
+    private void writeObject(java.io.ObjectOutputStream s)
+            throws IOException {
+        // ensure that object is in desired state. Possibly run any business rules if applicable.
+        // checkUserInfo();
+
+        // use java default serialization mechanism
+        // The class of each serializable object is encoded including the class
+        // name and signature of the class, the values of the object's fields and arrays,
+        // and the closure of any other objects referenced from the initial objects.
+        s.defaultWriteObject();
+        // Write out elements in order.
+        //for (Node<E> n = head; n != null; n = n.next) {
+        //    if (n.value.equals(otherNode.value)) otherNode = otherNode.next; else return false;
+        //}
     }
 
     /**
-     * @param node from which the previous node is returned
-     * @return the previous node
+     * Reconstitutes this deque from a stream (that is, deserializes it).
+     * @param s the stream
+     * @throws ClassNotFoundException if the class of a serialized object
+     *         could not be found
+     * @throws IOException if an I/O error occurs
      */
-    // we would link the previous node to the node itself
-    // but to stick with the assigment we went with this solution
-    private Node<E> prev(Node<E> node) {
-        Node<E> prev = head;
-        while (prev.next != node && prev.next != null)
-            prev = prev.next;
-        return prev;
-    }
+    private void readObject(java.io.ObjectInputStream s)
+            throws IOException, ClassNotFoundException {
 
-    /**
-     * empty Deque are considered equal
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DequeCustom<?> other = (DequeCustom<?>) o;
-        Node<?> otherNode = other.head;
-        if (size() != other.size()) return false;
-        if (head == null && otherNode == null) return true;
-        for (Node<E> n = head; n != null; n = n.next) {
-            if (n.value.equals(otherNode.value)) otherNode = otherNode.next; else return false;
-        }
-        return true;
-    }
+        // The objects must be read back from the corresponding ObjectInputstream
+        // with the same types and in the same order as they were written
 
-    @Override
-    public int hashCode() {
-        int hash = Objects.hash(size());
-        for (Node<E> n = head; n != null; n = n.next) {
-            hash += n.value.hashCode();
-        }
-        return hash;
-    }
+        // use java default deserialization mechanism
+        s.defaultReadObject();
+        // Read in size and allocate array
+        //int size = s.readInt();
+        // ObjectInputValidation
+        //@Override
+        //public void validateObject() {
+        //    System.out.println("Validating age.");
+        //    if (age < 18 || age > 70)
+        //    {
+        //        throw new IllegalArgumentException("Not a valid age to create an employee");
+        //    }
+        //}
+        // ensure that object state has not been corrupted or tampered with malicious code
+        //validateUserInfo();
+        //SharedSecrets.getJavaObjectInputStreamAccess().checkArray(s, Object[].class, size + 1);
+        //es = new Object[size];
+        //this.tail = size;
 
-    @Override
-    public String toString() {
-        return "Deque{" + head + '}';
-    }
-
-    private static class Node<N> {
-        N value;
-        Node<N> next;
-        Node(N value) {
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "value=" + value +
-                    ", next=" + next +
-                    '}';
-        }
-
+        // Read in all elements in the proper order.
+        //for (int i = 0; i < size; i++)
+        //    es[i] = s.readObject();
     }
 }
 

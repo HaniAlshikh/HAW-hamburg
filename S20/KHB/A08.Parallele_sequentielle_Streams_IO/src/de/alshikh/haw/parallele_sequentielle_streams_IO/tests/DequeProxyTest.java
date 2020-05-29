@@ -1,11 +1,12 @@
 package de.alshikh.haw.parallele_sequentielle_streams_IO.tests;
 
 import de.alshikh.haw.parallele_sequentielle_streams_IO.Toolbox.Toolbox;
-import de.alshikh.haw.parallele_sequentielle_streams_IO.classes.DequeCustom;
+import de.alshikh.haw.parallele_sequentielle_streams_IO.classes.DequeProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**********************************************************************
  *
@@ -15,17 +16,17 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  ************************************************************************/
 
-class DequeCustomTest {
+class DequeProxyTest {
 
-    DequeCustom<Integer> intDeque;
-    DequeCustom<String> strDeque;
-    DequeCustom<Object> empty;
+    DequeProxy<Integer> intDeque;
+    DequeProxy<String> strDeque;
+    DequeProxy<Object> empty;
 
     @BeforeEach
     void setUp() {
-        intDeque = new DequeCustom<>();
-        strDeque = new DequeCustom<>();
-        empty = new DequeCustom<>();
+        intDeque = new DequeProxy<>();
+        strDeque = new DequeProxy<>();
+        empty = new DequeProxy<>();
 
         strDeque.push("middle");
         strDeque.addFirst("first");
@@ -41,12 +42,12 @@ class DequeCustomTest {
     void serializing() {
 
         // write
-        assertDoesNotThrow(() -> Toolbox.serializeObject(strDeque, "DequeCustom.ser"));
+        assertDoesNotThrow(() -> Toolbox.serializeObject(strDeque, "DequeProxy.ser"));
 
         // read
         @SuppressWarnings("unchecked")
-        DequeCustom<String> readTest = (DequeCustom<String>)
-                assertDoesNotThrow(() -> Toolbox.deSerializeObject("DequeCustom.ser"));
+        DequeProxy<String> readTest = (DequeProxy<String>)
+                assertDoesNotThrow(() -> Toolbox.deSerializeObject("DequeProxy.ser"));
 
         // verify the object state
         assertEquals(strDeque, readTest);
