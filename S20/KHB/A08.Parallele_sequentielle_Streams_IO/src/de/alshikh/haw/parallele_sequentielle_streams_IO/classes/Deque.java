@@ -243,7 +243,6 @@ public class Deque<E> implements Serializable,
                     ", next=" + next +
                     '}';
         }
-
     }
 }
 

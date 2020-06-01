@@ -5,6 +5,8 @@ import de.alshikh.haw.parallele_sequentielle_streams_IO.classes.DequeProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -41,17 +43,15 @@ class DequeProxyTest {
     @Test
     void serializing() {
 
-        // write
-        assertDoesNotThrow(() -> Toolbox.serializeObject(strDeque, "DequeProxy.ser"));
-
-        // read
-        @SuppressWarnings("unchecked")
-        DequeProxy<String> readTest = (DequeProxy<String>)
-                assertDoesNotThrow(() -> Toolbox.deSerializeObject("DequeProxy.ser"));
-
-        // verify the object state
-        assertEquals(strDeque, readTest);
+        for (DequeProxy<?> testCase : Arrays.asList(intDeque, strDeque, empty)) {
+            // write
+            assertDoesNotThrow(() -> Toolbox.serializeObject(testCase, "DequeProxy.ser"));
+            // read
+            DequeProxy<?> test = assertDoesNotThrow(
+                    () -> (DequeProxy<?>) Toolbox.deSerializeObject("DequeProxy.ser"));
+            // verify
+            assertEquals(testCase, test);
+        }
     }
-
 }
 

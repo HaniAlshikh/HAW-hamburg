@@ -2,7 +2,6 @@ package de.alshikh.haw.parallele_sequentielle_streams_IO.classes;
 
 import de.alshikh.haw.parallele_sequentielle_streams_IO.interfaces.Deque;
 
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -272,13 +271,13 @@ public class ArrDeque<E> implements Deque<E> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ArrDeque<?> other = (ArrDeque<?>) o;
-        return Arrays.equals(queueStream().toArray(), other.queueStream().toArray());
-        //if (size() != other.size()) return false;
-        //if (isEmpty() && other.isEmpty()) return true;
-        //for (int i = 0, j = head, y = other.head, size = size(); i < size;
-        //     i++, j = inc(j, es.length), y = inc(y, other.es.length))
-        //    if (!es[j].equals(other.es[y])) return false;
-        //return true;
+        //return Arrays.equals(queueStream().toArray(), other.queueStream().toArray());
+        if (size() != other.size()) return false;
+        if (isEmpty() && other.isEmpty()) return true;
+        for (int i = 0, j = head, y = other.head, size = size(); i < size;
+             i++, j = inc(j, es.length), y = inc(y, other.es.length))
+            if (!es[j].equals(other.es[y])) return false;
+        return true;
     }
 
     @Override
@@ -289,11 +288,11 @@ public class ArrDeque<E> implements Deque<E> {
 
     @Override
     public String toString() {
-        return Arrays.toString(queueStream().toArray());
-        //StringBuilder output = new StringBuilder();
-        //for (int i = 0, j = head, size = size(); i < size - 1; i++, j = inc(j, es.length))
-        //    output.append(es[j]).append(", ");
-        //return output.append(es[dec(tail, es.length)]).insert(0,"[").append("]").toString();
+        //return Arrays.toString(queueStream().toArray());
+        StringBuilder output = new StringBuilder();
+        for (int i = 0, j = head, size = size(); i < size - 1; i++, j = inc(j, es.length))
+            output.append(es[j]).append(", ");
+        return output.append(es[dec(tail, es.length)]).insert(0,"[").append("]").toString();
     }
 }
 

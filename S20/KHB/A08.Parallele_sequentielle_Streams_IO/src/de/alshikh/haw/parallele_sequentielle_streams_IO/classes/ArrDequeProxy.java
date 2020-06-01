@@ -1,19 +1,17 @@
 package de.alshikh.haw.parallele_sequentielle_streams_IO.classes;
 
-import de.alshikh.haw.parallele_sequentielle_streams_IO.interfaces.Deque;
-
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**********************************************************************
  *
- * basic Array Deque implementation using circular array
+ * showcasing the basic implementation of the ArrDeque serialization proxy
  *
  * @author Hani Alshikh
  *
  ************************************************************************/
 public class ArrDequeProxy<E> extends ArrDeque<E>
-        implements Deque<E>, Serializable {
+        implements Serializable {
 
     private static final long serialVersionUID = -7071966788253823740L;
 
@@ -26,36 +24,45 @@ public class ArrDequeProxy<E> extends ArrDeque<E>
     }
 
     /**
-     * writeReplace method for the proxy pattern
-     * @return
+     * write a new proxy object to a stream of this ArrDeque
+     *
+     * @throws ObjectStreamException if an stream error occurs
+     * @return ArrDequeInnerProxy copy of this ArrDeque
+     * @serialData The current size ({@code int}) of the ArrDeque,
+     * followed by all of its elements in first-to-last order.
      */
     private Object writeReplace() throws ObjectStreamException {
         return new ArrDequeInnerProxy<>(this);
     }
 
-    // Nested static class - Proxy
     private static class ArrDequeInnerProxy<E> implements Serializable {
 
         private static final long serialVersionUID = 623286517279433635L;
-        private int head;
-        //private int tail; // tail points to last + 1 (tail is always null, otherwise deque is full)
         private int size;
         private Object[] es;
 
         ArrDequeInnerProxy(ArrDequeProxy<E> o) {
-            this.head = o.head;
-            //this.tail = o.tail;
             this.size = o.size();
-            this.es = o.es;
+            this.es = new Object[Math.max(size, 1)];
+            // avoid writing the entire array and stick with the filled part
+            for (int i = 0, j = o.head; i < size; i++, j = inc(j, o.es.length)) {
+                this.es[i] = o.es[j];
+            }
         }
 
-        // readResolve method for Person.PersonProxy
+        /**
+         * read a stream and create a new ArrDeque object from the proxy object
+         *
+         * @throws ObjectStreamException if an stream error occurs
+         * @return ArrDequeProxy copy of this ArrDeque
+         */
+        @SuppressWarnings("unchecked")
         private Object readResolve() throws ObjectStreamException {
             ArrDequeProxy<E> arrDeque = new ArrDequeProxy<>(size);
-            for (int i = 0, j = head; i < size; i++, j = inc(j, es.length)) {
+            for (int i = 0; i < size; i++) {
                 arrDeque.push((E) es[i]);
             }
-            return arrDeque; // Uses public constructor
+            return arrDeque;
         }
 
         private int inc(int i, int modulus) {

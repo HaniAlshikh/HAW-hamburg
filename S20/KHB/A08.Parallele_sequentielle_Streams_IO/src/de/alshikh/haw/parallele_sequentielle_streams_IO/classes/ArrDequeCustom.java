@@ -1,19 +1,18 @@
 package de.alshikh.haw.parallele_sequentielle_streams_IO.classes;
 
-import de.alshikh.haw.parallele_sequentielle_streams_IO.interfaces.Deque;
-
 import java.io.IOException;
 import java.io.Serializable;
 
 /**********************************************************************
  *
- * basic Array Deque implementation using circular array
+ * showcasing the basic implementation of custom Serializable on ArrDeque
  *
  * @author Hani Alshikh
  *
  ************************************************************************/
 public class ArrDequeCustom<E> extends ArrDeque<E>
-        implements Deque<E>, Serializable {
+        implements Serializable {
+    //  implements ObjectInputValidation
 
     public ArrDequeCustom(int size) {
         super(size);
@@ -26,18 +25,17 @@ public class ArrDequeCustom<E> extends ArrDeque<E>
     private static final long serialVersionUID = 5888241769701361418L;
 
     /**
-     * Saves this deque to a stream (that is, serializes it).
+     * save this arrDeque to a stream (serialize it)
      *
      * @param s the stream
-     * @throws java.io.IOException if an I/O error occurs
-     * @serialData The current size ({@code int}) of the deque,
-     * followed by all of its elements (each an object reference) in
-     * first-to-last order.
+     * @throws IOException if an I/O error occurs
+     * @serialData The current size ({@code int}) of the arrDeque,
+     * followed by all of its elements in first-to-last order.
      */
     private void writeObject(java.io.ObjectOutputStream s)
             throws IOException {
-        // ensure that object is in desired state. Possibly run any business rules if applicable.
-        // checkUserInfo();
+        // ensure that object is in desired state.
+        // checkState();
 
         // use java default serialization mechanism
         // The class of each serializable object is encoded including the class
@@ -46,14 +44,15 @@ public class ArrDequeCustom<E> extends ArrDeque<E>
         s.defaultWriteObject();
         // Write out size
         s.writeInt(size());
-        // Write out elements in order.
+        // Write out elements in first-to-last order.
         for (int i = 0, j = head, size = size(); i < size; i++, j = inc(j, es.length)) {
             s.writeObject(es[i]);
         }
     }
 
     /**
-     * Reconstitutes this deque from a stream (that is, deserializes it).
+     * Reconstitutes this arrDeque from a stream (deserializes it).
+     *
      * @param s the stream
      * @throws ClassNotFoundException if the class of a serialized object
      *         could not be found
@@ -63,25 +62,28 @@ public class ArrDequeCustom<E> extends ArrDeque<E>
             throws IOException, ClassNotFoundException {
 
         // The objects must be read back from the corresponding ObjectInputstream
-        // with the same types and in the same order as they were written
+        // with the same types and in the same order as they were written.
 
         // use java default deserialization mechanism
         s.defaultReadObject();
-        // Read in size and allocate array
-        int size = s.readInt();
+
         // ObjectInputValidation
         //@Override
         //public void validateObject() {
         //    System.out.println("Validating age.");
-        //    if (age < 18 || age > 70)
-        //    {
+        //    if (age < 18 || age > 70) {
         //        throw new IllegalArgumentException("Not a valid age to create an employee");
         //    }
         //}
         // ensure that object state has not been corrupted or tampered with malicious code
-        //validateUserInfo();
+        //checkState();
         //SharedSecrets.getJavaObjectInputStreamAccess().checkArray(s, Object[].class, size + 1);
-        es = new Object[size];
+
+        // Read in size and allocate array
+        int size = s.readInt();
+        es = new Object[Math.max(size, 1)];
+
+        // set tail to last, which means arrDeque is full after deserializing
         this.tail = size;
 
         // Read in all elements in the proper order.

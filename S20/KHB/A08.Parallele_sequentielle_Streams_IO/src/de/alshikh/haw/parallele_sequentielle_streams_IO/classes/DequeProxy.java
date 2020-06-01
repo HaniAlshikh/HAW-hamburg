@@ -5,21 +5,24 @@ import java.io.Serializable;
 
 /**********************************************************************
  *
- * basic LinkedList implementation
+ * showcasing the basic implementation of the Deque serialization proxy
  *
  * @author Hani Alshikh
  *
  ************************************************************************/
 public class DequeProxy<E> extends Deque<E> {
-    public DequeProxy() {
-        super();
-    }
 
+    /**
+     * write a new proxy object to a stream of this Deque
+     *
+     * @throws ObjectStreamException if an stream error occurs
+     * @return ArrDequeInnerProxy copy of this ArrDeque
+     * @serialData all of the Deque elements
+     */
     private Object writeReplace() throws ObjectStreamException {
         return new DequeProxy.DequeInnerProxy<>(this);
     }
 
-    // Nested static class - Proxy
     private static class DequeInnerProxy<E> implements Serializable {
 
         private static final long serialVersionUID = -5592750437218135456L;
@@ -31,14 +34,18 @@ public class DequeProxy<E> extends Deque<E> {
             this.tail = o.tail;
         }
 
-        // readResolve method for Person.PersonProxy
+        /**
+         * read a stream and create a new Deque object from the proxy object
+         *
+         * @throws ObjectStreamException if an stream error occurs
+         * @return DequeProxy copy of this Deque
+         */
         private Object readResolve() throws ObjectStreamException {
             DequeProxy<E> Deque = new DequeProxy<>();
             Deque.head = head;
             Deque.tail = tail;
-            return Deque; // Uses public constructor
+            return Deque;
         }
     }
-
 }
 

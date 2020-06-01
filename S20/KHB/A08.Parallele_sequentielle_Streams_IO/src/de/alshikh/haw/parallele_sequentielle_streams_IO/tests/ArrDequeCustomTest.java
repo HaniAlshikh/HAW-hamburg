@@ -6,11 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**********************************************************************
  *
- * basic test cases for the ArrDeque class
+ * basic test cases for the ArrDeque custom Serializable implementation
  *
  * @author Hani Alshikh
  *
@@ -21,13 +23,15 @@ class ArrDequeCustomTest {
     ArrDequeCustom<Integer> intArrDeque;
     ArrDequeCustom<String> strArrDeque;
     ArrDequeCustom<Object> empty;
+    ArrDequeCustom<Object> zero;
     int capacity = 3;
 
     @BeforeEach
     void setUp() {
         intArrDeque = new ArrDequeCustom<>(capacity);
         strArrDeque = new ArrDequeCustom<>(capacity);
-        empty = new ArrDequeCustom<>(0);
+        zero = new ArrDequeCustom<>(0);
+        empty = new ArrDequeCustom<>();
 
         strArrDeque.push("middle");
         strArrDeque.addFirst("first");
@@ -41,17 +45,15 @@ class ArrDequeCustomTest {
 
     @Test
     void serializing() {
-
-        // write
-        assertDoesNotThrow(() -> Toolbox.serializeObject(strArrDeque, "ArrDequeCustom.ser"));
-
-        // read
-        @SuppressWarnings("unchecked")
-        ArrDequeCustom<String> readTest = (ArrDequeCustom<String>)
-                assertDoesNotThrow(() -> Toolbox.deSerializeObject("ArrDequeCustom.ser"));
-
-        // verify the object state
-        assertEquals(strArrDeque, readTest);
+        for (ArrDequeCustom<?> testCase : Arrays.asList(intArrDeque, strArrDeque, empty, zero)) {
+            // write
+            assertDoesNotThrow(() -> Toolbox.serializeObject(testCase, "ArrDequeCustom.ser"));
+            // read
+            ArrDequeCustom<?> test = assertDoesNotThrow(
+                    () -> (ArrDequeCustom<?>) Toolbox.deSerializeObject("ArrDequeCustom.ser"));
+            // verify
+            assertEquals(testCase, test);
+        }
     }
 }
 

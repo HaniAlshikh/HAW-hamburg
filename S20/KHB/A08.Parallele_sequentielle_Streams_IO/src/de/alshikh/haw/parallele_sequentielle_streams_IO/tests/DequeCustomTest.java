@@ -5,11 +5,13 @@ import de.alshikh.haw.parallele_sequentielle_streams_IO.classes.DequeCustom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**********************************************************************
  *
- * basic test cases for the Deque class
+ * basic test cases for the Deque custom Serializable implementation
  *
  * @author Hani Alshikh
  *
@@ -39,18 +41,15 @@ class DequeCustomTest {
 
     @Test
     void serializing() {
-
-        // write
-        assertDoesNotThrow(() -> Toolbox.serializeObject(strDeque, "DequeCustom.ser"));
-
-        // read
-        @SuppressWarnings("unchecked")
-        DequeCustom<String> readTest = (DequeCustom<String>)
-                assertDoesNotThrow(() -> Toolbox.deSerializeObject("DequeCustom.ser"));
-
-        // verify the object state
-        assertEquals(strDeque, readTest);
+        for (DequeCustom<?> testCase : Arrays.asList(intDeque, strDeque, empty)) {
+            // write
+            assertDoesNotThrow(() -> Toolbox.serializeObject(testCase, "DequeCustom.ser"));
+            // read
+            DequeCustom<?> test = assertDoesNotThrow(
+                    () -> (DequeCustom<?>) Toolbox.deSerializeObject("DequeCustom.ser"));
+            // verify
+            assertEquals(testCase, test);
+        }
     }
-
 }
 
