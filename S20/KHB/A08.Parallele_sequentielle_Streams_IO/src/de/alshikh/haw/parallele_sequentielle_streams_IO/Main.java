@@ -3,9 +3,6 @@ package de.alshikh.haw.parallele_sequentielle_streams_IO;
 import de.alshikh.haw.parallele_sequentielle_streams_IO.Toolbox.Toolbox;
 import de.alshikh.haw.parallele_sequentielle_streams_IO.classes.NumericalIntegration;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -13,29 +10,23 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
+/**********************************************************************
+ *
+ * demonstrating the solution of the 08.th assigment
+ *
+ * @author Hani Alshikh
+ *
+ ************************************************************************/
 public class Main {
-
-    private static String[] getWordsArr(String file) {
-        Function<String, Stream<String>> toWordsNoPunct =
-                line -> Stream.of(line.replaceAll("\\p{Punct}", "").split("\\s+"));
-
-        try (Stream<String> lines = Files.lines(Paths.get(file))) {
-            return lines
-                    .filter(line -> !line.equals(""))
-                    .flatMap(toWordsNoPunct)
-                    .map(String::toLowerCase)
-                    .toArray(String[]::new);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new String[0];
-    }
 
     public static void main(String[] args) {
 
+        // region ****************** 2.1-4 Numerical Integration ******************
+
+        System.out.printf("\n%s %s %s\n\n","=".repeat(10),"Numerical Integration","=".repeat(10));
+
         int runs = 10;
-        long seqTime = 0, parTime = 0;
+        long seqTime, parTime;
 
         Map<Function<Double,Double>, Double[]> fxs = Map.of(
                 //   fx                   a  ,   b  ,   n
@@ -49,13 +40,13 @@ public class Main {
         fxs.forEach((fx, v) -> {
             // compiler will skip the run if the result is not used -> print
             System.out.print(Toolbox.timeOp(() -> NumericalIntegration
-                    .integrateSequential(v[0], v[1], v[2].intValue(), fx)));
+                    .integrateSequential(v[0], v[1], v[2].intValue(), fx)) + " ");
             System.out.print(Toolbox.timeOp(() -> NumericalIntegration
-                    .integrateParallel(v[0], v[1], v[2].intValue(), fx)));
+                    .integrateParallel(v[0], v[1], v[2].intValue(), fx)) + " ");
         });
         System.out.println("\n");
 
-        // run time test
+        // run-time test
         System.out.printf("Average run time for %s runs\n", runs);
         System.out.printf("%-4s | %-10s | %-10s\n", "Fx", "Sequential", "Parallel");
         int i = 0;
@@ -71,15 +62,17 @@ public class Main {
             System.out.printf("%-4d | %-10s | %-10s\n", ++i,seqTime/runs+"ms",parTime/runs+"ms");
         }
 
-        // ###########################################################################
+        // endregion
 
-        System.out.printf("\n%s %s %s\n\n","=".repeat(10),"Words count:","=".repeat(10));
+        // region ****************** 2.1-4 words count ******************
+
+        System.out.printf("\n%s %s %s\n\n","=".repeat(10),"Words count","=".repeat(10));
 
         String file = "text.txt";
         Function<Stream<String>, Map<String, Long>> collectWords =
                 s -> s.collect(groupingBy(Function.identity(), counting()));
 
-        String[] wordArray = getWordsArr(file);
+        String[] wordArray = Toolbox.getWordsArr(file);
         ArrayList<String> wordArrayList = new ArrayList<>(Arrays.asList(wordArray));
         LinkedList<String> wordLinkedList = new LinkedList<>(Arrays.asList(wordArray));
 
@@ -93,19 +86,17 @@ public class Main {
                 wordLinkedList.parallelStream()
         );
 
-
-        List<Stream<String>> warmeUpStreams = streams.get();
         System.out.print("warming up: ");
-        for (Stream<String> stream : warmeUpStreams) {
-            System.out.print(Toolbox.timeOp(() -> collectWords.apply(stream)));
+        for (Stream<String> stream : streams.get()) {
+            System.out.print(Toolbox.timeOp(() -> collectWords.apply(stream)) + " ");
         }
         System.out.println("\n");
 
-        // run time test
+        // run-time test
         System.out.printf("Average run time for %s runs\n", runs);
         System.out.printf("%-10s | %-10s | %-10s\n", "Collection", "Sequential", "Parallel");
 
-        for (i = 0; i < warmeUpStreams.size(); i+=2) {
+        for (i = 0; i < streams.get().size()/2; i++) {
             seqTime = 0; parTime = 0;
             for (int j = 0; j < runs; j++) {
                 int finalI = i;
@@ -113,7 +104,9 @@ public class Main {
                 parTime += Toolbox.timeOp(() -> collectWords.apply(streams.get().get(finalI+1)));
             }
             System.out.printf("%-10s | %-10s | %-10s\n",
-                    warmeUpStreams.get(i).getClass(),seqTime/runs+"ms",parTime/runs+"ms");
+                    i+1,seqTime/runs+"ms",parTime/runs+"ms");
         }
+
+        // endregion
     }
 }

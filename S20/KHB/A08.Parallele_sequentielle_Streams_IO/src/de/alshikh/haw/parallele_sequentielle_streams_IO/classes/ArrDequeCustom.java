@@ -1,6 +1,7 @@
 package de.alshikh.haw.parallele_sequentielle_streams_IO.classes;
 
 import java.io.IOException;
+import java.io.ObjectInputValidation;
 import java.io.Serializable;
 
 /**********************************************************************
@@ -11,8 +12,8 @@ import java.io.Serializable;
  *
  ************************************************************************/
 public class ArrDequeCustom<E> extends ArrDeque<E>
-        implements Serializable {
-    //  implements ObjectInputValidation
+        implements Serializable //, ObjectInputValidation
+{
 
     public ArrDequeCustom(int size) {
         super(size);
@@ -23,6 +24,12 @@ public class ArrDequeCustom<E> extends ArrDeque<E>
     }
 
     private static final long serialVersionUID = 5888241769701361418L;
+
+    // we could also validate object state here
+    //@Override
+    //public void validateObject() {
+    //    System.out.println("Validating...");
+    //}
 
     /**
      * save this arrDeque to a stream (serialize it)
@@ -67,16 +74,9 @@ public class ArrDequeCustom<E> extends ArrDeque<E>
         // use java default deserialization mechanism
         s.defaultReadObject();
 
-        // ObjectInputValidation
-        //@Override
-        //public void validateObject() {
-        //    System.out.println("Validating age.");
-        //    if (age < 18 || age > 70) {
-        //        throw new IllegalArgumentException("Not a valid age to create an employee");
-        //    }
-        //}
         // ensure that object state has not been corrupted or tampered with malicious code
         //checkState();
+        //s.registerValidation(this, 0);
         //SharedSecrets.getJavaObjectInputStreamAccess().checkArray(s, Object[].class, size + 1);
 
         // Read in size and allocate array
