@@ -200,7 +200,6 @@ class QueueTest {
 
 	@Test
 	public void testEqualsHashcode() {
-		System.out.println(smallStringQueue01);			System.out.println(smallStringQueue02);
 		assertEquals(smallStringQueue01.hashCode(), smallStringQueue02.hashCode(), "equals may be wrong!");
 		if (smallStringQueue01.equals(smallStringQueue02)) {
 			assertEquals(smallStringQueue01.hashCode(), smallStringQueue02.hashCode(),
