@@ -1,0 +1,65 @@
+-- Aufgabenblatt 1
+-- Hani Alshikh
+-- 12.11.2020
+-- V1.0
+
+model List
+
+class List
+  attributes
+    elements:Sequence(OclAny)
+
+  operations
+    append(element:OclAny)
+    
+    remove(index:Integer)
+    
+    insertAt(element:OclAny, index:Integer)
+    
+    size():Integer = 
+      self.elements->size()
+    
+    indexOf(element:OclAny) : Integer =
+      self.elements->asSequence()->indexOf(element)
+end
+
+constraints
+
+context List::append(element:OclAny)
+  post itemAdded:
+    self.size@pre() + 1 = self.size()
+  post itemIsLast:
+    self.elements->at(self.elements->size()) = element
+
+
+context List::remove(index:Integer)
+  pre checkLowerBound:
+    index > 0
+  pre checkUpperBound:
+    index <= self.size()
+  post itemRemoved:
+    self.size@pre() - 1 = self.size()
+  post itemAtIndexRemoved:
+    -- elements->excludes(elements@pre->at(index)) || why is it not working?
+    elements = 
+    if index = 1 -- removing first element
+      then if (elements@pre->size()) = 1 -- new sequence is empty
+        then Sequence{} -- empty sequence
+      else 
+        elements@pre->subSequence(2, (elements@pre->size())) -- sequence starts at the second index
+      endif
+    else 
+      elements@pre->subSequence(1, (index - 1))->union(elements@pre->subSequence((index + 1),(elements@pre->size()))) 
+    endif
+    
+context List::insertAt(element:OclAny, index:Integer)
+  pre checkLowerBound:
+    index > 0
+  pre checkUpperBound:
+    index <= self.size()
+  post sizeIncreased:
+    self.size@pre() + 1 = self.size()
+  post itemAdded:
+    self.elements->at(index) = element
+  post sequenceCheck:
+    elements@pre = elements->subSequence(1, (index - 1))->union(elements->subSequence((index + 1),(elements->size())))
