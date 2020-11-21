@@ -1,0 +1,17 @@
+a -> b (ab) : 1;           // 01. directed
+c -- d (cd) : 2;           // 02. notDirected
+e -- f : 3;                // 03. no edgeName
+h -> i (hi) :;             // 04. no weight
+g -- k : ;                 // 05. no edgeName & weight
+L -- M;                    // 06. basic
+N;                         // 07. free node
+O -- O : 0;                // 08. loop
+b -> a;                    // 09. multigraph
+d   -- c(dc)    :2;        // 10. weired spaces
+a -- X (ab);               // 11. duplicated id
+                           // not valid
+a -- b (ab) : 10           // 01. no semi-colleen
+-> b;                      // 02. no starting node
+--;                        // 03. no nodes
+;                          // 04. empty
+N;                         // 05. duplicate free node

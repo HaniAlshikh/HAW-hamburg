@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hawh.hajs.gka01.controllers.MainController">
+<children>
+    <Button id="loadGraph" fx:id="loadGraph" onAction="#handleLoadGraphBtn" alignment="CENTER" contentDisplay="CENTER" text="Load graph" textAlignment="CENTER" />
+      <Button id="findShortestPath" disable="true" fx:id="findShortestPath" onAction="#handleFindShortestPathBtn" alignment="CENTER" contentDisplay="CENTER" text="Find Shortest Path" textAlignment="CENTER" />
+      <Button id="saveGraph" disable="true" fx:id="saveGraph" onAction="#saveGraph" alignment="CENTER" contentDisplay="CENTER" text="Save Graph" textAlignment="CENTER" />
+</children>
+<padding>
+    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+</padding>
+</VBox>
