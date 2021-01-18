@@ -1,0 +1,44 @@
+UTF_8_small.txt
+file size before compression: 100 bytes
+after compression:            166 bytes
+ ->                           -66.000 % reduction
+UTF_8_medium.txt
+file size before compression: 1002 bytes
+after compression:            721 bytes
+ ->                           28.044 % reduction
+UTF_8_big.txt
+file size before compression: 10030 bytes
+after compression:            5567 bytes
+ ->                           44.497 % reduction
+UTF_8_repeating.txt
+file size before compression: 20062 bytes
+after compression:            10921 bytes
+ ->                           45.564 % reduction
+UTF_16_small.txt
+file size before compression: 632 bytes
+after compression:            742 bytes
+ ->                           -17.405 % reduction
+UTF_16_medium.txt
+file size before compression: 3654 bytes
+after compression:            2647 bytes
+ ->                           27.559 % reduction
+UTF_16_big.txt
+file size before compression: 14988 bytes
+after compression:            9752 bytes
+ ->                           34.935 % reduction
+UTF_16_repeating.txt
+file size before compression: 29978 bytes
+after compression:            19151 bytes
+ ->                           36.116 % reduction
+UTF_16_repeating.txt
+file size before compression: 29978 bytes
+after compression:            19151 bytes
+ ->                           36.116 % reduction
+21371-101.csv
+file size before compression: 77331 bytes
+after compression:            48306 bytes
+ ->                           37.533 % reduction
+pic.jpg
+file size before compression: 72566 bytes
+after compression:            73780 bytes
+ ->                           -1.673 % reduction
