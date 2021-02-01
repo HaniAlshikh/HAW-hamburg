@@ -1,0 +1,18 @@
+// double undirected
+v1 -- v2 : 3;
+v1 -- v2 : 4;
+
+// residual exists already
+v1 -> v3 : 5;
+v3 -> v1 : 8;
+
+// multiple outgoing directed edges
+v3 -> v4 : 5;
+v3 -> v4 : 10;
+
+// multiple edges with the same weight
+// NOTE: this will be read as one edge between v4 -> v5 according to our parser implementation
+//  but when generating all 3 edges are given uniq id's
+v4 -> v5 : 10;
+v4 -> v5 : 10;
+v4 -> v5 : 10;
