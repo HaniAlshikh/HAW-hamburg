@@ -21,7 +21,7 @@ public class LZWTest {
     public void setUp() {
         l = new LZW(255);
     }
-
+    
     @Test
     public void compressTest() {
         // ababcbc -> [97, 98, 256, 99, 98, 99]
